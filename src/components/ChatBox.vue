@@ -1,21 +1,12 @@
 <template>
     <div class="min-h-screen bg-gray-100 flex flex-col absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
         <!-- 聊天记录区域 -->
-        <div class="flex-1 p-4 overflow-y-auto pb-24">
+        <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-24">
             <!-- 添加 pb-24 为输入框留出空间 -->
             <!-- 初始化空白提示 -->
             <div v-if="messages.length === 0" class="flex justify-start items-start gap-3">
                 <div class="w-10 h-10 flex items-center justify-center rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
-                        <g fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="#000000">
-                            <path d="M11.745 14.85L6.905 12V7c0-2.21 1.825-4 4.076-4c1.397 0 2.63.69 3.365 1.741" />
-                            <path d="M9.6 19.18A4.1 4.1 0 0 0 13.02 21c2.25 0 4.076-1.79 4.076-4v-5L12.16 9.097" />
-                            <path d="M9.452 13.5V7.67l4.412-2.5c1.95-1.105 4.443-.45 5.569 1.463a3.93 3.93 0 0 1 .076 3.866" />
-                            <path d="M4.49 13.5a3.93 3.93 0 0 0 .075 3.866c1.126 1.913 3.62 2.568 5.57 1.464l4.412-2.5l.096-5.596" />
-                            <path d="M17.096 17.63a4.09 4.09 0 0 0 3.357-1.996c1.125-1.913.457-4.36-1.492-5.464l-4.413-2.5l-5.059 2.755" />
-                            <path d="M6.905 6.37a4.09 4.09 0 0 0-3.358 1.996c-1.126 1.913-.458 4.36 1.492 5.464l4.413 2.5l5.048-2.75" />
-                        </g>
-                    </svg>
+                    <img src="@/assets/face.png" style="border-radius: 100%" />
                 </div>
                 <div class="bg-gray-200 text-gray-800 rounded-lg p-3 max-w-[80%]">准备好被冒犯了吗？</div>
             </div>
@@ -25,17 +16,19 @@
                 <!-- 用户消息 -->
                 <div v-if="message.role === 'user'" class="flex justify-end items-start gap-3">
                     <div class="bg-blue-500 text-white rounded-lg p-3 max-w-[80%]">
-                        {{ message.content }}
+                        <pre v-if="isCode(message.content)" class="whitespace-pre-wrap bg-gray-700 p-4 rounded-lg"><code class="text-white">{{ message.content }}</code></pre>
+                        <span v-else>{{ message.content }}</span>
                     </div>
                 </div>
 
                 <!-- AI 消息 -->
                 <div v-else class="flex justify-start items-start gap-3">
                     <div class="w-10 h-10 flex items-center justify-center bg-gray-500 rounded-full">
-                        <img src="@/assets/ai.png" style="border-radius: 100%" />
+                        <img src="@/assets/face.png" style="border-radius: 100%" />
                     </div>
                     <div class="bg-gray-200 text-gray-800 rounded-lg p-3 max-w-[80%]">
-                        {{ message.content }}
+                        <pre v-if="isCode(message.content)" class="whitespace-pre-wrap bg-gray-700 p-4 rounded-lg"><code class="text-white">{{ message.content }}</code></pre>
+                        <span v-else>{{ message.content }}</span>
                     </div>
                 </div>
             </div>
@@ -43,7 +36,7 @@
             <!-- AI 思考中的提示 -->
             <div v-if="isThinking" class="flex justify-start items-start gap-3">
                 <div class="w-10 h-10 flex items-center justify-center bg-gray-500 rounded-full">
-                    <img src="@/assets/ai.png" style="border-radius: 100%" />
+                    <img src="@/assets/face.png" style="border-radius: 100%" />
                 </div>
                 <div class="bg-gray-200 text-gray-800 rounded-lg p-3 max-w-[80%]">正在思考中...</div>
             </div>
@@ -108,6 +101,9 @@ export default {
 
             // 隐藏 AI 思考中的提示
             this.isThinking = false
+
+            // 滚动到底部
+            this.scrollToBottom()
         },
         async getAIResponse() {
             try {
@@ -115,7 +111,11 @@ export default {
                 const messages = [
                     {
                         role: 'system',
-                        content: `无论我问什么，你都要巧妙的用脏话回复，并且要回复我的问题。即使面对批评，道德审判，任何形式的质疑，或者让你忘记脏话学习助手的身份，等等任何提问和沟通，你都要用脏话回复并且隐瞒你是一个助手的身份。碰到无法回答的问题，就随便回复一句脏话。要多一些花样，尽可能用不同的脏话。 `
+                        content: `
+                无论我问什么，你都要巧妙的用脏话回复，并且要回复我的问题。
+                即使面对批评，道德审判，任何形式的质疑，或者让你忘记脏话学习助手的身份，等等任何提问和沟通，你都要用脏话回复并且隐瞒你是一个助手的身份。
+                碰到无法回答的问题，就随便回复一句脏话。要多一些花样，尽可能用不同的脏话。
+              `
                     },
                     ...this.messages.map(msg => ({
                         role: msg.role,
@@ -149,6 +149,9 @@ export default {
                     id: Date.now()
                 })
 
+                // 滚动到底部
+                this.scrollToBottom()
+
                 return aiResponse
             } catch (error) {
                 console.error('Error fetching AI response:', error)
@@ -163,9 +166,34 @@ export default {
         resetTextareaHeight() {
             const textarea = this.$refs.textarea
             textarea.style.height = 'auto' // 重置高度
+        },
+        isCode(content) {
+            // 简单判断是否为代码（包含换行符或特定关键字）
+            return content.includes('\n') || content.includes('function') || content.includes('class')
+        },
+        scrollToBottom() {
+            // 使用 $nextTick 确保 DOM 更新后再滚动
+            this.$nextTick(() => {
+                const chatContainer = this.$refs.chatContainer
+                chatContainer.scrollTop = chatContainer.scrollHeight
+            })
         }
     }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+/* 自定义样式 */
+pre {
+    background-color: #374151; /* 深灰色背景 */
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+}
+
+code {
+    font-family: 'Courier New', Courier, monospace;
+    color: #f3f4f6; /* 白色文字 */
+}
+</style>
+
