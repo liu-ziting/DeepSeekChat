@@ -1,10 +1,21 @@
 <template>
     <div class="min-h-screen bg-gray-100 flex flex-col absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
         <!-- 头部切换按钮 -->
-        <div class="flex justify-center gap-4 p-4 bg-white border-b border-gray-200">
-            <button @click="changeMode('normal')" :class="['px-4 py-2 rounded-lg', mode === 'normal' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800']">正常模式</button>
-            <button @click="changeMode('angry')" :class="['px-4 py-2 rounded-lg', mode === 'angry' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800']">暴躁模式</button>
-            <button @click="changeMode('rude')" :class="['px-4 py-2 rounded-lg', mode === 'rude' ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-800']">祖安模式</button>
+
+        <div class="radio-inputs flex justify-center gap-4 p-4 bg-white border-b border-gray-200">
+            <label class="radio" @click="changeMode('normal')">
+                <input type="radio" name="radio" checked="" />
+                <span class="name">正常模式</span>
+            </label>
+            <label class="radio" @click="changeMode('angry')">
+                <input type="radio" name="radio" />
+                <span class="name">暴躁模式</span>
+            </label>
+
+            <label class="radio" @click="changeMode('rude')">
+                <input type="radio" name="radio" />
+                <span class="name">祖安模式</span>
+            </label>
         </div>
 
         <!-- 聊天记录区域 -->
@@ -264,6 +275,46 @@ pre {
 code {
     font-family: 'Courier New', Courier, monospace;
     color: #f3f4f6; /* 白色文字 */
+}
+
+.radio-inputs {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 0.5rem;
+    background-color: #eee;
+    box-sizing: border-box;
+    box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+    padding: 0.25rem;
+    width: 90%;
+    margin: 20px auto 0 auto;
+    font-size: 14px;
+}
+
+.radio-inputs .radio {
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+.radio-inputs .radio input {
+    display: none;
+}
+
+.radio-inputs .radio .name {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: none;
+    padding: 0.5rem 0;
+    color: rgba(51, 65, 85, 1);
+    transition: all 0.15s ease-in-out;
+}
+
+.radio-inputs .radio input:checked + .name {
+    background-color: #fff;
+    font-weight: 600;
 }
 </style>
 
