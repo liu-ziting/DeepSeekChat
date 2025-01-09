@@ -316,7 +316,7 @@ code {
     box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
     padding: 0.25rem;
     width: 90%;
-    margin: 20px auto 0 auto;
+    margin: 20px auto 10px auto;
     font-size: 14px;
 }
 
