@@ -63,7 +63,7 @@
                     <!-- 用户消息 -->
                     <div v-if="message.role === 'user'" class="flex justify-end items-start gap-3">
                         <div class="bg-blue-500 text-white rounded-lg p-3 max-w-[80%]">
-                            <pre v-if="isCode(message.content)" class="whitespace-pre-wrap bg-gray-700 p-4 rounded-lg"><code class="text-white">{{ message.content }}</code></pre>
+                            <pre v-if="isCode(message.content)" class="whitespace-pre-wrap  p-4 rounded-lg"><code>{{ message.content }}</code></pre>
                             <span v-else>{{ message.content }}</span>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                         </svg>
                         </div>
                         <div class="bg-gray-200 text-gray-800 rounded-lg p-3 max-w-[80%]">
-                            <pre v-if="isCode(message.content)" class="whitespace-pre-wrap bg-gray-700 p-4 rounded-lg"><code class="text-white">{{ message.content }}</code></pre>
+                            <pre v-if="isCode(message.content)" class="whitespace-pre-wrap  p-4 rounded-lg"><code>{{ message.content }}</code></pre>
                             <span v-else>{{ message.content }}</span>
                         </div>
                     </div>
@@ -334,15 +334,13 @@ export default {
 <style scoped>
 /* 自定义样式 */
 pre {
-    background-color: #374151; /* 深灰色背景 */
-    padding: 1rem;
-    border-radius: 0.5rem;
+    padding: 0;
+    border-radius: 0;
     overflow-x: auto;
 }
 
 code {
-    font-family: 'Courier New', Courier, monospace;
-    color: #f3f4f6; /* 白色文字 */
+    font-family: normal
 }
 .main,
 .form {
