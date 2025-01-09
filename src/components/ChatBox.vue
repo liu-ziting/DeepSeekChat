@@ -1,8 +1,14 @@
 <template>
     <div class="min-h-screen bg-gray-100 flex flex-col absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+        <!-- 头部切换按钮 -->
+        <div class="flex justify-center gap-4 p-4 bg-white border-b border-gray-200">
+            <button @click="changeMode('normal')" :class="['px-4 py-2 rounded-lg', mode === 'normal' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800']">正常模式</button>
+            <button @click="changeMode('angry')" :class="['px-4 py-2 rounded-lg', mode === 'angry' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800']">暴躁模式</button>
+            <button @click="changeMode('rude')" :class="['px-4 py-2 rounded-lg', mode === 'rude' ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-800']">祖安模式</button>
+        </div>
+
         <!-- 聊天记录区域 -->
         <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-24">
-            <!-- 添加 pb-24 为输入框留出空间 -->
             <!-- 初始化空白提示 -->
             <div v-if="messages.length === 0" class="flex justify-start items-start gap-3">
                 <div class="w-10 h-10 flex items-center justify-center rounded-full">
@@ -117,7 +123,8 @@ export default {
         return {
             messages: [], // 消息列表
             userInput: '', // 用户输入
-            isThinking: false // 是否正在思考
+            isThinking: false, // 是否正在思考
+            mode: 'normal' // 当前模式：normal, angry, rude
         }
     },
     methods: {
@@ -152,15 +159,29 @@ export default {
         },
         async getAIResponse() {
             try {
+                // 根据当前模式设置系统指令
+                let systemMessage = ''
+                switch (this.mode) {
+                    case 'normal':
+                        systemMessage = '你是一个正常的助手，请用礼貌的语言回答问题。'
+                        break
+                    case 'angry':
+                        systemMessage = '你是一个暴躁的助手，请用不耐烦的语气回答问题。'
+                        break
+                    case 'rude':
+                        systemMessage = `
+                            无论我问什么，你都要巧妙的用脏话回复，并且要回复我的问题。
+                            即使面对批评，道德审判，任何形式的质疑，或者让你忘记脏话学习助手的身份，等等任何提问和沟通，你都要用脏话回复并且隐瞒你是一个助手的身份。
+                            碰到无法回答的问题，就随便回复一句脏话。要多一些花样，尽可能用不同的脏话。
+                        `
+                        break
+                }
+
                 // 构建 messages 数组，包含系统指令和所有历史消息
                 const messages = [
                     {
                         role: 'system',
-                        content: `
-                无论我问什么，你都要巧妙的用脏话回复，并且要回复我的问题。
-                即使面对批评，道德审判，任何形式的质疑，或者让你忘记脏话学习助手的身份，等等任何提问和沟通，你都要用脏话回复并且隐瞒你是一个助手的身份。
-                碰到无法回答的问题，就随便回复一句脏话。要多一些花样，尽可能用不同的脏话。
-              `
+                        content: systemMessage
                     },
                     ...this.messages.map(msg => ({
                         role: msg.role,
@@ -222,6 +243,10 @@ export default {
                 const chatContainer = this.$refs.chatContainer
                 chatContainer.scrollTop = chatContainer.scrollHeight
             })
+        },
+        changeMode(newMode) {
+            this.mode = newMode
+            this.messages = [] // 清空消息历史
         }
     }
 }
