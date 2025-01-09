@@ -231,7 +231,8 @@ export default {
                     },
                     body: JSON.stringify({
                         model: 'deepseek-chat',
-                        messages: messages
+                        messages: messages,
+                        temperature: 1.5
                     })
                 })
 
