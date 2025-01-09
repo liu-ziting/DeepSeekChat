@@ -40,7 +40,7 @@
                         ></path>
                     </svg>
                 </div>
-                <div class="bg-gray-200 text-gray-800 rounded-lg p-3 max-w-[80%]">准备好被冒犯了吗？</div>
+                <div class="bg-gray-200 text-gray-800 rounded-lg p-3 max-w-[80%]">{{ promptMessage }}</div>
             </div>
 
             <!-- 消息列表 -->
@@ -136,6 +136,21 @@ export default {
             userInput: '', // 用户输入
             isThinking: false, // 是否正在思考
             mode: 'normal' // 当前模式：normal, angry, rude
+        }
+    },
+    computed: {
+        // 根据当前模式返回不同的提示语
+        promptMessage() {
+            switch (this.mode) {
+                case 'normal':
+                    return '你好！请问有什么可以帮您的？'
+                case 'angry':
+                    return '有话快说，别浪费我时间！'
+                case 'rude':
+                    return '准备好被冒犯了吗？'
+                default:
+                    return '你好！请问有什么可以帮您的？'
+            }
         }
     },
     methods: {
