@@ -115,6 +115,7 @@
                     :disabled="isThinking"
                     rows="1"
                     @input="autoResizeTextarea"
+                    @keydown="handleKeydown"
                 ></textarea>
                 <button
                     type="submit"
@@ -273,6 +274,19 @@ export default {
         changeMode(newMode) {
             this.mode = newMode
             this.messages = [] // 清空消息历史
+        },
+        handleKeydown(event) {
+            // 如果按下的是 Enter 键，并且没有按下 Ctrl 或 Cmd 键
+            if (event.key === 'Enter' && !event.ctrlKey && !event.metaKey) {
+                event.preventDefault() // 阻止默认行为（换行）
+                this.sendMessage() // 提交消息
+            }
+            // 如果按下的是 Ctrl + Enter 或 Cmd + Enter，插入换行符
+            else if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+                event.preventDefault() // 阻止默认行为（提交表单）
+                this.userInput += '\n' // 插入换行符
+                this.autoResizeTextarea({ target: this.$refs.textarea }) // 调整输入框高度
+            }
         }
     }
 }
