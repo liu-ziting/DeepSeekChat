@@ -23,7 +23,7 @@
 
                 <!-- AI 消息 -->
                 <div v-else class="flex justify-start items-start gap-3">
-                    <div class="w-10 h-10 flex items-center justify-center bg-gray-500 rounded-full">
+                    <div class="w-10 h-10 flex items-center justify-center rounded-full">
                         <img src="@/assets/face.png" style="border-radius: 100%" />
                     </div>
                     <div class="bg-gray-200 text-gray-800 rounded-lg p-3 max-w-[80%]">
@@ -35,7 +35,7 @@
 
             <!-- AI 思考中的提示 -->
             <div v-if="isThinking" class="flex justify-start items-start gap-3">
-                <div class="w-10 h-10 flex items-center justify-center bg-gray-500 rounded-full">
+                <div class="w-10 h-10 flex items-center justify-center rounded-full">
                     <img src="@/assets/face.png" style="border-radius: 100%" />
                 </div>
                 <div class="bg-gray-200 text-gray-800 rounded-lg p-3 max-w-[80%]">正在思考中...</div>
@@ -48,7 +48,7 @@
                 <textarea
                     ref="textarea"
                     v-model="userInput"
-                    placeholder="输入你的问题..."
+                    placeholder="来说点什么..."
                     class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none overflow-hidden"
                     :disabled="isThinking"
                     rows="1"
