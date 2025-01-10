@@ -1,74 +1,90 @@
-# Deep Seek Chat
+# DeepSeek Chat
 
-A Vue.js based chat application with AI integration using OpenAI's API.
+DeepSeek Chat 是一个基于 Vue.js 的聊天应用前端项目。
 
-## Features
+## 技术栈
 
--   Real-time chat interface
--   AI-powered responses
--   Clean and responsive UI using Tailwind CSS
--   Vue.js single-page application
+-   Vue 3
+-   Vue Router
+-   Tailwind CSS
+-   PostCSS
+-   Babel
 
-## Technology Stack
+## 项目结构
 
--   Vue.js 2.6
--   Vue Router 3.6
--   Tailwind CSS 3.4
--   OpenAI API
+```
+.
+├── public/              # 静态资源
+│   ├── face.ico         # 网站图标
+│   └── index.html       # 主HTML文件
+├── src/                 # 源代码
+│   ├── assets/          # 图片资源
+│   ├── components/      # Vue组件
+│   │   ├── ChatBox/     # 聊天框相关组件
+│   │   ├── IconBox/     # 图标组件
+│   │   ├── ChatBox.vue  # 主聊天框
+│   │   ├── ModelSelector.vue  # 模型选择器
+│   │   └── ModeSelector.vue   # 模式选择器
+│   ├── router/          # 路由配置
+│   ├── utils/           # 工具函数
+│   ├── App.vue          # 根组件
+│   ├── index.css        # 全局样式
+│   └── main.js          # 入口文件
+├── .env                 # 环境变量
+├── .gitignore           # Git忽略文件
+├── babel.config.js      # Babel配置
+├── jsconfig.json        # JS配置
+├── package.json         # 项目依赖
+├── postcss.config.js    # PostCSS配置
+├── tailwind.config.js   # Tailwind配置
+└── vue.config.js        # Vue CLI配置
+```
 
-## Project Setup
+## 快速开始
 
-### Prerequisites
+1. 克隆仓库
 
--   Node.js (v16+ recommended)
--   npm (v8+ recommended)
+```bash
+git clone https://github.com/your-repo/deepseek-chat.git
+```
 
-### Installation
-
-1. Clone the repository
-2. Install dependencies:
+2. 安装依赖
 
 ```bash
 npm install
 ```
 
-### Running the Development Server
+3. 配置环境变量
+   复制 `.env.example` 为 `.env` 并填写相关配置
+
+4. 运行开发服务器
 
 ```bash
 npm run serve
 ```
 
-### Building for Production
+5. 构建生产版本
 
 ```bash
 npm run build
 ```
 
-### Linting
+## 环境变量
 
-```bash
-npm run lint
-```
+| 变量名                   | 说明         |
+| ------------------------ | ------------ |
+| VUE_APP_DEEPSEEK_API_KEY | DeepSeek Key |
+| VUE_APP_GEMINI_API_KEY   | Gemini Key   |
 
-## Project Structure
+## 贡献指南
 
-```
-deep-seek-chat/
-├── public/              # Static assets
-├── src/                 # Application source code
-│   ├── assets/          # Images and other assets
-│   ├── components/      # Vue components
-│   ├── router/          # Vue router configuration
-│   ├── App.vue          # Main application component
-│   ├── main.js          # Application entry point
-│   └── index.css        # Tailwind CSS styles
-├── .env                 # Environment variables
-├── package.json         # Project dependencies and scripts
-├── tailwind.config.js   # Tailwind CSS configuration
-└── vue.config.js        # Vue CLI configuration
-```
+1. Fork 项目
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送分支 (`git push origin feature/AmazingFeature`)
+5. 创建 Pull Request
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://choosealicense.com/licenses/mit/)
 
