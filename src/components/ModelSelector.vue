@@ -8,6 +8,10 @@
             <input type="radio" name="model" :checked="model === 'gemini'" />
             <span class="name">Gemini</span>
         </label>
+        <label class="radio" @click="changeModel('bigmodel')">
+            <input type="radio" name="model" :checked="model === 'bigmodel'" />
+            <span class="name">智谱</span>
+        </label>
         <label class="radio">
             <input type="radio" name="model" disabled />
             <span class="name" style="color: #9ca3af">实时视频交互模式</span>

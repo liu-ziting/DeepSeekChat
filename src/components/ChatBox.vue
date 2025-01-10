@@ -5,7 +5,7 @@
             <ModelSelector :model="model" @change-model="changeModel" />
 
             <!-- 模式选择 -->
-            <ModeSelector v-if="model !== 'gemini'" :mode="mode" @change-mode="changeMode" />
+            <ModeSelector v-if="model !== 'gemini' && model !== 'bigmodel'" :mode="mode" @change-mode="changeMode" />
 
             <!-- 聊天记录区域 -->
             <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-36">
@@ -33,10 +33,7 @@
             <InputBox :is-thinking="isThinking" @send-message="sendMessage" />
 
             <!-- 底部介绍 -->
-            <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 text-center text-sm text-gray-500">
-                Powered by DeepSeek |
-                <a class="text-blue-500" href="https://liuziting.netlify.app/">Liuziting</a>
-            </footer>
+            <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 text-center text-sm text-gray-500">Powered by DeepSeek | Liuziting</footer>
         </div>
     </div>
 </template>
@@ -109,8 +106,8 @@ export default {
                     }))
                 ]
 
-                const { apiUrl, apiKey, modelName } = this.getApiConfig()
-                const data = await fetchAIResponse(apiUrl, apiKey, modelName, messages)
+                const { apiUrl, apiKey, modelName, temperature } = this.getApiConfig()
+                const data = await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature)
 
                 this.messages.push({
                     role: 'assistant',
