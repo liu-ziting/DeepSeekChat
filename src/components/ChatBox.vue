@@ -9,24 +9,8 @@
 
             <!-- 聊天记录区域 -->
             <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-36 chatContainer">
-                <!-- 初始化空白提示 -->
-                <div v-if="messages.length === 0" class="flex justify-start items-start gap-3">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-full">
-                        <IconAI />
-                    </div>
-                    <div class="bg-gray-200 text-gray-800 rounded-lg p-3 max-w-[80%]">{{ promptMessage }}</div>
-                </div>
-
                 <!-- 消息列表 -->
                 <Message v-for="message in messages" :key="message.id" :message="message" />
-
-                <!-- AI 思考中的提示 -->
-                <div v-if="isThinking" class="flex justify-start items-start gap-3">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-full">
-                        <IconAI />
-                    </div>
-                    <div class="bg-gray-200 text-gray-800 rounded-lg p-3 max-w-[80%]">正在思考中...</div>
-                </div>
             </div>
 
             <!-- 输入框区域 -->
@@ -43,56 +27,56 @@ import ModelSelector from './ModelSelector.vue'
 import ModeSelector from './ModeSelector.vue'
 import Message from './ChatBox/MessageBox.vue'
 import InputBox from './ChatBox/InputBox.vue'
-import IconAI from './IconBox/IconAI.vue'
 import { fetchAIResponse, API_CONFIG } from '../utils/api'
 export default {
     components: {
         ModelSelector,
         ModeSelector,
         Message,
-        InputBox,
-        IconAI
+        InputBox
     },
     data() {
         return {
-            messages: [],
+            messages: [
+                {
+                    role: 'assistant',
+                    content: '你好！请问有什么可以帮您的？'
+                }
+            ],
             isThinking: false,
             mode: 'normal',
             model: 'deepseek'
-        }
-    },
-    computed: {
-        promptMessage() {
-            switch (this.mode) {
-                case 'normal':
-                    return '你好！请问有什么可以帮您的？'
-                case 'angry':
-                    return '有话快说，别浪费我时间！'
-                case 'rude':
-                    return '准备好被冒犯了吗？'
-                default:
-                    return '你好！请问有什么可以帮您的？'
-            }
         }
     },
     methods: {
         async sendMessage(userInput) {
             if (userInput.trim() === '') return
 
+            // 插入用户消息
             this.messages.push({
                 role: 'user',
                 content: userInput,
                 id: Date.now()
             })
 
+            // 插入“加载中”临时消息
+            const loadingMessage = {
+                role: 'assistant',
+                content: '思考中...',
+                id: 'loading-' + Date.now()
+            }
+            this.messages.push(loadingMessage)
+
             this.isThinking = true
 
-            await this.getAIResponse()
+            // 获取 AI 响应
+            await this.getAIResponse(loadingMessage.id)
 
             this.isThinking = false
+
             this.scrollToBottom()
         },
-        async getAIResponse() {
+        async getAIResponse(loadingMessageId) {
             try {
                 const systemMessage = this.getSystemMessage()
                 const messages = [
@@ -100,24 +84,39 @@ export default {
                         role: 'system',
                         content: systemMessage
                     },
-                    ...this.messages.map(msg => ({
-                        role: msg.role,
-                        content: msg.content
-                    }))
+                    ...this.messages
+                        .filter(msg => msg.id !== loadingMessageId) // 排除“加载中”消息
+                        .map(msg => ({
+                            role: msg.role,
+                            content: msg.content
+                        }))
                 ]
 
                 const { apiUrl, apiKey, modelName, temperature } = this.getApiConfig()
                 const data = await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature)
 
-                this.messages.push({
-                    role: 'assistant',
-                    content: data.choices[0].message.content,
-                    id: Date.now()
-                })
+                // 替换“加载中”消息为实际响应
+                const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
+                if (index !== -1) {
+                    this.messages.splice(index, 1, {
+                        role: 'assistant',
+                        content: data.choices[0].message.content,
+                        id: Date.now()
+                    })
+                }
 
                 this.scrollToBottom()
             } catch (error) {
                 console.error('Error fetching AI response:', error)
+                // 替换“加载中”消息为错误提示
+                const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
+                if (index !== -1) {
+                    this.messages.splice(index, 1, {
+                        role: 'assistant',
+                        content: '请求失败，请稍后重试。',
+                        id: Date.now()
+                    })
+                }
             }
         },
         getSystemMessage() {
@@ -150,12 +149,21 @@ export default {
         },
         changeMode(newMode) {
             this.mode = newMode
-            // this.messages = []
+            this.messages = [] // 清空消息列表
+            this.insertDefaultMessage() // 插入默认的第一个对话
         },
         changeModel(newModel) {
             this.model = newModel
-            this.mode = 'normal'
-            this.messages = []
+            this.mode = 'normal' // 重置为默认模式
+            this.messages = [] // 清空消息列表
+            this.insertDefaultMessage() // 插入默认的第一个对话
+        },
+        insertDefaultMessage() {
+            // 插入默认的第一个对话
+            this.messages.push({
+                role: 'assistant',
+                content: '你好！请问有什么可以帮您的？'
+            })
         }
     }
 }

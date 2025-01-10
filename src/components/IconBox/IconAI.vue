@@ -25,6 +25,7 @@
     aspect-ratio: 1;
     position: relative;
     margin-top: 6px;
+    z-index: -1;
 }
 
 .loader .box {
