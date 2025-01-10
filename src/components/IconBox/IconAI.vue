@@ -16,9 +16,8 @@
     </div>
 </template>
 <style scoped>
-/* From Uiverse.io by Smit-Prajapati */
 .loader {
-    --size: 45px;
+    --size: 40px;
     --duration: 2s;
     --logo-color: grey;
     --background: linear-gradient(0deg, rgba(50, 50, 50, 0.2) 0%, rgba(100, 100, 100, 0.2) 100%);
@@ -33,7 +32,6 @@
     background: rgba(100, 100, 100, 0.15);
     background: var(--background);
     border-radius: 50%;
-    border-top: 1px solid rgba(100, 100, 100, 1);
     backdrop-filter: blur(5px);
     animation: ripple var(--duration) infinite ease-in-out;
 }
