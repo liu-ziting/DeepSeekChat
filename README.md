@@ -1,6 +1,6 @@
 # DeepSeek Chat
 
-DeepSeek Chat 是一个基于 Vue.js 的聊天应用前端项目。
+DeepSeek Chat 是一款基于 Vue.js 开发的聊天应用前端项目，所有代码均由 DeepSeek AI 自主构建并进行了定制化修改。目前，DeepSeek 支持与 Gemini 模型的集成，并提供三种不同的语言模式供用户选择。
 
 ## 技术栈
 
