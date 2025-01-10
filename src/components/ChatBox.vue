@@ -17,7 +17,7 @@
                 </label>
             </div>
             <!-- 头部切换按钮 -->
-            <div class="radio-inputs flex justify-center gap-4 p-4 bg-white border-b border-gray-200">
+            <div v-if="model !== 'gemini'" class="radio-inputs flex justify-center gap-4 p-4 bg-white border-b border-gray-200">
                 <label class="radio" @click="changeMode('normal')">
                     <input type="radio" name="radio" checked="" />
                     <span class="name">正常模式</span>
@@ -256,6 +256,9 @@ export default {
             textarea.style.height = 'auto' // 重置高度
         },
         isCode(content) {
+            if (!content || typeof content !== 'string') {
+                return false // 如果 content 为 undefined、null 或不是字符串，返回 false
+            }
             // 简单判断是否为代码（包含换行符或特定关键字）
             return content.includes('\n') || content.includes('function') || content.includes('class')
         },
@@ -285,6 +288,7 @@ export default {
         },
         changeModel(newModel) {
             this.model = newModel
+            this.mode = 'normal'
             this.messages = [] // 清空消息历史
         }
     }
