@@ -17,11 +17,17 @@ export const API_CONFIG = {
         apiKey: process.env.VUE_APP_GLM_API_KEY,
         modelName: 'glm-4v-flash',
         temperature: 1
+    },
+    kimi: {
+        apiUrl: 'https://api.moonshot.cn/v1/chat/completions',
+        apiKey: process.env.VUE_APP_KIMI_API_KEY,
+        modelName: 'moonshot-v1-8k',
+        temperature: 1
     }
 }
 
 // 封装 API 请求
-export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, temperature = 1.5) => {
+export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, temperature = 1) => {
     const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {

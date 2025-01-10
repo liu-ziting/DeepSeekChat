@@ -12,7 +12,11 @@
             <input type="radio" name="model" :checked="model === 'bigmodel'" />
             <span class="name">智谱</span>
         </label>
-        <label class="radio">
+        <label class="radio" @click="changeModel('kimi')">
+            <input type="radio" name="model" :checked="model === 'kimi'" />
+            <span class="name">月之暗面</span>
+        </label>
+        <label class="radio" v-show="false">
             <input type="radio" name="model" disabled />
             <span class="name" style="color: #9ca3af">实时视频交互模式</span>
         </label>

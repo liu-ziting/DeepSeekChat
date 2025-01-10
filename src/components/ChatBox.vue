@@ -5,10 +5,10 @@
             <ModelSelector :model="model" @change-model="changeModel" />
 
             <!-- 模式选择 -->
-            <ModeSelector v-if="model !== 'gemini' && model !== 'bigmodel'" :mode="mode" @change-mode="changeMode" />
+            <ModeSelector v-if="model == 'deepseek'" :mode="mode" @change-mode="changeMode" />
 
             <!-- 聊天记录区域 -->
-            <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-36">
+            <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-36 chatContainer">
                 <!-- 初始化空白提示 -->
                 <div v-if="messages.length === 0" class="flex justify-start items-start gap-3">
                     <div class="w-10 h-10 flex items-center justify-center rounded-full">

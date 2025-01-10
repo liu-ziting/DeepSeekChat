@@ -97,3 +97,20 @@ code {
     font-weight: 600;
 }
 
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb {
+    box-shadow: none;
+    background: #cccccc;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: none;
+    background: #f1f1f1;
+}
+
