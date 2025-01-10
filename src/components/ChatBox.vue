@@ -150,7 +150,7 @@ export default {
         },
         changeMode(newMode) {
             this.mode = newMode
-            this.messages = []
+            // this.messages = []
         },
         changeModel(newModel) {
             this.model = newModel
