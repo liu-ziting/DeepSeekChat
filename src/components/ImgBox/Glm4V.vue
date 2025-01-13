@@ -36,7 +36,7 @@
                     <button
                         @click="startRecognition"
                         :disabled="!imageUrl || isLoading"
-                        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                        class="submit-button w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
                     >
                         <span v-if="isLoading">正在识别中...</span>
                         <span v-else>开始识别</span>
