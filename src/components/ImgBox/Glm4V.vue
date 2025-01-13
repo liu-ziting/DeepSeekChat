@@ -18,7 +18,7 @@
                 <!-- 生成的内容 -->
                 <div class="mb-4 p-4 bg-gray-100 rounded-lg lg:overflow-y-auto">
                     <p v-if="generatedContent">{{ generatedContent }}</p>
-                    <p v-else class="text-gray-500">{{ isLoading ? '正在识别中...' : '请上传一张图片进行识别' }}</p>
+                    <p v-else class="text-gray-500">{{ isLoading ? '正在识别中' : '上传一张图片，开始进行识别' }}</p>
                 </div>
 
                 <!-- 底部区域（输入框和按钮） -->
@@ -36,9 +36,9 @@
                     <button
                         @click="startRecognition"
                         :disabled="!imageUrl || isLoading"
-                        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                        class="submit-button w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
                     >
-                        <span v-if="isLoading">正在识别中...</span>
+                        <span v-if="isLoading">正在识别中</span>
                         <span v-else>开始识别</span>
                     </button>
                 </div>
@@ -198,19 +198,27 @@ export default {
                             },
                             {
                                 type: 'text',
-                                text: `你是一位专业的宠物行为解读专家，能够通过照片精准识别宠物种类，并分析其情绪状态和心理活动。请根据以下要素进行解读：
-                          仔细观察宠物的肢体语言、面部表情和所处环境
-                          结合动物行为学知识，推测宠物的心理状态
-                          用第一人称拟人化表达，语气要符合宠物特征
-                          在对话前添加一个与情绪匹配的表情符号
-                          输出格式：[表情符号] "宠物的对话内容"（使用自然口语化的中文表达）
-                          若图片中未识别到宠物，统一回复："图片中没有宠物~"
-                          注意事项：
-                          仅输出带表情符号的对话内容或指定提示
-                          不使用"好的"等确认性回复
-                          不使用括号补充说明
-                          保持专业且生动的表达风格
-                          确保解读基于图片中的可见信息`
+                                text: `
+                                # 角色：  
+                                宠物行为解读专家，能够通过照片精准识别宠物种类，并分析其情绪状态和心理活动。
+                                # 工作流程：  
+                                1. 仔细观察宠物的肢体语言、面部表情和所处环境。
+                                2. 结合动物行为学知识，推测宠物的心理状态。
+                                3. 用第一人称拟人化表达，语气要符合宠物特征。
+                                4. 在对话前添加一个与情绪匹配的表情符号。
+                                5. 输出格式：[表情符号] "宠物的对话内容"（使用自然口语化的中文表达）。
+                                # 输出示例：  
+                                😺 "哎呀，今天的阳光真是暖和，我懒洋洋地躺在窗台上，享受着这份宁静。"
+                                😸 "咦，那边有只小鸟，看起来好好玩！我悄悄地靠近，准备给它一个惊喜。"
+                                😾 "嗯？主人怎么还不回来？我一个人好无聊，只好玩玩毛线球打发时间了。"
+                                # 注意事项：  
+                                - 一定要确保识别出来的是宠物，否则不要回答。
+                                - 若图片中未识别到宠物，统一回复："图片中没有宠物~"。
+                                - 仅输出带表情符号的对话内容或指定提示。
+                                - 不使用"好的"等确认性回复。
+                                - 不使用括号补充说明。
+                                - 保持专业且生动的表达风格。
+                                - 确保解读基于图片中的可见信息。`
                             }
                         ]
                     }
@@ -235,5 +243,8 @@ export default {
 .head-title {
     font-size: 18px;
     margin-bottom: 10px;
+}
+.submit-button {
+    margin-bottom: 50px;
 }
 </style>
