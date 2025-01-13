@@ -4,17 +4,23 @@
             <!-- 模型选择 -->
             <ModelSelector :model="model" @change-model="changeModel" />
 
-            <!-- 模式选择 -->
-            <ModeSelector v-if="model == 'deepseek'" :mode="mode" @change-mode="changeMode" />
+            <template v-if="model !== 'bigmodel'">
+                <!-- 模式选择 -->
+                <ModeSelector v-if="model == 'deepseek'" :mode="mode" @change-mode="changeMode" />
 
-            <!-- 聊天记录区域 -->
-            <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-36 chatContainer">
-                <!-- 消息列表 -->
-                <Message v-for="message in messages" :key="message.id" :message="message" />
-            </div>
+                <!-- 聊天记录区域 -->
+                <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-36 chatContainer">
+                    <!-- 消息列表 -->
+                    <Message v-for="message in messages" :key="message.id" :message="message" />
+                </div>
 
-            <!-- 输入框区域 -->
-            <InputBox :is-thinking="isThinking" @send-message="sendMessage" />
+                <!-- 输入框区域 -->
+                <InputBox :is-thinking="isThinking" @send-message="sendMessage" />
+            </template>
+            <!-- 图片识别大模型-智谱 -->
+            <template v-else>
+                <Glm4V />
+            </template>
 
             <!-- 底部介绍 -->
             <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 text-center text-sm text-gray-500">Powered by DeepSeek | Liuziting</footer>
@@ -27,13 +33,15 @@ import ModelSelector from './ModelSelector.vue'
 import ModeSelector from './ModeSelector.vue'
 import Message from './ChatBox/MessageBox.vue'
 import InputBox from './ChatBox/InputBox.vue'
+import Glm4V from './ImgBox/Glm4V.vue'
 import { fetchAIResponse, API_CONFIG } from '../utils/api'
 export default {
     components: {
         ModelSelector,
         ModeSelector,
         Message,
-        InputBox
+        InputBox,
+        Glm4V
     },
     data() {
         return {
