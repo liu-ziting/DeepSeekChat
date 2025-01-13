@@ -287,9 +287,21 @@ export default {
                 return
             }
 
+            // 使用 html2canvas 生成图片
             html2canvas(postCardElement, {
                 allowTaint: true, // 允许跨域
-                useCORS: true // 启用 CORS
+                useCORS: true, // 启用 CORS
+                scale: 2, // 提高分辨率，避免模糊
+                onclone: clonedDoc => {
+                    // 在克隆的文档中调整图片样式，确保图片不会被拉伸
+                    const clonedImg = clonedDoc.querySelector('.image-preview img')
+                    if (clonedImg) {
+                        // 确保图片保持比例
+                        clonedImg.style.objectFit = 'cover'
+                        clonedImg.style.width = '100%'
+                        clonedImg.style.height = '100%'
+                    }
+                }
             })
                 .then(canvas => {
                     // 将 canvas 转为 Data URL
@@ -371,6 +383,6 @@ export default {
 .image-preview img {
     width: 100%;
     height: 300px;
-    object-fit: cover;
+    object-fit: over;
 }
 </style>
