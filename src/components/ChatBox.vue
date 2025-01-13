@@ -173,6 +173,15 @@ export default {
                 content: '你好！请问有什么可以帮您的？'
             })
         }
+    },
+    mounted() {
+        // 获取Url中的参数model 然后赋值给this.model
+        const urlParams = new URLSearchParams(window.location.search)
+        const modelParam = urlParams.get('model')
+        if (modelParam) {
+            this.model = modelParam
+        }
+        this.insertDefaultMessage()
     }
 }
 </script>

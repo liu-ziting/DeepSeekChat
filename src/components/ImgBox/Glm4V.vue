@@ -1,38 +1,49 @@
 <template>
     <div class="container mx-auto p-4">
-        <h2 class="head-title">我知道你的宠物在想什么！</h2>
-        <!-- 图片展示区域 -->
-        <div class="w-full aspect-square mb-4 rounded-md overflow-hidden">
-            <img :src="imageUrl" alt="Uploaded Image" class="w-full h-full object-cover" v-if="imageUrl" />
-            <div v-else class="w-full h-full bg-gray-100 flex items-center justify-center">
-                <IconGlm />
+        <!-- 标题 -->
+        <h2 class="head-title text-2xl font-bold text-center text-gray-700 mb-6">我知道你的宠物在想什么！</h2>
+
+        <!-- 布局容器 -->
+        <div class="flex flex-col lg:flex-row lg:gap-8">
+            <!-- 图片展示区域 -->
+            <div class="w-full aspect-square mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0">
+                <img :src="imageUrl" alt="Uploaded Image" class="w-full h-full object-cover" v-if="imageUrl" />
+                <div v-else class="w-full h-full bg-gray-100 flex items-center justify-center">
+                    <IconGlm />
+                </div>
+            </div>
+
+            <!-- 右侧区域（生成内容、输入框、按钮） -->
+            <div class="w-full lg:w-1/2 flex flex-col justify-between">
+                <!-- 生成的内容 -->
+                <div class="mb-4 p-4 bg-gray-100 rounded-lg lg:overflow-y-auto">
+                    <p v-if="generatedContent">{{ generatedContent }}</p>
+                    <p v-else class="text-gray-500">{{ isLoading ? '正在识别中...' : '请上传一张图片进行识别' }}</p>
+                </div>
+
+                <!-- 底部区域（输入框和按钮） -->
+                <div class="mt-auto">
+                    <!-- 上传图片的输入框 -->
+                    <input
+                        type="file"
+                        accept="image/jpg, image/jpeg, image/png"
+                        @change="handleImageUpload"
+                        :disabled="isLoading"
+                        class="mb-4 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
+
+                    <!-- 开始识别按钮 -->
+                    <button
+                        @click="startRecognition"
+                        :disabled="!imageUrl || isLoading"
+                        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    >
+                        <span v-if="isLoading">正在识别中...</span>
+                        <span v-else>开始识别</span>
+                    </button>
+                </div>
             </div>
         </div>
-
-        <!-- 生成的内容 -->
-        <div class="mb-4 p-4 bg-gray-100 rounded-lg">
-            <p v-if="generatedContent">{{ generatedContent }}</p>
-            <p v-else class="text-gray-500">请上传宠物的图片，让我看看它在想些什么呢！</p>
-        </div>
-
-        <!-- 上传图片的输入框 -->
-        <input
-            type="file"
-            accept="image/jpg, image/jpeg, image/png"
-            @change="handleImageUpload"
-            :disabled="isLoading"
-            class="mb-4 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
-        />
-
-        <!-- 开始识别按钮 -->
-        <button
-            @click="startRecognition"
-            :disabled="!imageUrl || isLoading"
-            class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-        >
-            <span v-if="isLoading">正在识别中...</span>
-            <span v-else>开始识别</span>
-        </button>
     </div>
 </template>
 
