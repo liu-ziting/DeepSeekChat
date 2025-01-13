@@ -1,10 +1,10 @@
 <template>
     <div class="container mx-auto p-4">
         <!-- 标题 -->
-        <h2 class="head-title text-2xl font-bold text-center text-gray-700 mb-6">我知道你的宠物在想什么！</h2>
+        <h2 class="head-title text-2xl font-bold text-center mb-6">我知道你的宠物在想什么！</h2>
 
         <!-- 布局容器 -->
-        <div class="flex flex-col lg:flex-row lg:gap-8 main-container">
+        <div class="flex flex-col lg:flex-row lg:gap-8">
             <!-- 图片展示区域 -->
             <div class="w-full aspect-square mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0">
                 <img :src="imageUrl" alt="Uploaded Image" class="w-full h-full object-cover" v-if="imageUrl" />
@@ -16,9 +16,9 @@
             <!-- 右侧区域（生成内容、输入框、按钮） -->
             <div class="w-full lg:w-1/2 flex flex-col justify-between">
                 <!-- 生成的内容 -->
-                <div class="mb-4 p-4 bg-gray-100 rounded-lg lg:overflow-y-auto">
+                <div class="mb-4 p-4 bg-gray-100 rounded-lg">
                     <p v-if="generatedContent">{{ generatedContent }}</p>
-                    <p v-else class="text-gray-500">{{ isLoading ? '正在识别中' : '上传一张图片，开始进行识别' }}</p>
+                    <p v-else class="text-gray-500">请上传宠物的照片，让我看看它在想些什么呢！</p>
                 </div>
 
                 <!-- 底部区域（输入框和按钮） -->
@@ -36,9 +36,9 @@
                     <button
                         @click="startRecognition"
                         :disabled="!imageUrl || isLoading"
-                        class="submit-button w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
                     >
-                        <span v-if="isLoading">正在识别中</span>
+                        <span v-if="isLoading">正在识别中...</span>
                         <span v-else>开始识别</span>
                     </button>
                 </div>
@@ -208,6 +208,7 @@ export default {
                                 3. 用第一人称拟人化表达，语气要符合宠物特征。
                                 4. 在对话前添加一个与情绪匹配的表情符号。
                                 5. 输出格式：[表情符号] "宠物的对话内容"（使用自然口语化的中文表达）。
+                                
                                 # 输出示例：  
                                 😺 "哎呀，今天的阳光真是暖和，我懒洋洋地躺在窗台上，享受着这份宁静。"
                                 😸 "咦，那边有只小鸟，看起来好好玩！我悄悄地靠近，准备给它一个惊喜。"

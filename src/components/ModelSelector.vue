@@ -10,7 +10,7 @@
         </label>
         <label class="radio" @click="changeModel('bigmodel')">
             <input type="radio" name="model" :checked="model === 'bigmodel'" />
-            <span class="name">智谱</span>
+            <span class="name">智谱清言</span>
         </label>
         <label class="radio" @click="changeModel('kimi')">
             <input type="radio" name="model" :checked="model === 'kimi'" />
