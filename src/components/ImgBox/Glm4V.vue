@@ -7,7 +7,7 @@
         <div class="flex flex-col lg:flex-row lg:gap-8">
             <!-- 图片展示区域 -->
             <div class="w-full aspect-square mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0">
-                <img :src="imageUrl" alt="Uploaded Image" class="w-full h-full object-cover" v-if="imageUrl" />
+                <img @click="openShareDialog" :src="imageUrl" alt="Uploaded Image" class="w-full h-full object-cover" v-if="imageUrl" />
                 <div v-else class="w-full h-full bg-gray-100 flex items-center justify-center">
                     <IconGlm />
                 </div>
@@ -17,7 +17,9 @@
             <div class="w-full lg:w-1/2 flex flex-col justify-between">
                 <!-- 生成的内容 -->
                 <div class="mb-4 p-4 bg-gray-100 rounded-lg">
-                    <p v-if="generatedContent">{{ generatedContent }}</p>
+                    <p v-if="generatedContent">
+                        {{ generatedContent }}
+                    </p>
                     <p v-else class="text-gray-500">请上传宠物的照片，让我看看它在想些什么呢！</p>
                 </div>
 
@@ -36,11 +38,37 @@
                     <button
                         @click="startRecognition"
                         :disabled="!imageUrl || isLoading"
-                        class="submit-button w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
                     >
                         <span v-if="isLoading">正在识别中...</span>
                         <span v-else>开始识别</span>
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分享弹窗 -->
+        <div v-if="isShareDialogOpen" class="propup fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white rounded-lg p-4 shadow-lg w-96">
+                <div class="flex flex-col items-center">
+                    <div class="post-card">
+                        <a href="javascript:;" class="title">{{ generatedContent }}</a>
+                        <span class="datetime"></span>
+                        <div class="image-preview">
+                            <img :src="imageUrl" alt="Pet Image" class="w-full h-64 object-cover mb-4 rounded-md" />
+                        </div>
+                        <!-- 修改后的 qrcode-preview 部分 -->
+                        <div class="qrcode-preview flex items-center justify-between w-full">
+                            <div class="text-left">
+                                <p class="text-sm text-gray-600">内容由AI生成</p>
+                                <p class="text-sm text-gray-600">irritable.netlify.app</p>
+                            </div>
+                            <img class="qrcode w-12 h-12" src="~@/assets/qrcode.png" />
+                        </div>
+                    </div>
+                    <br />
+                    <button @click="saveShareToLocal" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">保存到本地</button>
+                    <button @click="closeShareDialog" class="mt-4 text-gray-500 hover:text-gray-700">关闭</button>
                 </div>
             </div>
         </div>
@@ -50,7 +78,7 @@
 <script>
 import { fetchAIResponse, API_CONFIG } from '../../utils/api'
 import IconGlm from '../IconBox/IconGlm.vue'
-
+import html2canvas from 'html2canvas'
 export default {
     components: {
         IconGlm
@@ -60,7 +88,8 @@ export default {
             imageUrl: null, // 用于显示图片的 URL
             imageBase64: null, // 用于存储 Base64 格式的图片
             generatedContent: null,
-            isLoading: false // 加载状态
+            isLoading: false, // 加载状态
+            isShareDialogOpen: false // 分享弹窗是否打开
         }
     },
     methods: {
@@ -220,7 +249,9 @@ export default {
                                 - 不使用"好的"等确认性回复。
                                 - 不使用括号补充说明。
                                 - 保持专业且生动的表达风格。
-                                - 确保解读基于图片中的可见信息。`
+                                - 确保解读基于图片中的可见信息。
+                                - 生成的对话内容不得太长，不得超过40个中文字符。
+                                `
                             }
                         ]
                     }
@@ -236,17 +267,110 @@ export default {
             } finally {
                 this.isLoading = false // 结束加载
             }
+        },
+
+        // 打开分享弹窗
+        openShareDialog() {
+            this.isShareDialogOpen = true
+        },
+
+        // 关闭分享弹窗
+        closeShareDialog() {
+            this.isShareDialogOpen = false
+        },
+
+        // 保存分享内容到本地
+        saveShareToLocal() {
+            const postCardElement = document.querySelector('.post-card') // 获取 .post-card 元素
+            if (!postCardElement) {
+                alert('未找到分享内容')
+                return
+            }
+
+            html2canvas(postCardElement, {
+                allowTaint: true, // 允许跨域
+                useCORS: true // 启用 CORS
+            })
+                .then(canvas => {
+                    // 将 canvas 转为 Data URL
+                    const imageUrl = canvas.toDataURL('image/png')
+
+                    // 创建一个下载链接并触发点击事件保存图片
+                    const link = document.createElement('a')
+                    link.href = imageUrl
+                    link.download = 'pet-conversation.png' // 图片的默认保存名
+                    link.click() // 模拟点击下载图片
+                })
+                .catch(error => {
+                    console.error('生成图片失败:', error)
+                    alert('生成图片失败，请重试')
+                })
         }
     }
 }
 </script>
 
 <style scoped>
+.container {
+    padding-bottom: 50px;
+}
 .head-title {
     font-size: 18px;
     margin-bottom: 10px;
 }
 .submit-button {
     margin-bottom: 50px;
+}
+
+.propup {
+    z-index: 999;
+}
+.post-card {
+    width: 100%;
+    border-radius: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.avatar {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    background-color: blueviolet;
+    background-image: linear-gradient(to top left, blueviolet, rgb(73, 31, 112));
+}
+
+.title {
+    font-size: 20px;
+    line-height: 22px;
+    font-weight: 600;
+    color: #000000;
+    text-decoration: none;
+    transition: all 0.35s ease-in;
+}
+
+.title:hover {
+    text-decoration: underline blueviolet;
+}
+
+.datetime {
+    font-size: 12px;
+    color: rgb(168 179 207);
+    margin: 10px 0;
+}
+
+.image-preview {
+    flex: 1;
+    width: 100%;
+    border-radius: 20px;
+    min-height: 200px;
+}
+.image-preview img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
 }
 </style>
