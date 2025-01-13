@@ -330,9 +330,6 @@ export default {
     font-size: 18px;
     margin-bottom: 10px;
 }
-.submit-button {
-    margin-bottom: 50px;
-}
 
 .propup {
     z-index: 999;
