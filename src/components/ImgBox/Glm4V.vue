@@ -4,7 +4,7 @@
         <h2 class="head-title text-2xl font-bold text-center text-gray-700 mb-6">我知道你的宠物在想什么！</h2>
 
         <!-- 布局容器 -->
-        <div class="flex flex-col lg:flex-row lg:gap-8">
+        <div class="flex flex-col lg:flex-row lg:gap-8 main-container">
             <!-- 图片展示区域 -->
             <div class="w-full aspect-square mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0">
                 <img :src="imageUrl" alt="Uploaded Image" class="w-full h-full object-cover" v-if="imageUrl" />
@@ -50,6 +50,7 @@
 <script>
 import { fetchAIResponse, API_CONFIG } from '../../utils/api'
 import IconGlm from '../IconBox/IconGlm.vue'
+
 export default {
     components: {
         IconGlm
