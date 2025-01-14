@@ -2,11 +2,9 @@
     <div class="min-h-screen flex flex-col absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
         <div class="main min-h-screen flex flex-col absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
             <!-- 模型选择 -->
-            <ModelSelector :model="model" @change-model="changeModel" />
-
-            <template v-if="model !== 'bigmodel'">
-                <!-- 模式选择 -->
-                <ModeSelector v-if="model == 'deepseek'" :mode="mode" @change-mode="changeMode" />
+            <TabSelector :tab="tab" @tab-selected="changeTab" />
+            <template v-if="tab === 'chat'">
+                <ModelSelector :model="model" @change-model="changeModel" />
 
                 <!-- 聊天记录区域 -->
                 <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-36 chatContainer">
@@ -15,7 +13,7 @@
                 </div>
 
                 <!-- 输入框区域 -->
-                <InputBox :is-thinking="isThinking" @send-message="sendMessage" @scroll-to-bottom="scrollToBottom" />
+                <InputBox :is-thinking="isThinking" :mode="mode" :model="model" @send-message="sendMessage" @scroll-to-bottom="scrollToBottom" @change-mode="changeMode" />
             </template>
             <!-- 图片识别大模型-智谱 -->
             <template v-else>
@@ -30,7 +28,8 @@
 
 <script>
 import ModelSelector from './ModelSelector.vue'
-import ModeSelector from './ModeSelector.vue'
+// import ModeSelector from './ModeSelector.vue'
+import TabSelector from './TabSelector.vue'
 import Message from './ChatBox/MessageBox.vue'
 import InputBox from './ChatBox/InputBox.vue'
 import Glm4V from './ImgBox/Glm4V.vue'
@@ -38,7 +37,8 @@ import { fetchAIResponse, API_CONFIG } from '../utils/api'
 export default {
     components: {
         ModelSelector,
-        ModeSelector,
+        TabSelector,
+        // ModeSelector,
         Message,
         InputBox,
         Glm4V
@@ -53,7 +53,8 @@ export default {
             ],
             isThinking: false,
             mode: 'normal',
-            model: 'deepseek'
+            model: 'deepseek',
+            tab: 'chat'
         }
     },
     methods: {
@@ -109,7 +110,9 @@ export default {
                     this.messages.splice(index, 1, {
                         role: 'assistant',
                         content: data.choices[0].message.content,
-                        id: Date.now()
+                        id: Date.now(),
+                        mode: this.mode,
+                        model: this.model
                     })
                 }
 
@@ -157,8 +160,8 @@ export default {
         },
         changeMode(newMode) {
             this.mode = newMode
-            this.messages = [] // 清空消息列表
-            this.insertDefaultMessage() // 插入默认的第一个对话
+            // this.messages = [] // 清空消息列表
+            // this.insertDefaultMessage() // 插入默认的第一个对话
         },
         changeModel(newModel) {
             this.model = newModel
@@ -172,6 +175,9 @@ export default {
                 role: 'assistant',
                 content: '你好！请问有什么可以帮您的？'
             })
+        },
+        changeTab(newTab) {
+            this.tab = newTab
         }
     },
     mounted() {

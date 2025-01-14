@@ -1,5 +1,37 @@
 <template>
     <div class="form fixed bottom-9 left-0 right-0 bg-white border-t border-gray-200 p-4">
+        <!-- 模型切换下拉菜单 -->
+        <div v-if="model === 'deepseek'" class="mb-2" style="width: 80%; margin-top: -5px">
+            <div>
+                <!-- 正常模式 -->
+                <label @click="changeMode('normal')" style="margin-right: 20px" class="inline-block cursor-pointer radio">
+                    <input class="hidden peer" type="radio" name="radio" :checked="mode === 'normal'" />
+                    <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
+                        <span :class="{ 'filter grayscale': mode !== 'normal' }">😀</span>
+                        正常模式
+                    </span>
+                </label>
+
+                <!-- 暴躁模式 -->
+                <label @click="changeMode('angry')" style="margin-right: 20px" class="inline-block cursor-pointer radio">
+                    <input class="hidden peer" type="radio" name="radio" :checked="mode === 'angry'" />
+                    <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
+                        <span :class="{ 'filter grayscale': mode !== 'angry' }">😡</span>
+                        暴躁模式
+                    </span>
+                </label>
+
+                <!-- 祖安模式 -->
+                <label @click="changeMode('rude')" class="inline-block cursor-pointer radio">
+                    <input class="hidden peer" type="radio" name="radio" :checked="mode === 'rude'" />
+                    <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
+                        <span :class="{ 'filter grayscale': mode !== 'rude' }">🤬</span>
+                        祖安模式
+                    </span>
+                </label>
+            </div>
+        </div>
+
         <form @submit.prevent="handleSubmit" class="flex gap-2 items-end">
             <textarea
                 ref="textarea"
@@ -26,11 +58,20 @@ export default {
         isThinking: {
             type: Boolean,
             default: false
+        },
+        mode: {
+            type: String,
+            required: true
+        },
+        model: {
+            type: String,
+            required: true
         }
     },
     data() {
         return {
-            userInput: ''
+            userInput: '',
+            selectedModel: 'model1' // 默认选择的模型
         }
     },
     methods: {
@@ -48,10 +89,13 @@ export default {
             }
         },
         handleSubmit() {
-            this.$emit('send-message', this.userInput)
+            this.$emit('send-message', this.userInput, this.selectedModel)
             this.userInput = ''
             resetTextareaHeight(this.$refs.textarea)
             this.$emit('scroll-to-bottom')
+        },
+        changeMode(newMode) {
+            this.$emit('change-mode', newMode)
         }
     }
 }
