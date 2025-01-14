@@ -51,6 +51,7 @@ export default {
             this.$emit('send-message', this.userInput)
             this.userInput = ''
             resetTextareaHeight(this.$refs.textarea)
+            this.$emit('scroll-to-bottom')
         }
     }
 }

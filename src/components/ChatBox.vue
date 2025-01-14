@@ -15,7 +15,7 @@
                 </div>
 
                 <!-- 输入框区域 -->
-                <InputBox :is-thinking="isThinking" @send-message="sendMessage" />
+                <InputBox :is-thinking="isThinking" @send-message="sendMessage" @scroll-to-bottom="scrollToBottom" />
             </template>
             <!-- 图片识别大模型-智谱 -->
             <template v-else>
