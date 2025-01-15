@@ -194,8 +194,12 @@ export default {
         // 获取Url中的参数model 然后赋值给this.model
         const urlParams = new URLSearchParams(window.location.search)
         const modelParam = urlParams.get('model')
+        const tabParam = urlParams.get('tab')
         if (modelParam) {
             this.model = modelParam
+        }
+        if (tabParam) {
+            this.tab = tabParam
         }
     }
 }
