@@ -16,7 +16,7 @@
                 <InputBox :is-thinking="isThinking" :mode="mode" :model="model" @send-message="sendMessage" @scroll-to-bottom="scrollToBottom" @change-mode="changeMode" />
             </template>
             <!-- 大模型竞技场 -->
-            <template v-else-if="tab === 'sports'">
+            <template v-else-if="tab === 'battle'">
                 <iframe
                     src="https://bisheng.dataelem.com/chat/flow/f6e1f49e-7d84-4f83-bd0a-bb8874b7833a"
                     style="width: 100%; height: 100%; min-height: 700px"

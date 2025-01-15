@@ -4,8 +4,8 @@
             <input type="radio" name="tab" :checked="tab === 'chat'" />
             <span class="name">通用对话</span>
         </label>
-        <label class="radio" @click="changeModel('sports')">
-            <input type="radio" name="tab" :checked="tab === 'sports'" />
+        <label class="radio" @click="changeModel('battle')">
+            <input type="radio" name="tab" :checked="tab === 'battle'" />
             <span class="name">大模型竞技场</span>
         </label>
         <label class="radio" @click="changeModel('image')">
