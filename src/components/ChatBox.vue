@@ -13,7 +13,15 @@
                 </div>
 
                 <!-- 输入框区域 -->
-                <InputBox :is-thinking="isThinking" :mode="mode" :model="model" @send-message="sendMessage" @scroll-to-bottom="scrollToBottom" @change-mode="changeMode" />
+                <InputBox
+                    :is-thinking="isThinking"
+                    :showMode="true"
+                    :mode="mode"
+                    :model="model"
+                    @send-message="sendMessage"
+                    @scroll-to-bottom="scrollToBottom"
+                    @change-mode="changeMode"
+                />
             </template>
             <!-- 大模型竞技场 -->
             <template v-else-if="tab === 'battle'">
@@ -24,6 +32,10 @@
                     allow="fullscreen;clipboard-write"
                 >
                 </iframe>
+            </template>
+            <!-- 角色对话 -->
+            <template v-else-if="tab === 'role'">
+                <RoleList />
             </template>
             <!-- 图片识别大模型-智谱 -->
             <template v-else>
@@ -38,7 +50,7 @@
 
 <script>
 import ModelSelector from './ModelSelector.vue'
-// import ModeSelector from './ModeSelector.vue'
+import RoleList from './RoleBox/RoleList.vue'
 import TabSelector from './TabSelector.vue'
 import Message from './ChatBox/MessageBox.vue'
 import InputBox from './ChatBox/InputBox.vue'
@@ -48,7 +60,7 @@ export default {
     components: {
         ModelSelector,
         TabSelector,
-        // ModeSelector,
+        RoleList,
         Message,
         InputBox,
         Glm4V
@@ -98,7 +110,6 @@ export default {
         generateUniqueId() {
             return Date.now().toString(36) + Math.random().toString(36).substring(2)
         },
-
         async getAIResponse(loadingMessageId) {
             try {
                 const systemMessage = this.getSystemMessage()

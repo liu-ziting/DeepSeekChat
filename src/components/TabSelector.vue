@@ -4,6 +4,10 @@
             <input type="radio" name="tab" :checked="tab === 'chat'" />
             <span class="name">通用对话</span>
         </label>
+        <label class="radio" @click="changeModel('role')">
+            <input type="radio" name="tab" :checked="tab === 'role'" />
+            <span class="name">角色对话</span>
+        </label>
         <label class="radio" @click="changeModel('battle')">
             <input type="radio" name="tab" :checked="tab === 'battle'" />
             <span class="name">大模型竞技场</span>

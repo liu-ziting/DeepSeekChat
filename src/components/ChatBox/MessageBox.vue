@@ -4,10 +4,12 @@
             <div v-if="message.role === 'assistant'" class="w-10 h-10 flex items-center justify-center rounded-full">
                 <IconAI />
             </div>
+
             <div class="flex flex-col">
-                <span v-if="message.role === 'assistant' && message.model === 'deepseek'" class="text-sm font-medium mb-1" :class="nameClass">
+                <span v-if="message.role === 'assistant' && message.model === 'deepseek' && !name" class="text-sm font-medium mb-1" :class="nameClass">
                     {{ message.mode === 'normal' ? '😀' : message.mode === 'angry' ? '😡' : '🤬' }}
                 </span>
+                <span v-if="name && message.role === 'assistant'" class="text-sm font-medium mb-1" :class="nameClass">{{ name }}</span>
                 <div :class="bubbleClass">
                     <pre v-if="isCode(message.content)" class="whitespace-pre-wrap rounded-lg"><code>{{ message.content }}</code></pre>
                     <span v-else>{{ message.content }}</span>
@@ -29,6 +31,10 @@ export default {
         message: {
             type: Object,
             required: true
+        },
+        name: {
+            type: String,
+            required: false
         }
     },
     computed: {

@@ -14,3 +14,7 @@ export const autoResizeTextarea = textarea => {
 export const resetTextareaHeight = textarea => {
     textarea.style.height = 'auto'
 }
+
+export const generateUniqueId = () => {
+    return Date.now().toString(36) + Math.random().toString(36).substring(2)
+}
