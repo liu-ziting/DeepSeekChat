@@ -1,6 +1,6 @@
 <template>
-    <div class="min-h-screen flex flex-col absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
-        <div class="main min-h-screen flex flex-col absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+    <div class="min-h-screen flex flex-col absolute inset-0 -z-10 h-full w-full bg-main">
+        <div class="main min-h-screen flex flex-col absolute inset-0 -z-10 h-full w-full">
             <!-- 模型选择 -->
             <TabSelector :tab="tab" @tab-selected="changeTab" />
             <template v-if="tab === 'chat'">
@@ -14,6 +14,16 @@
 
                 <!-- 输入框区域 -->
                 <InputBox :is-thinking="isThinking" :mode="mode" :model="model" @send-message="sendMessage" @scroll-to-bottom="scrollToBottom" @change-mode="changeMode" />
+            </template>
+            <!-- 大模型竞技场 -->
+            <template v-else-if="tab === 'sports'">
+                <iframe
+                    src="https://bisheng.dataelem.com/chat/flow/f6e1f49e-7d84-4f83-bd0a-bb8874b7833a"
+                    style="width: 100%; height: 100%; min-height: 700px"
+                    frameborder="0"
+                    allow="fullscreen;clipboard-write"
+                >
+                </iframe>
             </template>
             <!-- 图片识别大模型-智谱 -->
             <template v-else>

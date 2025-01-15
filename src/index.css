@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 /* 自定义样式 */
+
 pre {
     padding: 0;
     border-radius: 0;
@@ -12,6 +13,14 @@ pre {
 code {
     font-family: normal;
 }
+.bg-main {
+    height: 100vh;
+    background: url('@/assets/points.png');
+    background-position: 0 100%;
+    background-repeat: repeat-x;
+    background-size: 10px 432px;
+}
+
 .main,
 .form {
     max-width: 800px;
@@ -106,11 +115,11 @@ code {
 
 ::-webkit-scrollbar-thumb {
     box-shadow: none;
-    background: #cccccc;
+    background: #f1f1f1ff;
 }
 
 ::-webkit-scrollbar-track {
     box-shadow: none;
-    background: #f1f1f1;
+    background: #ffff;
 }
 

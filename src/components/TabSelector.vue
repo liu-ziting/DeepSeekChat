@@ -2,7 +2,11 @@
     <div class="model-selector flex justify-center gap-4 p-4 bg-white border-b border-gray-200">
         <label class="radio" @click="changeModel('chat')">
             <input type="radio" name="tab" :checked="tab === 'chat'" />
-            <span class="name">对话</span>
+            <span class="name">通用对话</span>
+        </label>
+        <label class="radio" @click="changeModel('sports')">
+            <input type="radio" name="tab" :checked="tab === 'sports'" />
+            <span class="name">大模型竞技场</span>
         </label>
         <label class="radio" @click="changeModel('image')">
             <input type="radio" name="tab" :checked="tab === 'image'" />
