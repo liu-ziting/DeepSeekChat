@@ -166,9 +166,9 @@ export default {
                         ...this.messages.slice(index + 1)
                     ]
                 }
-
+                const stream = true
                 // 调用 fetchAIResponse 并处理流式数据
-                await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, chunk => {
+                await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, stream,chunk => {
                     // 逐步更新消息内容
                     streamContent += chunk
                     this.messages = [

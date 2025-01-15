@@ -256,9 +256,11 @@ export default {
                         ]
                     }
                 ]
-
                 const { apiUrl, apiKey, modelName, temperature } = API_CONFIG['bigmodel']
-                const data = await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature)
+
+                const stream = false
+
+                const data = await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature,stream)
 
                 this.generatedContent = data.choices[0].message.content
             } catch (error) {

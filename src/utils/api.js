@@ -16,7 +16,7 @@ export const API_CONFIG = {
         apiUrl: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
         apiKey: process.env.VUE_APP_GLM_API_KEY,
         modelName: 'glm-4v-flash',
-        temperature: 1
+        temperature: 0.8
     },
     kimi: {
         apiUrl: 'https://api.moonshot.cn/v1/chat/completions',
@@ -27,7 +27,8 @@ export const API_CONFIG = {
 }
 
 // 封装 API 请求
-export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, temperature = 1, onDataReceived) => {
+// 封装 API 请求
+export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, temperature = 1, stream = false, onDataReceived) => {
     const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -38,12 +39,18 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
             model: modelName,
             messages,
             temperature,
-            stream: true // 启用流式响应
+            stream: stream // 根据 stream 参数决定是否启用流式响应
         })
     })
 
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+
+    // 如果 stream 为 false，直接返回完整的响应数据
+    if (!stream) {
+        const data = await response.json()
+        return data
     }
 
     // 处理流式响应
