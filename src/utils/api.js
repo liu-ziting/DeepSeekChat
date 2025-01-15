@@ -27,7 +27,7 @@ export const API_CONFIG = {
 }
 
 // 封装 API 请求
-export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, temperature = 1) => {
+export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, temperature = 1, onDataReceived) => {
     const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -37,7 +37,8 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
         body: JSON.stringify({
             model: modelName,
             messages,
-            temperature
+            temperature,
+            stream: true // 启用流式响应
         })
     })
 
@@ -45,5 +46,40 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
         throw new Error(`HTTP error! Status: ${response.status}`)
     }
 
-    return response.json()
+    // 处理流式响应
+    const reader = response.body.getReader()
+    const decoder = new TextDecoder('utf-8')
+    let buffer = ''
+
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        buffer += decoder.decode(value, { stream: true })
+
+        // 处理每一条消息
+        const lines = buffer.split('\n')
+        buffer = lines.pop() // 最后一行可能不完整，保留在 buffer 中
+
+        for (const line of lines) {
+            if (line.trim() === 'data: [DONE]') {
+                // 流结束
+                return
+            }
+
+            if (line.startsWith('data: ')) {
+                const jsonData = line.slice(6) // 去掉 'data: ' 前缀
+                try {
+                    const data = JSON.parse(jsonData)
+                    if (data.choices && data.choices[0].delta.content) {
+                        // 调用回调函数处理增量数据
+                        onDataReceived(data.choices[0].delta.content)
+                    }
+                } catch (error) {
+                    console.error('Error parsing JSON:', error)
+                }
+            }
+        }
+    }
 }

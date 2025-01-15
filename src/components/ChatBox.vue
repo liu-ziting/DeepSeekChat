@@ -95,6 +95,10 @@ export default {
 
             this.scrollToBottom()
         },
+        generateUniqueId() {
+            return Date.now().toString(36) + Math.random().toString(36).substring(2)
+        },
+
         async getAIResponse(loadingMessageId) {
             try {
                 const systemMessage = this.getSystemMessage()
@@ -112,31 +116,54 @@ export default {
                 ]
 
                 const { apiUrl, apiKey, modelName, temperature } = this.getApiConfig()
-                const data = await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature)
 
-                // 替换“加载中”消息为实际响应
+                // 用于存储流式响应的内容
+                let streamContent = ''
+
+                // 替换“加载中”消息为流式响应消息
                 const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
                 if (index !== -1) {
-                    this.messages.splice(index, 1, {
-                        role: 'assistant',
-                        content: data.choices[0].message.content,
-                        id: Date.now(),
-                        mode: this.mode,
-                        model: this.model
-                    })
+                    this.messages = [
+                        ...this.messages.slice(0, index),
+                        {
+                            role: 'assistant',
+                            content: '思考中...', // 初始内容为空
+                            id: this.generateUniqueId(), // 使用唯一 ID
+                            mode: this.mode,
+                            model: this.model
+                        },
+                        ...this.messages.slice(index + 1)
+                    ]
                 }
 
-                this.scrollToBottom()
+                // 调用 fetchAIResponse 并处理流式数据
+                await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, chunk => {
+                    // 逐步更新消息内容
+                    streamContent += chunk
+                    this.messages = [
+                        ...this.messages.slice(0, index),
+                        {
+                            ...this.messages[index],
+                            content: streamContent
+                        },
+                        ...this.messages.slice(index + 1)
+                    ]
+                    this.scrollToBottom() // 每次更新内容后滚动到底部
+                })
             } catch (error) {
                 console.error('Error fetching AI response:', error)
                 // 替换“加载中”消息为错误提示
                 const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
                 if (index !== -1) {
-                    this.messages.splice(index, 1, {
-                        role: 'assistant',
-                        content: '请求失败，请稍后重试。',
-                        id: Date.now()
-                    })
+                    this.messages = [
+                        ...this.messages.slice(0, index),
+                        {
+                            role: 'assistant',
+                            content: '请求失败，请稍后重试。',
+                            id: this.generateUniqueId() // 使用唯一 ID
+                        },
+                        ...this.messages.slice(index + 1)
+                    ]
                 }
             }
         },
