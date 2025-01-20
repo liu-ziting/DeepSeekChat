@@ -42,7 +42,7 @@
                 <!-- 弹窗内容 -->
                 <div>
                     <div class="main min-h-screen flex flex-col absolute inset-0 -z-10 h-full w-full bg-main">
-                        <h2 class="text-1xl font-bold mb-2 mt-2 text-center h-8">
+                        <h2 class="text-1xl font-bold mb-2 mt-2 text-center">
                             {{ selectedPrompt.title }}
                         </h2>
                         <!-- 聊天记录区域 -->
