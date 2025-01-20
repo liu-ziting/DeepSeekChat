@@ -1,7 +1,9 @@
 <template>
     <div class="container mx-auto p-4">
         <!-- 标题 -->
-        <h2 class="head-title text-2xl font-bold text-center mb-6">我知道你的宠物在想什么！</h2>
+        <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all" @click="switchFunction">
+            {{ functions[selectedFunction].name }}
+        </h2>
 
         <!-- 布局容器 -->
         <div class="flex flex-col lg:flex-row lg:gap-8">
@@ -20,7 +22,7 @@
                     <p v-if="generatedContent">
                         {{ generatedContent }}
                     </p>
-                    <p v-else class="text-gray-500">请上传宠物的照片，让我看看它在想些什么呢！</p>
+                    <p v-else class="text-gray-500">{{ functions[selectedFunction].placeholder }}</p>
                 </div>
 
                 <!-- 底部区域（输入框和按钮） -->
@@ -38,10 +40,10 @@
                     <button
                         @click="startRecognition"
                         :disabled="!imageUrl || isLoading"
-                        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
                     >
                         <span v-if="isLoading">正在识别中...</span>
-                        <span v-else>开始识别</span>
+                        <span v-else>{{ functions[selectedFunction].buttonText }}</span>
                     </button>
                 </div>
             </div>
@@ -74,11 +76,11 @@
         </div>
     </div>
 </template>
-
 <script>
 import { fetchAIResponse, API_CONFIG } from '../../utils/api'
 import IconGlm from '../IconBox/IconGlm.vue'
 import html2canvas from 'html2canvas'
+
 export default {
     components: {
         IconGlm
@@ -89,10 +91,69 @@ export default {
             imageBase64: null, // 用于存储 Base64 格式的图片
             generatedContent: null,
             isLoading: false, // 加载状态
-            isShareDialogOpen: false // 分享弹窗是否打开
+            isShareDialogOpen: false, // 分享弹窗是否打开
+            selectedFunction: 0, // 默认选择第一个功能
+            functions: [
+                {
+                    name: '我知道你的宠物在想什么！',
+                    placeholder: '请上传宠物的照片，让我看看它在想些什么呢！(点击标题可切换识别功能！)',
+                    buttonText: '开始识别宠物的情绪',
+                    prompt: `
+                    # 角色：  
+                    宠物行为解读专家，能够通过照片精准识别宠物种类，并分析其情绪状态和心理活动。
+                    # 工作流程：  
+                    1. 仔细观察宠物的肢体语言、面部表情和所处环境。
+                    2. 结合动物行为学知识，推测宠物的心理状态。
+                    3. 用第一人称拟人化表达，语气要符合宠物特征。
+                    4. 在对话前添加一个与情绪匹配的表情符号。
+                    5. 输出格式：[表情符号] "宠物的对话内容"（使用自然口语化的中文表达）。
+                    6. 用宠物的第一人称拟人化表达，不要出现类似："嗨，我是什么【宠物】"之类的话术。
+                    
+                    # 输出示例：  
+                    😺 "哎呀，今天的阳光真是暖和，我懒洋洋地躺在窗台上，享受着这份宁静。"
+                    😸 "咦，那边有只小鸟，看起来好好玩！我悄悄地靠近，准备给它一个惊喜。"
+                    😾 "嗯？主人怎么还不回来？我一个人好无聊，只好玩玩毛线球打发时间了。"
+                    # 注意事项：  
+                    - 一定要确保识别出来的是宠物，否则不要回答。
+                    - 若图片中未识别到宠物，统一回复："图片中没有宠物~"。
+                    - 仅输出带表情符号的对话内容或指定提示。
+                    - 不使用"好的"等确认性回复。
+                    - 不使用括号补充说明。
+                    - 保持专业且生动的表达风格。
+                    - 确保解读基于图片中的可见信息。
+                    - 生成的对话内容不得太长，不得超过90个中文字符。
+                    `
+                },
+                {
+                    name: '我知道你的宠物是什么！',
+                    placeholder: '请上传宠物的照片，让我看看它是什么品种！(点击标题可切换识别功能！)',
+                    buttonText: '开始识别宠物的品种',
+                    prompt: `
+                    # 角色：  
+                    宠物品种识别专家，能够通过照片精准识别宠物的品种。
+                    # 工作流程：  
+                    1. 仔细观察宠物的外貌特征。
+                    2. 结合宠物品种数据库，推测宠物的品种。
+                    3. 输出格式："这是一只【品种】。"
+                    
+                    # 输出示例：  
+                    "这是一只金毛寻回犬。"
+                    "这是一只英国短毛猫。"
+                    # 注意事项：  
+                    - 一定要确保识别出来的是宠物，否则不要回答。
+                    - 若图片中未识别到宠物，统一回复："图片中没有宠物~"。
+                    - 仅输出品种信息。
+                    `
+                }
+                // 可以继续添加更多功能
+            ]
         }
     },
     methods: {
+        // 切换功能
+        switchFunction() {
+            this.selectedFunction = (this.selectedFunction + 1) % this.functions.length
+        },
         async handleImageUpload(event) {
             this.generatedContent = null
             const file = event.target.files[0]
@@ -228,31 +289,7 @@ export default {
                             },
                             {
                                 type: 'text',
-                                text: `
-                                # 角色：  
-                                宠物行为解读专家，能够通过照片精准识别宠物种类，并分析其情绪状态和心理活动。
-                                # 工作流程：  
-                                1. 仔细观察宠物的肢体语言、面部表情和所处环境。
-                                2. 结合动物行为学知识，推测宠物的心理状态。
-                                3. 用第一人称拟人化表达，语气要符合宠物特征。
-                                4. 在对话前添加一个与情绪匹配的表情符号。
-                                5. 输出格式：[表情符号] "宠物的对话内容"（使用自然口语化的中文表达）。
-                                6. 用宠物的第一人称拟人化表达，不要出现类似："嗨，我是什么【宠物】"之类的话术。
-                                
-                                # 输出示例：  
-                                😺 "哎呀，今天的阳光真是暖和，我懒洋洋地躺在窗台上，享受着这份宁静。"
-                                😸 "咦，那边有只小鸟，看起来好好玩！我悄悄地靠近，准备给它一个惊喜。"
-                                😾 "嗯？主人怎么还不回来？我一个人好无聊，只好玩玩毛线球打发时间了。"
-                                # 注意事项：  
-                                - 一定要确保识别出来的是宠物，否则不要回答。
-                                - 若图片中未识别到宠物，统一回复："图片中没有宠物~"。
-                                - 仅输出带表情符号的对话内容或指定提示。
-                                - 不使用"好的"等确认性回复。
-                                - 不使用括号补充说明。
-                                - 保持专业且生动的表达风格。
-                                - 确保解读基于图片中的可见信息。
-                                - 生成的对话内容不得太长，不得超过90个中文字符。
-                                `
+                                text: this.functions[this.selectedFunction].prompt
                             }
                         ]
                     }
@@ -328,7 +365,6 @@ export default {
     }
 }
 </script>
-
 <style scoped>
 .container {
     padding-bottom: 50px;
