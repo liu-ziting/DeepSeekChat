@@ -4,7 +4,7 @@
         <div v-if="model === 'deepseek' && showMode" class="mb-2" style="width: 80%; margin-top: -5px">
             <div>
                 <!-- 正常模式 -->
-                <label @click="changeMode('normal')" style="margin-right: 20px" class="inline-block cursor-pointer radio">
+                <label @click="changeMode('normal')" style="margin-right: 10px" class="inline-block cursor-pointer radio">
                     <input class="hidden peer" type="radio" name="radio" :checked="mode === 'normal'" />
                     <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
                         <span :class="{ 'filter grayscale': mode !== 'normal' }">😀</span>
@@ -13,7 +13,7 @@
                 </label>
 
                 <!-- 暴躁模式 -->
-                <label @click="changeMode('angry')" style="margin-right: 20px" class="inline-block cursor-pointer radio">
+                <label @click="changeMode('angry')" style="margin-right: 10px" class="inline-block cursor-pointer radio">
                     <input class="hidden peer" type="radio" name="radio" :checked="mode === 'angry'" />
                     <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
                         <span :class="{ 'filter grayscale': mode !== 'angry' }">😡</span>

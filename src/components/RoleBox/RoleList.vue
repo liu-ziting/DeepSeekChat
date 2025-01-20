@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto pl-4 pr-4">
-        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 pb-10">
             <article class="rounded-xl border-2 border-gray-100 bg-white prompts" v-for="(prompt, index) in prompts" :key="index" @click="changePrompt(prompt)">
                 <div class="flex items-start gap-4 p-4 sm:p-6 lg:p-8">
                     <div>
