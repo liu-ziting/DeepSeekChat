@@ -5,15 +5,34 @@
                 <IconAI />
             </div>
 
-            <div class="flex flex-col" style="max-width: calc(100% - 50px)">
+            <div class="flex flex-col relative" style="max-width: calc(100% - 50px)">
                 <span v-if="message.role === 'assistant' && message.model === 'deepseek' && !name" class="text-sm font-medium mb-1" :class="nameClass">
                     {{ message.mode === 'normal' ? '😀' : message.mode === 'angry' ? '😡' : '🤬' }}
                 </span>
                 <!-- <span v-if="name && message.role === 'assistant'" class="text-sm font-medium mb-1" :class="nameClass">{{ name }}</span> -->
-                <div :class="bubbleClass">
+
+                <!-- 内容区域 -->
+                <div :class="bubbleClass" class="relative group" @mouseenter="showCopyButton = true" @mouseleave="showCopyButton = false">
                     <pre v-if="isCode(message.content)" class="whitespace-pre-wrap rounded-lg"><code>{{ message.content }}</code></pre>
                     <span v-else>{{ message.content }}</span>
+
+                    <!-- 复制按钮 -->
+                    <button
+                        v-if="showCopyButton"
+                        @click="handleCopy"
+                        class="absolute -top-2 -right-2 p-1 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-100 transition-colors duration-200"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                            />
+                        </svg>
+                    </button>
                 </div>
+
                 <div>
                     <p
                         v-for="(presets, index) in message.presets"
@@ -48,6 +67,11 @@ export default {
             required: false
         }
     },
+    data() {
+        return {
+            showCopyButton: false // 控制复制按钮的显示
+        }
+    },
     computed: {
         messageClass() {
             return this.message.role === 'user' ? 'flex justify-end items-start gap-3' : 'flex justify-start items-start gap-3'
@@ -63,6 +87,46 @@ export default {
         isCode,
         handlePresetClick(preset) {
             this.$emit('preset-click', preset)
+        },
+        // 复制内容
+        handleCopy() {
+            const content = this.message.content
+            if (navigator.clipboard) {
+                // 使用现代 Clipboard API
+                navigator.clipboard
+                    .writeText(content)
+                    .then(() => {
+                        alert('内容已复制到剪贴板！')
+                    })
+                    .catch(() => {
+                        this.fallbackCopyText(content) // 如果 Clipboard API 失败，使用降级方案
+                    })
+            } else {
+                // 使用降级方案
+                this.fallbackCopyText(content)
+            }
+        },
+        // 降级复制方案
+        fallbackCopyText(text) {
+            const textArea = document.createElement('textarea')
+            textArea.value = text
+            textArea.style.position = 'fixed' // 避免滚动到底部
+            document.body.appendChild(textArea)
+            textArea.focus()
+            textArea.select()
+
+            try {
+                const successful = document.execCommand('copy')
+                if (successful) {
+                    console.log('内容已复制到剪贴板！')
+                } else {
+                    console.log('复制失败，请手动复制。')
+                }
+            } catch (err) {
+                console.log('复制失败，请手动复制。')
+            }
+
+            document.body.removeChild(textArea)
         }
     }
 }

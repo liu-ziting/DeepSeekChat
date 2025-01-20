@@ -209,8 +209,8 @@ export default {
         },
         changeMode(newMode) {
             this.mode = newMode
-            // this.messages = [] // 清空消息列表
-            // this.insertDefaultMessage() // 插入默认的第一个对话
+            this.messages = [] // 清空消息列表
+            this.insertDefaultMessage() // 插入默认的第一个对话
         },
         changeModel(newModel) {
             this.model = newModel
