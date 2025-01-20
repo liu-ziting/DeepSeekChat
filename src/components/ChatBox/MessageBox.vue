@@ -18,6 +18,7 @@
                     <p
                         v-for="(presets, index) in message.presets"
                         :key="index"
+                        style="width: auto"
                         class="preset-item cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition-colors duration-200 border border-gray-300"
                         @click="handlePresetClick(presets)"
                     >
