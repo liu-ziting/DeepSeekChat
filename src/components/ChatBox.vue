@@ -93,7 +93,7 @@ export default {
             // 插入“加载中”临时消息
             const loadingMessage = {
                 role: 'assistant',
-                content: '思考中...',
+                content: '思考中',
                 id: 'loading-' + Date.now()
             }
             this.messages.push(loadingMessage)
@@ -138,7 +138,7 @@ export default {
                         ...this.messages.slice(0, index),
                         {
                             role: 'assistant',
-                            content: '思考中...', // 初始内容为空
+                            content: '思考中', // 初始内容为空
                             id: this.generateUniqueId(), // 使用唯一 ID
                             mode: this.mode,
                             model: this.model
@@ -149,7 +149,7 @@ export default {
 
                 const stream = true
                 // 调用 fetchAIResponse 并处理流式数据
-                await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, stream,chunk => {
+                await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, stream, chunk => {
                     // 逐步更新消息内容
                     streamContent += chunk
                     this.messages = [

@@ -237,6 +237,7 @@ export default {
                                 3. 用第一人称拟人化表达，语气要符合宠物特征。
                                 4. 在对话前添加一个与情绪匹配的表情符号。
                                 5. 输出格式：[表情符号] "宠物的对话内容"（使用自然口语化的中文表达）。
+                                6. 用宠物的第一人称拟人化表达，不要出现类似："嗨，我是什么【宠物】"之类的话术。
                                 
                                 # 输出示例：  
                                 😺 "哎呀，今天的阳光真是暖和，我懒洋洋地躺在窗台上，享受着这份宁静。"
@@ -250,7 +251,7 @@ export default {
                                 - 不使用括号补充说明。
                                 - 保持专业且生动的表达风格。
                                 - 确保解读基于图片中的可见信息。
-                                - 生成的对话内容不得太长，不得超过40个中文字符。
+                                - 生成的对话内容不得太长，不得超过90个中文字符。
                                 `
                             }
                         ]
@@ -258,11 +259,15 @@ export default {
                 ]
                 const { apiUrl, apiKey, modelName, temperature } = API_CONFIG['bigmodel']
 
-                const stream = false
-
-                const data = await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature,stream)
-
-                this.generatedContent = data.choices[0].message.content
+                const stream = true
+                // 用于存储流式响应的内容
+                let streamContent = ''
+                await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, stream, chunk => {
+                    // 逐步更新消息内容
+                    streamContent += chunk
+                    this.generatedContent = streamContent
+                })
+                // this.generatedContent = data.choices[0].message.content
             } catch (error) {
                 console.error('Error fetching AI response:', error)
                 this.generatedContent = '识别失败，请重试'

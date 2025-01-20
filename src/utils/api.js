@@ -23,6 +23,12 @@ export const API_CONFIG = {
         apiKey: process.env.VUE_APP_KIMI_API_KEY,
         modelName: 'moonshot-v1-8k',
         temperature: 0.8
+    },
+    kimiFile: {
+        apiUrl: 'https://api.moonshot.cn/v1/chat/completions',
+        apiKey: process.env.VUE_APP_KIMI_API_KEY,
+        modelName: 'moonshot-v1-8k-vision-preview',
+        temperature: 0.7
     }
 }
 

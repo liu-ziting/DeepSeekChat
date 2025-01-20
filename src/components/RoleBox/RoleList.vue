@@ -14,7 +14,7 @@
                     </div>
                 </div>
 
-                <div class="flex justify-end">
+                <div class="flex justify-end hidden">
                     <strong class="-mb-[2px] -me-[2px] inline-flex items-center gap-1 rounded-ee-xl rounded-ss-xl bg-green-600 bg-opacity-80 px-3 py-1.5 text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path
@@ -33,7 +33,7 @@
             <!-- 全屏弹窗容器 -->
             <div class="fixed inset-0 bg-white shadow-lg flex flex-col">
                 <!-- 关闭按钮 -->
-                <button @click="closeShareDialog" class="absolute top-4 right-4 p-2 text-gray-600 hover:text-gray-900 focus:outline-none">
+                <button @click="closeShareDialog" class="absolute right-4 p-2 text-gray-600 hover:text-gray-900 focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -42,15 +42,25 @@
                 <!-- 弹窗内容 -->
                 <div>
                     <div class="main min-h-screen flex flex-col absolute inset-0 -z-10 h-full w-full bg-main">
-                        <h2 class="text-1xl font-bold mb-4 mt-6 text-center">{{ selectedPrompt.title }}</h2>
+                        <h2 class="text-1xl font-bold mb-2 mt-2 text-center h-8">
+                            {{ selectedPrompt.title }}
+                        </h2>
                         <!-- 聊天记录区域 -->
                         <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-36 chatContainer">
                             <!-- 消息列表 -->
-                            <Message v-for="message in messages" :key="message.id" :message="message" :name="selectedPrompt.title" />
+                            <Message v-for="message in messages" :key="message.id" :message="message" :name="selectedPrompt.title" @preset-click="handlePresetClick" />
                         </div>
 
                         <!-- 输入框区域 -->
-                        <InputBox :is-thinking="isThinking" :showMode="false" :mode="mode" :model="model" @send-message="sendMessage" @scroll-to-bottom="scrollToBottom" />
+                        <InputBox
+                            ref="inputBox"
+                            :is-thinking="isThinking"
+                            :showMode="false"
+                            :mode="mode"
+                            :model="model"
+                            @send-message="sendMessage"
+                            @scroll-to-bottom="scrollToBottom"
+                        />
                     </div>
                     <!-- 底部介绍 -->
                     <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 text-center text-sm text-gray-500">
@@ -99,7 +109,8 @@ export default {
                 {
                     role: 'assistant',
                     content: data.content,
-                    name: data.title
+                    name: data.title,
+                    presets: data.presets
                 }
             ]
         },
@@ -116,7 +127,7 @@ export default {
             // 插入“加载中”临时消息
             const loadingMessage = {
                 role: 'assistant',
-                content: '思考中...',
+                content: '思考中',
                 id: 'loading-' + Date.now()
             }
             this.messages.push(loadingMessage)
@@ -158,7 +169,7 @@ export default {
                         ...this.messages.slice(0, index),
                         {
                             role: 'assistant',
-                            content: '思考中...', // 初始内容为空
+                            content: '思考中', // 初始内容为空
                             id: this.generateUniqueId(), // 使用唯一 ID
                             mode: this.mode,
                             model: this.model
@@ -168,7 +179,7 @@ export default {
                 }
                 const stream = true
                 // 调用 fetchAIResponse 并处理流式数据
-                await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, stream,chunk => {
+                await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, stream, chunk => {
                     // 逐步更新消息内容
                     streamContent += chunk
                     this.messages = [
@@ -218,6 +229,9 @@ export default {
         },
         closeShareDialog() {
             this.isShareDialogOpen = false // 关闭弹窗
+        },
+        handlePresetClick(preset) {
+            this.$refs.inputBox.userInput = preset
         }
     }
 }

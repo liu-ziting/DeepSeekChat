@@ -72,6 +72,13 @@ export default {
             default: false
         }
     },
+    watch: {
+        userInput() {
+            this.$nextTick(() => {
+                autoResizeTextarea(this.$refs.textarea)
+            })
+        }
+    },
     data() {
         return {
             userInput: '',

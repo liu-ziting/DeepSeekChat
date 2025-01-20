@@ -9,10 +9,10 @@
     border-radius: 0;
     overflow-x: auto;
 }
-
+*/
 code {
     font-family: normal;
-} */
+}
 .bg-main {
     height: 100vh;
     background: url('@/assets/points.png');
