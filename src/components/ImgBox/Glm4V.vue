@@ -301,8 +301,11 @@ export default {
                 let streamContent = ''
                 await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, stream, chunk => {
                     // 逐步更新消息内容
-                    streamContent += chunk
-                    this.generatedContent = streamContent
+
+                    if (chunk.type === 'content') {
+                        streamContent += chunk.content
+                        this.generatedContent = streamContent
+                    }
                 })
                 // this.generatedContent = data.choices[0].message.content
             } catch (error) {

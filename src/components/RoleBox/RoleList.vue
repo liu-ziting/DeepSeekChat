@@ -160,7 +160,8 @@ export default {
                 const { apiUrl, apiKey, modelName, temperature } = this.getApiConfig()
 
                 // 用于存储流式响应的内容
-                let streamContent = ''
+                let reasoningContent = ''
+                let finalContent = ''
 
                 // 替换“加载中”消息为流式响应消息
                 const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
@@ -180,17 +181,40 @@ export default {
                 const stream = true
                 // 调用 fetchAIResponse 并处理流式数据
                 await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, stream, chunk => {
-                    // 逐步更新消息内容
-                    streamContent += chunk
-                    this.messages = [
-                        ...this.messages.slice(0, index),
-                        {
-                            ...this.messages[index],
-                            content: streamContent
-                        },
-                        ...this.messages.slice(index + 1)
-                    ]
-                    this.scrollToBottom() // 每次更新内容后滚动到底部
+                    // // 逐步更新消息内容
+                    // streamContent += chunk
+                    // this.messages = [
+                    //     ...this.messages.slice(0, index),
+                    //     {
+                    //         ...this.messages[index],
+                    //         content: streamContent
+                    //     },
+                    //     ...this.messages.slice(index + 1)
+                    // ]
+                    // this.scrollToBottom() // 每次更新内容后滚动到底部
+                    if (chunk.type === 'reasoning') {
+                        // 更新 reasoningContent
+                        reasoningContent += chunk.content
+                        this.messages = [
+                            ...this.messages.slice(0, index),
+                            {
+                                ...this.messages[index],
+                                reasoningContent: reasoningContent
+                            },
+                            ...this.messages.slice(index + 1)
+                        ]
+                    } else if (chunk.type === 'content') {
+                        // 更新最终回答 content
+                        finalContent += chunk.content
+                        this.messages = [
+                            ...this.messages.slice(0, index),
+                            {
+                                ...this.messages[index],
+                                content: finalContent
+                            },
+                            ...this.messages.slice(index + 1)
+                        ]
+                    }
                 })
             } catch (error) {
                 console.error('Error fetching AI response:', error)
