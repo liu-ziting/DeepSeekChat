@@ -81,11 +81,6 @@ export default {
         async sendMessage(userInput) {
             if (userInput.trim() === '') return
 
-            if (this.isDeepThinking) {
-                // 深度思考模式下，清空消息列表
-                this.messages = []
-            }
-
             // 插入用户消息
             this.messages.push({
                 role: 'user',
@@ -256,16 +251,10 @@ export default {
             this.isDeepThinking = isDeepThinking
             if (isDeepThinking) {
                 // 深度思考模式下，清空消息列表
-                this.messages = [
-                    {
-                        role: 'assistant',
-                        content: '已切换至深度思考模式！'
-                    }
-                ]
+                this.messages = []
                 this.model = 'deepThinking'
             } else {
                 this.model = 'deepseek'
-                this.messages = []
                 // 非深度思考模式下，插入默认的第一个对话
                 this.insertDefaultMessage()
             }
