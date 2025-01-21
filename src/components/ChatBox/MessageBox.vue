@@ -130,7 +130,7 @@ export default {
                 navigator.clipboard
                     .writeText(content)
                     .then(() => {
-                        alert('内容已复制到剪贴板！')
+                        console.log('内容已复制到剪贴板！')
                     })
                     .catch(() => {
                         this.fallbackCopyText(content)
