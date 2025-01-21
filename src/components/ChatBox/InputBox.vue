@@ -35,7 +35,7 @@
 
         <!-- 深度思考开关 -->
         <label
-            v-if="model === 'deepseek' || model === 'deepThinking'"
+            v-if="(model === 'deepseek' || model === 'deepThinking') && showMode"
             class="inline-flex items-center cursor-pointer"
             style="position: absolute; right: 1rem; top: 10px; float: right"
         >
