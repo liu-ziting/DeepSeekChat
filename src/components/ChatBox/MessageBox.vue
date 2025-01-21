@@ -56,6 +56,16 @@
                         </svg>
                     </button>
                 </div>
+                <div>
+                    <p
+                        v-for="(presets, index) in message.presets"
+                        :key="index"
+                        class="preset-item cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition-colors duration-200 border border-gray-300"
+                        @click="handlePresetClick(presets)"
+                    >
+                        {{ presets }}
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -111,6 +121,9 @@ export default {
     },
     methods: {
         isCode,
+        handlePresetClick(preset) {
+            this.$emit('preset-click', preset)
+        },
         handleCopy() {
             const content = this.message.content
             if (navigator.clipboard) {
@@ -169,3 +182,16 @@ export default {
     }
 }
 </script>
+<style scoped>
+.preset-item {
+    margin: 4px 0;
+    color: #4a5568; /* 预设文本颜色 */
+    font-size: 0.875rem; /* 预设文本大小 */
+    border: 1px solid #e2e8f0; /* 边框颜色 */
+}
+
+.preset-item:hover {
+    background-color: #f7fafc; /* 悬停背景色 */
+    border-color: #cbd5e0; /* 悬停时边框颜色加深 */
+}
+</style>
