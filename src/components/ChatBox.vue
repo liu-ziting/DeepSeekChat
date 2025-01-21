@@ -4,7 +4,7 @@
             <!-- 模型选择 -->
             <TabSelector :tab="tab" @tab-selected="changeTab" />
             <template v-if="tab === 'chat'">
-                <ModelSelector :model="model" @change-model="changeModel" />
+                <ModelSelector v-if="!isDeepThinking" :model="model" @change-model="changeModel" />
 
                 <!-- 聊天记录区域 -->
                 <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-36 chatContainer">
@@ -21,6 +21,7 @@
                     @send-message="sendMessage"
                     @scroll-to-bottom="scrollToBottom"
                     @change-mode="changeMode"
+                    @toggle-deep-thinking="toggleDeepThinking"
                 />
             </template>
             <!-- 大模型竞技场 -->
@@ -56,6 +57,7 @@ import Message from './ChatBox/MessageBox.vue'
 import InputBox from './ChatBox/InputBox.vue'
 import Glm4V from './ImgBox/Glm4V.vue'
 import { fetchAIResponse, API_CONFIG } from '../utils/api'
+
 export default {
     components: {
         ModelSelector,
@@ -67,21 +69,22 @@ export default {
     },
     data() {
         return {
-            messages: [
-                {
-                    role: 'assistant',
-                    content: '你好！请问有什么可以帮您的？'
-                }
-            ],
+            messages: [], // 初始化为空
             isThinking: false,
             mode: 'normal',
             model: 'deepseek',
-            tab: 'chat'
+            tab: 'chat',
+            isDeepThinking: false
         }
     },
     methods: {
         async sendMessage(userInput) {
             if (userInput.trim() === '') return
+
+            if (this.isDeepThinking) {
+                // 深度思考模式下，清空消息列表
+                this.messages = []
+            }
 
             // 插入用户消息
             this.messages.push({
@@ -119,7 +122,7 @@ export default {
                         content: systemMessage
                     },
                     ...this.messages
-                        .filter(msg => msg.id !== loadingMessageId) // 排除“加载中”消息
+                        .filter(msg => msg.id !== loadingMessageId)
                         .map(msg => ({
                             role: msg.role,
                             content: msg.content
@@ -129,7 +132,8 @@ export default {
                 const { apiUrl, apiKey, modelName, temperature } = this.getApiConfig()
 
                 // 用于存储流式响应的内容
-                let streamContent = ''
+                let reasoningContent = ''
+                let finalContent = ''
 
                 // 替换“加载中”消息为流式响应消息
                 const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
@@ -138,8 +142,9 @@ export default {
                         ...this.messages.slice(0, index),
                         {
                             role: 'assistant',
-                            content: '思考中', // 初始内容为空
-                            id: this.generateUniqueId(), // 使用唯一 ID
+                            content: '思考中',
+                            reasoningContent: '', // 新增 reasoningContent 字段
+                            id: this.generateUniqueId(),
                             mode: this.mode,
                             model: this.model
                         },
@@ -148,23 +153,34 @@ export default {
                 }
 
                 const stream = true
-                // 调用 fetchAIResponse 并处理流式数据
                 await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, stream, chunk => {
-                    // 逐步更新消息内容
-                    streamContent += chunk
-                    this.messages = [
-                        ...this.messages.slice(0, index),
-                        {
-                            ...this.messages[index],
-                            content: streamContent
-                        },
-                        ...this.messages.slice(index + 1)
-                    ]
-                    this.scrollToBottom() // 每次更新内容后滚动到底部
+                    if (chunk.type === 'reasoning') {
+                        // 更新 reasoningContent
+                        reasoningContent += chunk.content
+                        this.messages = [
+                            ...this.messages.slice(0, index),
+                            {
+                                ...this.messages[index],
+                                reasoningContent: reasoningContent
+                            },
+                            ...this.messages.slice(index + 1)
+                        ]
+                    } else if (chunk.type === 'content') {
+                        // 更新最终回答 content
+                        finalContent += chunk.content
+                        this.messages = [
+                            ...this.messages.slice(0, index),
+                            {
+                                ...this.messages[index],
+                                content: finalContent
+                            },
+                            ...this.messages.slice(index + 1)
+                        ]
+                    }
+                    this.scrollToBottom()
                 })
             } catch (error) {
                 console.error('Error fetching AI response:', error)
-                // 替换“加载中”消息为错误提示
                 const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
                 if (index !== -1) {
                     this.messages = [
@@ -172,7 +188,7 @@ export default {
                         {
                             role: 'assistant',
                             content: '请求失败，请稍后重试。',
-                            id: this.generateUniqueId() // 使用唯一 ID
+                            id: this.generateUniqueId()
                         },
                         ...this.messages.slice(index + 1)
                     ]
@@ -180,6 +196,9 @@ export default {
             }
         },
         getSystemMessage() {
+            if (this.isDeepThinking) {
+                return '' // 深度思考模式下，systemMessage 为空
+            }
             switch (this.mode) {
                 case 'normal':
                     return '你是一个正常的助手，请用礼貌的语言回答问题。'
@@ -210,13 +229,17 @@ export default {
         changeMode(newMode) {
             this.mode = newMode
             this.messages = [] // 清空消息列表
-            this.insertDefaultMessage() // 插入默认的第一个对话
+            if (!this.isDeepThinking) {
+                this.insertDefaultMessage() // 如果不是深度思考模式，插入默认的第一个对话
+            }
         },
         changeModel(newModel) {
             this.model = newModel
             this.mode = 'normal' // 重置为默认模式
             this.messages = [] // 清空消息列表
-            this.insertDefaultMessage() // 插入默认的第一个对话
+            if (!this.isDeepThinking) {
+                this.insertDefaultMessage() // 如果不是深度思考模式，插入默认的第一个对话
+            }
         },
         insertDefaultMessage() {
             // 插入默认的第一个对话
@@ -227,6 +250,25 @@ export default {
         },
         changeTab(newTab) {
             this.tab = newTab
+        },
+        // 切换深度思考
+        toggleDeepThinking(isDeepThinking) {
+            this.isDeepThinking = isDeepThinking
+            if (isDeepThinking) {
+                // 深度思考模式下，清空消息列表
+                this.messages = [
+                    {
+                        role: 'assistant',
+                        content: '已切换至深度思考模式！'
+                    }
+                ]
+                this.model = 'deepThinking'
+            } else {
+                this.model = 'deepseek'
+                this.messages = []
+                // 非深度思考模式下，插入默认的第一个对话
+                this.insertDefaultMessage()
+            }
         }
     },
     mounted() {
@@ -239,6 +281,11 @@ export default {
         }
         if (tabParam) {
             this.tab = tabParam
+        }
+
+        // 初始化时根据深度思考状态决定是否插入默认消息
+        if (!this.isDeepThinking) {
+            this.insertDefaultMessage()
         }
     }
 }

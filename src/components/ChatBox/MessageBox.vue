@@ -9,12 +9,36 @@
                 <span v-if="message.role === 'assistant' && message.model === 'deepseek' && !name" class="text-sm font-medium mb-1" :class="nameClass">
                     {{ message.mode === 'normal' ? '😀' : message.mode === 'angry' ? '😡' : '🤬' }}
                 </span>
-                <!-- <span v-if="name && message.role === 'assistant'" class="text-sm font-medium mb-1" :class="nameClass">{{ name }}</span> -->
 
-                <!-- 内容区域 -->
+                <!-- 可折叠的思维链内容 -->
+                <div v-if="message.reasoningContent" class="bg-gray-100 p-3 rounded-lg mb-2 text-sm text-gray-700">
+                    <div class="flex items-center justify-between cursor-pointer" @click="toggleReasoning">
+                        <span class="font-medium">深度思考</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4 transition-transform duration-200"
+                            :class="{ 'transform rotate-180': isReasoningExpanded }"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div v-if="isReasoningExpanded" class="mt-2">
+                        <pre class="whitespace-pre-wrap">{{ message.reasoningContent }}</pre>
+                    </div>
+                </div>
+
+                <!-- 最终回答内容 -->
                 <div :class="bubbleClass" class="relative group" @mouseenter="showCopyButton = true" @mouseleave="showCopyButton = false">
-                    <pre v-if="isCode(message.content)" class="whitespace-pre-wrap rounded-lg"><code>{{ message.content }}</code></pre>
-                    <span v-else>{{ message.content }}</span>
+                    <!-- 拆分混合内容并分别渲染 -->
+                    <div v-for="(part, index) in splitMixedContent(message.content)" :key="index">
+                        <!-- 如果是代码，使用 CodeBlock 组件 -->
+                        <CodeBlock v-if="part.type === 'code'" :code="part.content" :language="detectLanguage(part.content)" />
+                        <!-- 否则解析为 Markdown -->
+                        <div v-else v-html="renderMarkdown(part.content)" class="markdown-content"></div>
+                    </div>
 
                     <!-- 复制按钮 -->
                     <button
@@ -32,30 +56,21 @@
                         </svg>
                     </button>
                 </div>
-
-                <div>
-                    <p
-                        v-for="(presets, index) in message.presets"
-                        :key="index"
-                        style="width: auto"
-                        class="preset-item cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition-colors duration-200 border border-gray-300"
-                        @click="handlePresetClick(presets)"
-                    >
-                        {{ presets }}
-                    </p>
-                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { isCode } from '../../utils/helpers'
+import { marked } from 'marked' // 引入 marked
+import { splitMixedContent, isCode } from '../../utils/helpers'
 import IconAI from '../IconBox/IconAI.vue'
+import CodeBlock from '../CodeBlock.vue' // 引入 CodeBlock 组件
 
 export default {
     components: {
-        IconAI
+        IconAI,
+        CodeBlock
     },
     props: {
         message: {
@@ -69,7 +84,18 @@ export default {
     },
     data() {
         return {
-            showCopyButton: false // 控制复制按钮的显示
+            showCopyButton: false, // 控制复制按钮的显示
+            isReasoningExpanded: !!this.message.reasoningContent // 默认展开（如果 reasoningContent 存在）
+        }
+    },
+    watch: {
+        'message.reasoningContent': {
+            handler(newVal) {
+                if (newVal) {
+                    this.isReasoningExpanded = true // 有内容时自动展开
+                }
+            },
+            immediate: true // 立即触发监听
         }
     },
     computed: {
@@ -85,32 +111,25 @@ export default {
     },
     methods: {
         isCode,
-        handlePresetClick(preset) {
-            this.$emit('preset-click', preset)
-        },
-        // 复制内容
         handleCopy() {
             const content = this.message.content
             if (navigator.clipboard) {
-                // 使用现代 Clipboard API
                 navigator.clipboard
                     .writeText(content)
                     .then(() => {
                         alert('内容已复制到剪贴板！')
                     })
                     .catch(() => {
-                        this.fallbackCopyText(content) // 如果 Clipboard API 失败，使用降级方案
+                        this.fallbackCopyText(content)
                     })
             } else {
-                // 使用降级方案
                 this.fallbackCopyText(content)
             }
         },
-        // 降级复制方案
         fallbackCopyText(text) {
             const textArea = document.createElement('textarea')
             textArea.value = text
-            textArea.style.position = 'fixed' // 避免滚动到底部
+            textArea.style.position = 'fixed'
             document.body.appendChild(textArea)
             textArea.focus()
             textArea.select()
@@ -127,21 +146,26 @@ export default {
             }
 
             document.body.removeChild(textArea)
+        },
+        toggleReasoning() {
+            this.isReasoningExpanded = !this.isReasoningExpanded
+        },
+        // 解析 Markdown 内容
+        renderMarkdown(content) {
+            return marked.parse(content) // 使用 marked 解析 Markdown
+        },
+        // 检测代码语言
+        detectLanguage(content) {
+            if (content.startsWith('```')) {
+                const language = content.split('\n')[0].replace(/```/, '').trim()
+                return language || 'javascript'
+            }
+            return 'javascript'
+        },
+        // 拆分混合内容
+        splitMixedContent(content) {
+            return splitMixedContent(content)
         }
     }
 }
 </script>
-
-<style scoped>
-.preset-item {
-    margin: 4px 0;
-    color: #4a5568; /* 预设文本颜色 */
-    font-size: 0.875rem; /* 预设文本大小 */
-    border: 1px solid #e2e8f0; /* 边框颜色 */
-}
-
-.preset-item:hover {
-    background-color: #f7fafc; /* 悬停背景色 */
-    border-color: #cbd5e0; /* 悬停时边框颜色加深 */
-}
-</style>
