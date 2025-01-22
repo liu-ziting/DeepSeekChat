@@ -255,7 +255,7 @@ export default {
             this.isShareDialogOpen = false // 关闭弹窗
         },
         handlePresetClick(preset) {
-            this.$refs.inputBox.userInput = preset
+            this.$refs.inputBox.roleChange(preset)
         }
     }
 }

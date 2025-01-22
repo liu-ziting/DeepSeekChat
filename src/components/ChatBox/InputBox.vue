@@ -150,6 +150,10 @@ export default {
             resetTextareaHeight(this.$refs.textarea)
             this.$emit('scroll-to-bottom')
         },
+        roleChange(preset) {
+            this.userInput = preset
+            this.handleSubmit()
+        },
         changeMode(newMode) {
             this.$emit('change-mode', newMode)
         },
