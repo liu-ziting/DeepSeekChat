@@ -4,6 +4,10 @@
 
 DeepSeek Chat 是一个基于 Vue.js 的 AI 聊天应用，集成了多种大模型能力，提供智能对话和宠物心理分析功能。项目采用模块化设计，具有良好的可扩展性。
 
+### 项目背景
+
+随着大语言模型的快速发展，AI 对话系统在各个领域得到广泛应用。本项目旨在构建一个轻量级、易扩展的 AI 对话平台，集成多种主流大模型，为用户提供智能对话服务。同时，结合计算机视觉技术，创新性地加入了宠物心理分析功能，为宠物主人提供有趣的互动体验。
+
 ## 在线演示
 
 本项目部署在 Netlify 平台，可以直接访问:[https://irritable.netlify.app/](https://irritable.netlify.app/)
@@ -121,6 +125,3 @@ DeepSeekChat/
 -   [Gemini API 文档](https://ai.google.dev/docs)
 -   [智谱清言 API 文档](https://open.bigmodel.cn/dev/api)
 -   [月之暗面 API 文档](https://platform.moonshot.cn/docs)
-
-MIT License © 2024 DeepSeek Chat
-

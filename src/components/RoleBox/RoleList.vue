@@ -95,7 +95,7 @@ export default {
             ],
             isThinking: false,
             mode: 'normal',
-            model: 'deepseek',
+            model: 'gemini',
             tab: 'chat',
             selectedPrompt: null
         }
