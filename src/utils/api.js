@@ -51,6 +51,9 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
         requestBody.temperature = temperature
     }
 
+    // 记录请求开始时间
+    const startTime = performance.now()
+
     const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -67,6 +70,9 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
     // 如果 stream 为 false，直接返回完整的响应数据
     if (!stream) {
         const data = await response.json()
+        const endTime = performance.now()
+        const totalDuration = parseFloat(((endTime - startTime) / 1000).toFixed(1)) // 计算总耗时，保留 1 位小数
+        onDataReceived({ type: 'complete', duration: totalDuration }) // 传递总耗时
         return data
     }
 
@@ -78,7 +84,13 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
     // eslint-disable-next-line no-constant-condition
     while (true) {
         const { done, value } = await reader.read()
-        if (done) break
+        if (done) {
+            // 请求结束时计算总耗时
+            const endTime = performance.now()
+            const totalDuration = parseFloat(((endTime - startTime) / 1000).toFixed(1)) // 计算总耗时，保留 1 位小数
+            onDataReceived({ type: 'complete', duration: totalDuration }) // 传递总耗时
+            break
+        }
 
         buffer += decoder.decode(value, { stream: true })
 
@@ -97,13 +109,17 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
                     if (data.choices && data.choices[0].delta) {
                         const delta = data.choices[0].delta
 
+                        // 计算当前耗时（秒），保留 1 位小数
+                        const currentDuration = parseFloat(((performance.now() - startTime) / 1000).toFixed(2))
+
                         // 处理 reasoning_content
                         if (delta.reasoning_content) {
                             const tokenCount = calculateTokenCount(delta.reasoning_content)
                             onDataReceived({
                                 type: 'reasoning',
                                 content: delta.reasoning_content,
-                                token: tokenCount
+                                token: tokenCount,
+                                duration: currentDuration // 实时传递当前耗时
                             })
                         }
 
@@ -113,7 +129,8 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
                             onDataReceived({
                                 type: 'content',
                                 content: delta.content,
-                                token: tokenCount
+                                token: tokenCount,
+                                duration: currentDuration // 实时传递当前耗时
                             })
                         }
                     }

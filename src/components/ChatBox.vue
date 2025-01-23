@@ -175,9 +175,6 @@ export default {
                 let finalContent = ''
                 let totalTokens = 0
 
-                // 记录请求开始时间
-                const startTime = performance.now()
-
                 // 替换“加载中”消息为流式响应消息
                 const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
                 if (index !== -1) {
@@ -208,7 +205,8 @@ export default {
                             {
                                 ...this.messages[index],
                                 reasoningContent: reasoningContent,
-                                token: totalTokens
+                                token: totalTokens,
+                                duration: chunk.duration // 实时更新耗时
                             },
                             ...this.messages.slice(index + 1)
                         ]
@@ -221,29 +219,24 @@ export default {
                             {
                                 ...this.messages[index],
                                 content: finalContent,
-                                token: totalTokens
+                                token: totalTokens,
+                                duration: chunk.duration // 实时更新耗时
+                            },
+                            ...this.messages.slice(index + 1)
+                        ]
+                    } else if (chunk.type === 'complete') {
+                        // 更新总耗时
+                        this.messages = [
+                            ...this.messages.slice(0, index),
+                            {
+                                ...this.messages[index],
+                                duration: chunk.duration // 更新总耗时
                             },
                             ...this.messages.slice(index + 1)
                         ]
                     }
                     this.scrollToBottom()
                 })
-
-                // 计算请求耗时（秒），并保留 1 位小数
-                const endTime = performance.now()
-                const durationInSeconds = parseFloat(((endTime - startTime) / 1000).toFixed(1)) // 保留 1 位小数
-
-                // 更新消息中的耗时
-                if (index !== -1) {
-                    this.messages = [
-                        ...this.messages.slice(0, index),
-                        {
-                            ...this.messages[index],
-                            duration: durationInSeconds // 更新耗时
-                        },
-                        ...this.messages.slice(index + 1)
-                    ]
-                }
             } catch (error) {
                 console.error('Error fetching AI response:', error)
                 const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
