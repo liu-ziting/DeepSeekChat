@@ -94,7 +94,7 @@ export default {
             ],
             isThinking: false,
             mode: 'normal',
-            model: 'aliyuncs',
+            model: 'deepseek',
             tab: 'chat',
             selectedPrompt: null
         }
