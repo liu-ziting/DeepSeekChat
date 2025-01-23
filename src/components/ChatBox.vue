@@ -96,6 +96,9 @@ export default {
             showInfo: false,
             modelIntroduce: `
 🧠 大模型接口
+本项目90%代码由大模型自主开发
+RooCline+DeepSeek+TailwindCSS
+我只提供了需求和部分样式
 
 🤖 通用对话
 - DeepSeek：deepseek-chat
