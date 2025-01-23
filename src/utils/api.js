@@ -8,8 +8,9 @@ export const API_CONFIG = {
     },
     gemini: {
         apiUrl: 'https://liuziting-gemini-play-98-58acmhtr50hp.deno.dev/v1/chat/completions',
+        // apiUrl: 'https://my-openai-gemini-demo.vercel.app/v1/chat/completions',
         apiKey: process.env.VUE_APP_GEMINI_API_KEY,
-        modelName: 'gemini-2.0-flash-exp',
+        modelName: 'gemini-1.5-pro-latest',
         temperature: 1
     },
     bigmodel: {
