@@ -38,7 +38,6 @@ export const API_CONFIG = {
     }
 }
 
-// 封装 API 请求
 export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, temperature = 1, stream = false, onDataReceived) => {
     // 构建请求体
     const requestBody = {
@@ -100,17 +99,21 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
 
                         // 处理 reasoning_content
                         if (delta.reasoning_content) {
+                            const tokenCount = calculateTokenCount(delta.reasoning_content)
                             onDataReceived({
                                 type: 'reasoning',
-                                content: delta.reasoning_content
+                                content: delta.reasoning_content,
+                                token: tokenCount
                             })
                         }
 
                         // 处理最终回答 content
                         if (delta.content) {
+                            const tokenCount = calculateTokenCount(delta.content)
                             onDataReceived({
                                 type: 'content',
-                                content: delta.content
+                                content: delta.content,
+                                token: tokenCount
                             })
                         }
                     }
@@ -120,4 +123,12 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
             }
         }
     }
+}
+
+// 计算 token 数量的函数
+const calculateTokenCount = text => {
+    const englishChars = text.match(/[a-zA-Z]/g) || []
+    const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || []
+    const tokenCount = englishChars.length * 0.3 + chineseChars.length * 0.6
+    return parseFloat(tokenCount.toFixed(4)) // 保留 4 位小数并转换为数字
 }

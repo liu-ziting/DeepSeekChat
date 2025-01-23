@@ -39,7 +39,6 @@
                         <!-- 否则解析为 Markdown -->
                         <div v-else v-html="renderMarkdown(part.content)" class="markdown-content"></div>
                     </div>
-
                     <!-- 复制按钮 -->
                     <button
                         v-if="showCopyButton"
@@ -56,6 +55,12 @@
                         </svg>
                     </button>
                 </div>
+                <p class="text-xs text-gray-500 mt-1" v-if="message.token">
+                    <span style="float: left">{{ message.duration }}s</span>
+                    <span style="background: #888d92; display: block; height: 8px; margin: 4px 8px; width: 1px; float: left"></span>
+                    <span style="float: left">{{ message.token }}Token</span>
+                </p>
+
                 <div>
                     <p
                         v-for="(presets, index) in message.presets"

@@ -173,6 +173,10 @@ export default {
                 // 用于存储流式响应的内容
                 let reasoningContent = ''
                 let finalContent = ''
+                let totalTokens = 0
+
+                // 记录请求开始时间
+                const startTime = performance.now()
 
                 // 替换“加载中”消息为流式响应消息
                 const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
@@ -183,6 +187,8 @@ export default {
                             role: 'assistant',
                             content: '思考中',
                             reasoningContent: '', // 新增 reasoningContent 字段
+                            token: 0, // 新增 token 字段
+                            duration: 0, // 新增 duration 字段，用于存储耗时（秒）
                             id: this.generateUniqueId(),
                             mode: this.mode,
                             model: this.model
@@ -194,30 +200,50 @@ export default {
                 const stream = true
                 await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, stream, chunk => {
                     if (chunk.type === 'reasoning') {
-                        // 更新 reasoningContent
+                        // 更新 reasoningContent 和 token
                         reasoningContent += chunk.content
+                        totalTokens = parseFloat((totalTokens + chunk.token).toFixed(4)) // 累加并保留 4 位小数
                         this.messages = [
                             ...this.messages.slice(0, index),
                             {
                                 ...this.messages[index],
-                                reasoningContent: reasoningContent
+                                reasoningContent: reasoningContent,
+                                token: totalTokens
                             },
                             ...this.messages.slice(index + 1)
                         ]
                     } else if (chunk.type === 'content') {
-                        // 更新最终回答 content
+                        // 更新最终回答 content 和 token
                         finalContent += chunk.content
+                        totalTokens = parseFloat((totalTokens + chunk.token).toFixed(4)) // 累加并保留 4 位小数
                         this.messages = [
                             ...this.messages.slice(0, index),
                             {
                                 ...this.messages[index],
-                                content: finalContent
+                                content: finalContent,
+                                token: totalTokens
                             },
                             ...this.messages.slice(index + 1)
                         ]
                     }
                     this.scrollToBottom()
                 })
+
+                // 计算请求耗时（秒），并保留 1 位小数
+                const endTime = performance.now()
+                const durationInSeconds = parseFloat(((endTime - startTime) / 1000).toFixed(1)) // 保留 1 位小数
+
+                // 更新消息中的耗时
+                if (index !== -1) {
+                    this.messages = [
+                        ...this.messages.slice(0, index),
+                        {
+                            ...this.messages[index],
+                            duration: durationInSeconds // 更新耗时
+                        },
+                        ...this.messages.slice(index + 1)
+                    ]
+                }
             } catch (error) {
                 console.error('Error fetching AI response:', error)
                 const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
