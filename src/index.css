@@ -32,9 +32,17 @@ code {
 }
 
 .main,
-.form {
+.form,
+footer {
     max-width: 800px;
     margin: 0 auto;
+    border: 1px solid #eeeeee;
+}
+footer {
+    z-index: -1;
+}
+.main {
+    border-radius: 0.3rem;
 }
 .radio-inputs {
     position: relative;

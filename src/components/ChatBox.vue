@@ -56,6 +56,10 @@
                 </div>
             </div>
         </div>
+        <!-- 模型介绍 -->
+        <div class="w-full md:w-64 lg:w-80 bg-white border-l border-gray-200 p-4 space-y-6 hidden">
+            <CodeBlock :code="modelIntroduce" language="markdown" :showCopyButton="false" />
+        </div>
     </div>
 </template>
 
@@ -66,6 +70,7 @@ import TabSelector from './TabSelector.vue'
 import Message from './ChatBox/MessageBox.vue'
 import InputBox from './ChatBox/InputBox.vue'
 import Glm4V from './ImgBox/Glm4V.vue'
+import CodeBlock from './CodeBlock.vue'
 import { fetchAIResponse, API_CONFIG } from '../utils/api'
 
 export default {
@@ -75,7 +80,8 @@ export default {
         RoleList,
         Message,
         InputBox,
-        Glm4V
+        Glm4V,
+        CodeBlock
     },
     data() {
         return {
@@ -86,7 +92,27 @@ export default {
             tab: 'chat',
             isDeepThinking: false,
             showWeChatQR: false,
-            wechatQR: require('@/assets/WeChat.jpg')
+            wechatQR: require('@/assets/WeChat.jpg'),
+            modelIntroduce: `
+🧠 大模型接口
+
+🤖 通用对话
+- DeepSeek：deepseek-chat  
+- Gemini：gemini-2.0-flash-exp  
+- 智谱清言：glm-4v-flash  
+- 月之暗面：moonshot-v1-8k  
+- 深度思考：deepseek-reasoner  
+  （目前算力翻倍，暂时不开放...）
+
+🎭 角色对话
+- Gemini：gemini-2.0-flash-exp  
+
+🏟️ 大模型竞技场
+- 毕昇BISHENG开源LLM应用开发平台  
+
+🖼️ 识图
+- 智谱清言：glm-4v-flash  
+            `
         }
     },
     methods: {

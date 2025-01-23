@@ -2,7 +2,7 @@
     <div class="container mx-auto pl-4 pr-4">
         <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 pb-10">
             <article class="rounded-xl border-2 border-gray-100 bg-white prompts" v-for="(prompt, index) in prompts" :key="index" @click="changePrompt(prompt)">
-                <div class="flex items-start gap-4 p-4 sm:p-6 lg:p-8">
+                <div class="flex items-start gap-4 p-4 sm:p-6">
                     <div>
                         <h3 class="font-medium sm:text-lg">
                             <a href="javascript:;" class="hover:underline">{{ prompt.title }}</a>
@@ -32,18 +32,17 @@
         <div v-if="isShareDialogOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <!-- 全屏弹窗容器 -->
             <div class="fixed inset-0 bg-white shadow-lg flex flex-col">
-                <!-- 关闭按钮 -->
-                <button @click="closeShareDialog" class="absolute right-4 p-2 text-gray-600 hover:text-gray-900 focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-
                 <!-- 弹窗内容 -->
                 <div>
                     <div class="main min-h-screen flex flex-col absolute inset-0 -z-10 h-full w-full bg-main">
                         <h2 class="text-1xl font-bold mb-2 mt-2 text-center">
                             {{ selectedPrompt.title }}
+                            <!-- 关闭按钮 -->
+                            <button @click="closeShareDialog" class="absolute right-4 text-gray-600 hover:text-gray-900 focus:outline-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
                         </h2>
                         <!-- 聊天记录区域 -->
                         <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-36 chatContainer">

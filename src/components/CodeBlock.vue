@@ -3,8 +3,8 @@
         <!-- 代码块 -->
         <pre><code ref="code" :class="languageClass">{{ formattedCode }}</code></pre>
         <!-- 复制按钮 -->
-        <!-- <button class="copy-button" @click="copyCode">复制代码</button> -->
         <button
+            v-if="showCopyButton"
             @click="copyCode"
             class="copy-button absolute -top-2 -right-2 p-1 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-100 transition-colors duration-200"
         >
@@ -34,6 +34,10 @@ export default {
         language: {
             type: String,
             default: 'plaintext' // 默认语言为纯文本
+        },
+        showCopyButton: {
+            type: Boolean,
+            default: true
         }
     },
     computed: {
