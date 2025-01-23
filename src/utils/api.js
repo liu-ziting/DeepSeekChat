@@ -11,7 +11,7 @@ export const API_CONFIG = {
         // apiUrl: 'https://my-openai-gemini-demo.vercel.app/v1/chat/completions',
         apiKey: process.env.VUE_APP_GEMINI_API_KEY,
         modelName: 'gemini-1.5-pro-latest',
-        temperature: 1
+        temperature: 0.8
     },
     bigmodel: {
         apiUrl: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
