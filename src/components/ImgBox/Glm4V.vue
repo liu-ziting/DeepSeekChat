@@ -148,7 +148,7 @@ export default {
                 //     `
                 // },
                 {
-                    name: '年夜饭鉴定评级',
+                    name: '年夜饭鉴定评分',
                     placeholder: '请上传年夜饭的照片，我来给你打分！',
                     buttonText: '开始识别你的年夜饭',
                     prompt: `
