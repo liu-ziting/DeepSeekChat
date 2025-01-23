@@ -111,7 +111,7 @@ export default {
   （目前算力翻倍，暂时不开放...）
 
 🎭 角色对话
-- Gemini：gemini-2.0-flash-exp
+- Gemini：deepseek-chat
 
 🏟️ 大模型竞技场
 - 毕昇BISHENG开源LLM应用开发平台
