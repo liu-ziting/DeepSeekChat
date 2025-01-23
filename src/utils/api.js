@@ -35,6 +35,12 @@ export const API_CONFIG = {
         apiUrl: 'https://api.deepseek.com/v1/chat/completions',
         apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
         modelName: 'deepseek-reasoner'
+    },
+    aliyuncs: {
+        apiUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
+        apiKey: process.env.VUE_APP_ALIYUNCS_API_KEY,
+        modelName: 'qwen-plus',
+        temperature: 0.8
     }
 }
 

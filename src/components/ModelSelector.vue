@@ -16,6 +16,10 @@
             <input type="radio" name="model" :checked="model === 'kimi'" />
             <span class="name">月之暗面</span>
         </label>
+        <label class="radio" @click="changeModel('aliyuncs')">
+            <input type="radio" name="model" :checked="model === 'aliyuncs'" />
+            <span class="name">通义千问</span>
+        </label>
     </div>
 </template>
 

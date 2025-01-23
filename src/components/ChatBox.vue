@@ -42,23 +42,7 @@
             <template v-else>
                 <Glm4V />
             </template>
-
-            <!-- 底部介绍 -->
-            <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 text-center text-sm text-gray-500 z-1">
-                <a href="javascript:;" @click="showInfo = true">本项目整合的AI大模型技术生态介绍</a>
-                |
-                <a href="javascript:;" class="text-blue-500 hover:underline" @click="showWeChatQR = true"> By lztziting </a>
-            </footer>
-        </div>
-
-        <div v-if="showWeChatQR" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click.self="showWeChatQR = false">
-            <div class="bg-white p-4 rounded-lg">
-                <img :src="wechatQR" alt="WeChat QR Code" class="w-64 h-100" />
-            </div>
-        </div>
-
-        <div v-if="showInfo" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click.self="showInfo = false">
-            <CodeBlock :code="modelIntroduce" language="markdown" :showCopyButton="false" />
+            <FooterBox />
         </div>
     </div>
 </template>
@@ -70,7 +54,7 @@ import TabSelector from './TabSelector.vue'
 import Message from './ChatBox/MessageBox.vue'
 import InputBox from './ChatBox/InputBox.vue'
 import Glm4V from './ImgBox/Glm4V.vue'
-import CodeBlock from './CodeBlock.vue'
+import FooterBox from './FooterBox.vue'
 import { fetchAIResponse, API_CONFIG } from '../utils/api'
 
 export default {
@@ -80,8 +64,8 @@ export default {
         RoleList,
         Message,
         InputBox,
-        Glm4V,
-        CodeBlock
+        FooterBox,
+        Glm4V
     },
     data() {
         return {
@@ -90,35 +74,7 @@ export default {
             mode: 'normal',
             model: 'deepseek',
             tab: 'chat',
-            isDeepThinking: false,
-            showWeChatQR: false,
-            wechatQR: require('@/assets/WeChat.jpg'),
-            showInfo: false,
-            modelIntroduce: `
-🧠 大模型接口
-- 本项目90%的代码由大模型自主开发
-- 构建工具和技术栈如下
-- RooCline+DeepSeek+TailwindCSS
-- 我主要负责需求提供和部分样式调整
-- 项目已部署在Netlify平台
-
-🤖 通用对话
-- DeepSeek：deepseek-chat
-- Gemini：gemini-2.0-flash-exp
-- 智谱清言：glm-4v-flash
-- 月之暗面：moonshot-v1-8k
-- 深度思考：deepseek-reasoner
-  （目前算力翻倍，暂时不开放...）
-
-🎭 角色对话
-- Gemini：deepseek-chat
-
-🏟️ 大模型竞技场
-- 毕昇BISHENG开源LLM应用开发平台
-
-🖼️ 识图
-- 智谱清言：glm-4v-flash
-            `
+            isDeepThinking: false
         }
     },
     methods: {
