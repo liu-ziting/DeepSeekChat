@@ -4,10 +4,10 @@
             <input type="radio" name="model" :checked="model === 'deepseek'" />
             <span class="name">DeepSeek</span>
         </label>
-        <label class="radio" @click="changeModel('gemini')">
+        <!-- <label class="radio" @click="changeModel('gemini')">
             <input type="radio" name="model" :checked="model === 'gemini'" />
             <span class="name">Gemini</span>
-        </label>
+        </label> -->
         <label class="radio" @click="changeModel('bigmodel')">
             <input type="radio" name="model" :checked="model === 'bigmodel'" />
             <span class="name">智谱清言</span>
