@@ -96,9 +96,11 @@ export default {
             showInfo: false,
             modelIntroduce: `
 🧠 大模型接口
-本项目90%代码由大模型自主开发
-RooCline+DeepSeek+TailwindCSS
-我只提供了需求和部分样式
+- 本项目90%的代码由大模型自主开发
+- 构建工具和技术栈如下
+- RooCline+DeepSeek+TailwindCSS
+- 我主要负责需求提供和部分样式调整
+- 项目已部署在Netlify平台
 
 🤖 通用对话
 - DeepSeek：deepseek-chat
