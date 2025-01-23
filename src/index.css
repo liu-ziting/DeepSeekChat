@@ -39,7 +39,7 @@ footer {
     border: 1px solid #eeeeee;
 }
 footer {
-    z-index: -1;
+    z-index: 1;
 }
 .main {
     border-radius: 0.3rem;
