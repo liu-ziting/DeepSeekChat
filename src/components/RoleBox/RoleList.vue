@@ -73,7 +73,7 @@
 import Message from '../ChatBox/MessageBox.vue'
 import InputBox from '../ChatBox/InputBox.vue'
 import { fetchAIResponse, API_CONFIG } from '../../utils/api'
-import { prompts } from '../../utils/prompt.js'
+import { RolePrompts } from '../../utils/prompt.js'
 
 import FooterBox from '../FooterBox.vue'
 export default {
@@ -84,7 +84,7 @@ export default {
     },
     data() {
         return {
-            prompts: prompts,
+            prompts: RolePrompts,
             isShareDialogOpen: false,
             messages: [
                 {

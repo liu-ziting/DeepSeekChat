@@ -4,7 +4,10 @@
             <input type="radio" name="model" :checked="model === 'deepseek'" />
             <span class="name">DeepSeek</span>
         </label>
-
+        <!-- <label class="radio" @click="changeModel('aliyuncs')">
+            <input type="radio" name="model" :checked="model === 'aliyuncs'" />
+            <span class="name">通义千问</span>
+        </label> -->
         <label class="radio" @click="changeModel('bigmodel')">
             <input type="radio" name="model" :checked="model === 'bigmodel'" />
             <span class="name">智谱清言</span>

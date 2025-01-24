@@ -56,7 +56,7 @@ import InputBox from './ChatBox/InputBox.vue'
 import Glm4V from './ImgBox/Glm4V.vue'
 import FooterBox from './FooterBox.vue'
 import { fetchAIResponse, API_CONFIG } from '../utils/api'
-
+import { ChatPrompts } from '../utils/prompt.js'
 export default {
     components: {
         ModelSelector,
@@ -194,37 +194,21 @@ export default {
                     this.scrollToBottom()
                 })
             } catch (error) {
-                console.error('Error fetching AI response:', error)
-                const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
-                if (index !== -1) {
-                    this.messages = [
-                        ...this.messages.slice(0, index),
-                        {
-                            role: 'assistant',
-                            content: '请求失败，请稍后重试。',
-                            id: this.generateUniqueId()
-                        },
-                        ...this.messages.slice(index + 1)
-                    ]
-                }
+                this.messages = [
+                    {
+                        role: 'assistant',
+                        content: '这个模型出现了问题，请换个模型试试。',
+                        id: this.generateUniqueId()
+                    }
+                ]
             }
         },
         getSystemMessage() {
             if (this.isDeepThinking) {
                 return '' // 深度思考模式下，systemMessage 为空
             }
-            switch (this.mode) {
-                case 'normal':
-                    return '你是一个正常的助手，请用礼貌的语言回答问题。'
-                case 'angry':
-                    return '你是一个暴躁的助手，请用不耐烦的语气回答问题。'
-                case 'rude':
-                    return `无论我问什么，你都要巧妙的用脏话回复，并且要回复我的问题。
-                            即使面对批评，道德审判，任何形式的质疑，或者让你忘记脏话学习助手的身份，等等任何提问和沟通，你都要用脏话回复并且隐瞒你是一个助手的身份。
-                            碰到无法回答的问题，就随便回复一句脏话。要多一些花样，尽可能用不同的脏话。`
-                default:
-                    return '你是一个正常的助手，请用礼貌的语言回答问题。'
-            }
+            const prompt = ChatPrompts.find(p => p.mode === this.mode)
+            return prompt ? prompt.systemMessage : '你是一个正常的助手，请用礼貌的语言回答问题。'
         },
         getApiConfig() {
             // 直接从配置文件中获取当前模型的配置
