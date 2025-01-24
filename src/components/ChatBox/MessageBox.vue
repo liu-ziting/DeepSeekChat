@@ -10,6 +10,9 @@
                     {{ message.mode === 'normal' ? '😀' : message.mode === 'angry' ? '😡' : '🤬' }}
                 </span>
 
+                <span v-else-if="message.model && showName" class="text-sm font-medium mb-1" :class="nameClass">
+                    {{ config[message.model].name }}
+                </span>
                 <!-- 可折叠的思维链内容 -->
                 <div v-if="message.reasoningContent" class="bg-gray-100 p-3 rounded-lg mb-2 text-sm text-gray-700">
                     <div class="flex items-center justify-between cursor-pointer" @click="toggleReasoning">
@@ -68,7 +71,7 @@
                 </div>
             </div>
         </div>
-        <p class="w-full ml-[52px] text-xs text-gray-500 mt-1" v-if="message.token">
+        <p class="w-full ml-[52px] text-xs text-gray-500 mt-1" v-if="message.token" style="width: 60%">
             <span style="float: left">{{ message.duration }}s</span>
             <span style="background: #888d92; display: block; height: 8px; margin: 4px 8px; width: 1px; float: left"></span>
             <span style="float: left">{{ message.token }}Token</span>
@@ -82,6 +85,7 @@ import { splitMixedContent, isCode } from '../../utils/helpers'
 import IconAI from '../IconBox/IconAI.vue'
 import CodeBlock from '../CodeBlock.vue' // 引入 CodeBlock 组件
 
+import { API_CONFIG } from '../../utils/api'
 export default {
     components: {
         IconAI,
@@ -95,12 +99,17 @@ export default {
         name: {
             type: String,
             required: false
+        },
+        showName: {
+            type: Boolean,
+            default: true
         }
     },
     data() {
         return {
             showCopyButton: false, // 控制复制按钮的显示
-            isReasoningExpanded: !!this.message.reasoningContent // 默认展开（如果 reasoningContent 存在）
+            isReasoningExpanded: !!this.message.reasoningContent, // 默认展开（如果 reasoningContent 存在）
+            config: API_CONFIG
         }
     },
     watch: {

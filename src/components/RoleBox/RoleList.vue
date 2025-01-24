@@ -47,7 +47,14 @@
                         <!-- 聊天记录区域 -->
                         <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-36 chatContainer">
                             <!-- 消息列表 -->
-                            <Message v-for="message in messages" :key="message.id" :message="message" :name="selectedPrompt.title" @preset-click="handlePresetClick" />
+                            <Message
+                                v-for="message in messages"
+                                :key="message.id"
+                                :message="message"
+                                :name="selectedPrompt.title"
+                                @preset-click="handlePresetClick"
+                                :showName="false"
+                            />
                         </div>
 
                         <!-- 输入框区域 -->

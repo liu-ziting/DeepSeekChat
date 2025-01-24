@@ -12,6 +12,10 @@
             <input type="radio" name="model" :checked="model === 'kimi'" />
             <span class="name">月之暗面</span>
         </label>
+        <label class="radio" @click="changeModel('baichuan')">
+            <input type="radio" name="model" :checked="model === 'baichuan'" />
+            <span class="name">百川</span>
+        </label>
         <label class="radio" @click="changeModel('gemini')">
             <input type="radio" name="model" :checked="model === 'gemini'" />
             <span class="name">Gemini</span>

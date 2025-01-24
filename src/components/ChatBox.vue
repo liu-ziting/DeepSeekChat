@@ -197,7 +197,7 @@ export default {
                 this.messages = [
                     {
                         role: 'assistant',
-                        content: '这个模型出现了问题，请换个模型试试。',
+                        content: '这个模型出现了问题，请换个模型试试！',
                         id: this.generateUniqueId()
                     }
                 ]
@@ -243,7 +243,8 @@ export default {
             // 插入默认的第一个对话
             this.messages.push({
                 role: 'assistant',
-                content: '你好！请问有什么可以帮您的？'
+                content: '你好！请问有什么可以帮您的？',
+                model: this.model
             })
         },
         changeTab(newTab) {

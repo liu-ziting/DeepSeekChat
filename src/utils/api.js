@@ -1,12 +1,14 @@
 // 不同模型的 API 配置
 export const API_CONFIG = {
     deepseek: {
+        name: 'DeepSeek',
         apiUrl: 'https://api.deepseek.com/v1/chat/completions',
         apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
         modelName: 'deepseek-chat',
         temperature: 1.5
     },
     gemini: {
+        name: 'Gemini',
         apiUrl: 'https://liuziting-gemini-play-98-58acmhtr50hp.deno.dev/v1/chat/completions',
         // apiUrl: 'https://my-openai-gemini-demo.vercel.app/v1/chat/completions',
         apiKey: process.env.VUE_APP_GEMINI_API_KEY,
@@ -14,12 +16,14 @@ export const API_CONFIG = {
         temperature: 0.8
     },
     bigmodel: {
+        name: '智谱清言',
         apiUrl: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
         apiKey: process.env.VUE_APP_GLM_API_KEY,
         modelName: 'glm-4v-flash',
         temperature: 0.8
     },
     kimi: {
+        name: '月之暗面',
         apiUrl: 'https://api.moonshot.cn/v1/chat/completions',
         apiKey: process.env.VUE_APP_KIMI_API_KEY,
         modelName: 'moonshot-v1-8k',
@@ -36,6 +40,13 @@ export const API_CONFIG = {
         apiUrl: 'https://api.deepseek.com/v1/chat/completions',
         apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
         modelName: 'deepseek-reasoner'
+    },
+    baichuan: {
+        name: '百川智能',
+        apiUrl: 'https://api.baichuan-ai.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_BAICHUAN_API_KEY,
+        modelName: 'Baichuan4-Air',
+        temperature: 0.8
     }
     // aliyuncs: {
     //     apiUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
