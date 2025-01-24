@@ -43,6 +43,7 @@ export default {
 - 智谱清言：glm-4v-flash
 - 月之暗面：moonshot-v1-8k
 - 通义千问：qwen-plus
+- 百川智能：Baichuan4-Air
 - Gemini：gemini-1.5-pro-latest
 - 深度思考：deepseek-reasoner
   （目前算力翻倍，暂时不开放...）
