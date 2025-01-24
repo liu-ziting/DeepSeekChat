@@ -4,7 +4,7 @@
         <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">
             {{ functions[selectedFunction].name }}
 
-            <span class="text-sm text-blue-500" @click="switchFunction">切换</span>
+            <!-- <span class="text-sm text-blue-500" @click="switchFunction">切换</span> -->
         </h2>
 
         <!-- 布局容器 -->
