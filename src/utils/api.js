@@ -36,19 +36,19 @@ export const API_CONFIG = {
         apiUrl: 'https://api.deepseek.com/v1/chat/completions',
         apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
         modelName: 'deepseek-reasoner'
-    },
-    aliyuncs: {
-        apiUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
-        apiKey: process.env.VUE_APP_ALIYUNCS_API_KEY,
-        modelName: 'qwen-plus',
-        temperature: 0.8
-    },
-    gpt35: {
-        apiUrl: 'https://freegpt351024.vercel.app/v1/chat/completions',
-        apiKey: '1313ljjmtdsxxx',
-        modelName: 'gpt-3.5-turbo',
-        temperature: 0.8
     }
+    // aliyuncs: {
+    //     apiUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
+    //     apiKey: process.env.VUE_APP_ALIYUNCS_API_KEY,
+    //     modelName: 'qwen-plus',
+    //     temperature: 0.8
+    // },
+    // gpt35: {
+    //     apiUrl: 'https://freegpt351024.vercel.app/v1/chat/completions',
+    //     apiKey: '1313ljjmtdsxxx',
+    //     modelName: 'gpt-3.5-turbo',
+    //     temperature: 0.8
+    // }
 }
 
 export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, temperature = 1, stream = false, onDataReceived) => {
