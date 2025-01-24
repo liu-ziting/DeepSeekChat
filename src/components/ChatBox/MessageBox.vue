@@ -71,7 +71,7 @@
                 </div>
             </div>
         </div>
-        <p class="w-full ml-[52px] text-xs text-gray-500 mt-1" v-if="message.token" style="width: 60%">
+        <p class="w-full ml-[52px] text-xs text-gray-500 mt-1" v-if="message.token" style="width: 60%;overflow: hidden;s">
             <span style="float: left">{{ message.duration }}s</span>
             <span style="background: #888d92; display: block; height: 8px; margin: 4px 8px; width: 1px; float: left"></span>
             <span style="float: left">{{ message.token }}Token</span>
