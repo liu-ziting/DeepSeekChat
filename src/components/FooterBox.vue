@@ -35,11 +35,10 @@ export default {
 - 本项目90%的代码由大模型自主开发
 - 构建工具和技术栈如下
 - RooCline+DeepSeek+TailwindCSS
-- 我主要负责需求提供和部分样式调整
-- 项目已部署在Netlify平台
+- 目前DeepSeek接口不稳定，请求慢无响应
 
 🤖 通用对话
-- DeepSeek：deepseek-chat
+- DeepSeek：deepseek-chat 
 - 智谱清言：glm-4v-flash
 - 月之暗面：moonshot-v1-8k
 - 通义千问：qwen-plus
@@ -51,8 +50,7 @@ export default {
 🎭 角色对话
 - Gemini：deepseek-chat
 
-🏟️ 大模型竞技场
-- 毕昇BISHENG开源LLM应用开发平台
+🏟️ 大模型竞技场(已下线) 
 
 🖼️ 识图
 - 智谱清言：glm-4v-flash

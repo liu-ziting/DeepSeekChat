@@ -8,7 +8,7 @@
                     <input class="hidden peer" type="radio" name="radio" :checked="mode === 'normal'" />
                     <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
                         <span :class="{ 'filter grayscale': mode !== 'normal' }">😀</span>
-                        正常模式
+                        正常
                     </span>
                 </label>
 
@@ -17,7 +17,7 @@
                     <input class="hidden peer" type="radio" name="radio" :checked="mode === 'angry'" />
                     <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
                         <span :class="{ 'filter grayscale': mode !== 'angry' }">😡</span>
-                        暴躁模式
+                        暴躁
                     </span>
                 </label>
 
@@ -26,7 +26,7 @@
                     <input class="hidden peer" type="radio" name="radio" :checked="mode === 'rude'" />
                     <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
                         <span :class="{ 'filter grayscale': mode !== 'rude' }">🤬</span>
-                        祖安模式
+                        有点脏
                     </span>
                 </label>
             </div>
