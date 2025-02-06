@@ -101,7 +101,7 @@ export default {
             ],
             isThinking: false,
             mode: 'normal',
-            model: 'bigmodel',
+            model: 'baichuan',
             tab: 'chat',
             selectedPrompt: null
         }
