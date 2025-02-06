@@ -101,7 +101,7 @@ export default {
             ],
             isThinking: false,
             mode: 'normal',
-            model: 'deepseek',
+            model: 'bigmodel',
             tab: 'chat',
             selectedPrompt: null
         }
