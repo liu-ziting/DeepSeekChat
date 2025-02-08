@@ -69,7 +69,7 @@ export const API_CONFIG = {
     // }
 }
 
-export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, temperature = 1, stream = false, onDataReceived) => {
+export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, temperature = 1, stream = false, onDataReceived, controller) => {
     // 构建请求体
     const requestBody = {
         model: modelName,
@@ -91,7 +91,8 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
             'Content-Type': 'application/json',
             Authorization: `Bearer ${apiKey}`
         },
-        body: JSON.stringify(requestBody) // 使用动态构建的请求体
+        body: JSON.stringify(requestBody), // 使用动态构建的请求体
+        signal: controller.signal // 关联 AbortController
     })
 
     if (!response.ok) {
@@ -116,7 +117,6 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
     while (true) {
         const { done, value } = await reader.read()
         if (done) {
-            // 请求结束时计算总耗时
             const endTime = performance.now()
             const totalDuration = parseFloat(((endTime - startTime) / 1000).toFixed(1)) // 计算总耗时，保留 1 位小数
             onDataReceived({ type: 'complete', duration: totalDuration }) // 传递总耗时
@@ -139,29 +139,25 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
                     const data = JSON.parse(jsonData)
                     if (data.choices && data.choices[0].delta) {
                         const delta = data.choices[0].delta
-
-                        // 计算当前耗时（秒），保留 1 位小数
                         const currentDuration = parseFloat(((performance.now() - startTime) / 1000).toFixed(2))
 
-                        // 处理 reasoning_content
                         if (delta.reasoning_content) {
                             const tokenCount = calculateTokenCount(delta.reasoning_content)
                             onDataReceived({
                                 type: 'reasoning',
                                 content: delta.reasoning_content,
                                 token: tokenCount,
-                                duration: currentDuration // 实时传递当前耗时
+                                duration: currentDuration
                             })
                         }
 
-                        // 处理最终回答 content
                         if (delta.content) {
                             const tokenCount = calculateTokenCount(delta.content)
                             onDataReceived({
                                 type: 'content',
                                 content: delta.content,
                                 token: tokenCount,
-                                duration: currentDuration // 实时传递当前耗时
+                                duration: currentDuration
                             })
                         }
                     }
