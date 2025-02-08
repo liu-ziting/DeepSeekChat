@@ -38,11 +38,11 @@ export default {
 - 目前DeepSeek接口不稳定，请求慢无响应
 
 🤖 通用对话
+- 水泥封心：Baichuan4-Air
 - DeepSeek：deepseek-chat 
 - 智谱清言：glm-4v-flash
 - 月之暗面：moonshot-v1-8k
 - 通义千问：qwen-plus
-- 百川智能：Baichuan4-Air
 - Gemini：gemini-1.5-pro-latest
 - 深度思考：deepseek-reasoner
   （目前算力翻倍，暂时不开放...）
@@ -50,7 +50,8 @@ export default {
 🎭 角色对话
 - Gemini：deepseek-chat
 
-🏟️ 大模型竞技场(已下线) 
+🏟️ 大模型竞技场
+- 毕昇BISHENG一款开源LLM应用开发平台
 
 🖼️ 识图
 - 智谱清言：glm-4v-flash
