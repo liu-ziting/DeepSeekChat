@@ -1,5 +1,12 @@
 // 不同模型的 API 配置
 export const API_CONFIG = {
+    shuinifengxin: {
+        name: '水泥封心',
+        apiUrl: 'https://api.baichuan-ai.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_BAICHUAN_API_KEY,
+        modelName: 'Baichuan4-Air',
+        temperature: 0.3
+    },
     deepseek: {
         name: 'DeepSeek',
         apiUrl: 'https://api.deepseek.com/v1/chat/completions',

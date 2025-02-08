@@ -72,7 +72,7 @@ export default {
             messages: [], // 初始化为空
             isThinking: false,
             mode: 'normal',
-            model: 'deepseek',
+            model: 'shuinifengxin',
             tab: 'chat',
             isDeepThinking: false
         }
@@ -234,6 +234,9 @@ export default {
         changeModel(newModel) {
             this.model = newModel
             this.mode = 'normal' // 重置为默认模式
+            if (newModel === 'shuinifengxin') {
+                this.mode = 'rude'
+            }
             this.messages = [] // 清空消息列表
             if (!this.isDeepThinking) {
                 this.insertDefaultMessage() // 如果不是深度思考模式，插入默认的第一个对话

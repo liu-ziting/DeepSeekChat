@@ -1,20 +1,21 @@
 <template>
     <div class="model-selector flex justify-center gap-4 p-4 bg-white border-b border-gray-200" style="margin-top: 0">
+        <label class="radio" @click="changeModel('shuinifengxin')">
+            <input type="radio" name="model" :checked="model === 'shuinifengxin'" />
+            <span class="name">水泥封心</span>
+        </label>
         <label class="radio" @click="changeModel('deepseek')">
             <input type="radio" name="model" :checked="model === 'deepseek'" />
             <span class="name">DeepSeek</span>
         </label>
+
         <label class="radio" @click="changeModel('bigmodel')">
             <input type="radio" name="model" :checked="model === 'bigmodel'" />
-            <span class="name">智谱清言</span>
+            <span class="name">智谱</span>
         </label>
         <label class="radio" @click="changeModel('kimi')">
             <input type="radio" name="model" :checked="model === 'kimi'" />
-            <span class="name">月之暗面</span>
-        </label>
-        <label class="radio" @click="changeModel('baichuan')">
-            <input type="radio" name="model" :checked="model === 'baichuan'" />
-            <span class="name">百川</span>
+            <span class="name">Kimi</span>
         </label>
         <label class="radio" @click="changeModel('gemini')">
             <input type="radio" name="model" :checked="model === 'gemini'" />
