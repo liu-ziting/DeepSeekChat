@@ -224,7 +224,11 @@ export default {
             }
 
             this.model = newModel
-            this.mode = 'normal'
+            if (newModel === 'shuinifengxin') {
+                this.mode = 'rude'
+            } else {
+                this.mode = 'normal'
+            }
             this.messages = [] // 清空消息列表
 
             if (!this.isDeepThinking) {
