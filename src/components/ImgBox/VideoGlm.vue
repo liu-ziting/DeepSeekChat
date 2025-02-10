@@ -16,7 +16,7 @@
                 <textarea
                     v-model="inputText"
                     :disabled="disabled"
-                    class="text-sm w-full h-40 p-2 text-lg border rounded-md focus:ring-2 mb-4"
+                    class="text-sm w-full h-30 p-2 text-lg border rounded-md focus:ring-2 mb-4"
                     placeholder="请输入梦境描述，详细描绘梦中的场景、人物、情感和细节，越具体越能还原出真实的梦境画面！"
                 ></textarea>
                 <button
@@ -84,7 +84,7 @@ export default {
                     stream: false,
                     temperature: 0.8,
                     messages: [
-                        { "role": "system", "content": "请将以下用户描述优化为适合生成视频的详细提示词，不超过200字：" },
+                        { "role": "system", "content": "请将以下用户描述优化为适合生成视频的详细提示词，不超过 100字：" },
                         { "role": "user", "content": `${userInput}` }
                     ],
                 }
@@ -185,5 +185,9 @@ export default {
 <style>
 textarea {
     outline: none;
+}
+.head-title {
+    font-size: 18px;
+    margin-bottom: 10px;
 }
 </style>
