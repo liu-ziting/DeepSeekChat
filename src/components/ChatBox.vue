@@ -43,8 +43,12 @@
                 <Glm4V />
             </template>
             <!-- 生图大模型 -->
-            <template v-else>
+            <template v-else-if="tab === 'cogview'">
                 <CogView />
+            </template>
+            <!-- 视频生成大模型 -->
+            <template v-else-if="tab === 'video'">
+                <VideoGlm />
             </template>
             <FooterBox />
         </div>
@@ -59,6 +63,7 @@ import Message from './ChatBox/MessageBox.vue'
 import InputBox from './ChatBox/InputBox.vue'
 import Glm4V from './ImgBox/Glm4V.vue'
 import CogView from './ImgBox/CogView.vue'
+import VideoGlm from './ImgBox/VideoGlm.vue'
 import FooterBox from './FooterBox.vue'
 import { fetchAIResponse, API_CONFIG } from '../utils/api'
 import { ChatPrompts } from '../utils/prompt.js'
@@ -71,7 +76,8 @@ export default {
         InputBox,
         FooterBox,
         Glm4V,
-        CogView
+        CogView,
+        VideoGlm
     },
     data() {
         return {

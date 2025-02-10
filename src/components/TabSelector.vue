@@ -8,10 +8,10 @@
             <input type="radio" name="tab" :checked="tab === 'role'" />
             <span class="name">角色对话</span>
         </label>
-        <label class="radio" @click="changeModel('battle')">
+        <!-- <label class="radio" @click="changeModel('battle')">
             <input type="radio" name="tab" :checked="tab === 'battle'" />
             <span class="name">大模型竞技场</span>
-        </label>
+        </label> -->
         <label class="radio" @click="changeModel('image')">
             <input type="radio" name="tab" :checked="tab === 'image'" />
             <span class="name">识图</span>
@@ -19,6 +19,10 @@
         <label class="radio" @click="changeModel('cogview')">
             <input type="radio" name="tab" :checked="tab === 'cogview'" />
             <span class="name">生图</span>
+        </label> 
+        <label class="radio" @click="changeModel('video')">
+            <input type="radio" name="tab" :checked="tab === 'video'" />
+            <span class="name">视频生成</span>
         </label>
     </div>
 </template>

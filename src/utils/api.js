@@ -36,6 +36,14 @@ export const API_CONFIG = {
         modelName: 'cogview-3-flash',
         temperature: 0.8
     },
+    bigmodelCogVideo: {
+        name: '智谱清言',
+        apiUrl: 'https://open.bigmodel.cn/api/paas/v4/videos/generations',
+        apiKey: process.env.VUE_APP_GLM_API_KEY,
+        modelName: 'cogvideox-flash',
+        temperature: 0.8
+    },
+
     kimi: {
         name: '月之暗面',
         apiUrl: 'https://api.moonshot.cn/v1/chat/completions',
