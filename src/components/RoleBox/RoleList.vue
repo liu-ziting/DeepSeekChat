@@ -103,7 +103,8 @@ export default {
             mode: 'normal',
             model: 'bigmodel',
             tab: 'chat',
-            selectedPrompt: null
+            selectedPrompt: null,
+            abortController: null // 用来保存 AbortController 实例
         }
     },
     methods: {
@@ -140,37 +141,29 @@ export default {
 
             this.isThinking = true
 
+            // 创建新的 AbortController 实例
+            this.abortController = new AbortController()
             // 获取 AI 响应
-            await this.getAIResponse(loadingMessage.id)
+            await this.getAIResponse(loadingMessage.id, this.abortController)
 
             this.isThinking = false
 
             this.scrollToBottom()
         },
-        async getAIResponse(loadingMessageId) {
+        async getAIResponse(loadingMessageId, controller) {
             try {
                 const systemMessage = this.activePrompt
                 const messages = [
-                    {
-                        role: 'system',
-                        content: systemMessage
-                    },
-                    ...this.messages
-                        .filter(msg => msg.id !== loadingMessageId) // 排除“加载中”消息
-                        .map(msg => ({
-                            role: msg.role,
-                            content: msg.content
-                        }))
+                    { role: 'system', content: systemMessage },
+                    ...this.messages.filter(msg => msg.id !== loadingMessageId).map(msg => ({ role: msg.role, content: msg.content }))
                 ]
 
                 const { apiUrl, apiKey, modelName, temperature } = this.getApiConfig()
 
-                // 用于存储流式响应的内容
                 let reasoningContent = ''
                 let finalContent = ''
                 let totalTokens = 0
 
-                // 替换“加载中”消息为流式响应消息
                 const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
                 if (index !== -1) {
                     this.messages = [
@@ -178,9 +171,9 @@ export default {
                         {
                             role: 'assistant',
                             content: '思考中',
-                            reasoningContent: '', // 新增 reasoningContent 字段
-                            token: 0, // 新增 token 字段
-                            duration: 0, // 新增 duration 字段，用于存储耗时（秒）
+                            reasoningContent: '',
+                            token: 0,
+                            duration: 0,
                             id: this.generateUniqueId(),
                             mode: this.mode,
                             model: this.model
@@ -190,61 +183,44 @@ export default {
                 }
 
                 const stream = true
-                await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, stream, chunk => {
-                    if (chunk.type === 'reasoning') {
-                        // 更新 reasoningContent 和 token
-                        reasoningContent += chunk.content
-                        totalTokens = parseFloat((totalTokens + chunk.token).toFixed(4)) // 累加并保留 4 位小数
-                        this.messages = [
-                            ...this.messages.slice(0, index),
-                            {
-                                ...this.messages[index],
-                                reasoningContent: reasoningContent,
-                                token: totalTokens,
-                                duration: chunk.duration // 实时更新耗时
-                            },
-                            ...this.messages.slice(index + 1)
-                        ]
-                    } else if (chunk.type === 'content') {
-                        // 更新最终回答 content 和 token
-                        finalContent += chunk.content
-                        totalTokens = parseFloat((totalTokens + chunk.token).toFixed(4)) // 累加并保留 4 位小数
-                        this.messages = [
-                            ...this.messages.slice(0, index),
-                            {
-                                ...this.messages[index],
-                                content: finalContent,
-                                token: totalTokens,
-                                duration: chunk.duration // 实时更新耗时
-                            },
-                            ...this.messages.slice(index + 1)
-                        ]
-                    } else if (chunk.type === 'complete') {
-                        // 更新总耗时
-                        this.messages = [
-                            ...this.messages.slice(0, index),
-                            {
-                                ...this.messages[index],
-                                duration: chunk.duration // 更新总耗时
-                            },
-                            ...this.messages.slice(index + 1)
-                        ]
-                    }
-                    this.scrollToBottom()
-                })
+                await fetchAIResponse(
+                    apiUrl,
+                    apiKey,
+                    modelName,
+                    messages,
+                    temperature,
+                    stream,
+                    chunk => {
+                        if (controller.signal.aborted) {
+                            return // 请求被中止，退出
+                        }
+
+                        if (chunk.type === 'reasoning') {
+                            reasoningContent += chunk.content
+                            totalTokens = parseFloat((totalTokens + chunk.token).toFixed(4))
+                            this.messages = [
+                                ...this.messages.slice(0, index),
+                                { ...this.messages[index], reasoningContent, token: totalTokens, duration: chunk.duration },
+                                ...this.messages.slice(index + 1)
+                            ]
+                        } else if (chunk.type === 'content') {
+                            finalContent += chunk.content
+                            totalTokens = parseFloat((totalTokens + chunk.token).toFixed(4))
+                            this.messages = [
+                                ...this.messages.slice(0, index),
+                                { ...this.messages[index], content: finalContent, token: totalTokens, duration: chunk.duration },
+                                ...this.messages.slice(index + 1)
+                            ]
+                        } else if (chunk.type === 'complete') {
+                            this.messages = [...this.messages.slice(0, index), { ...this.messages[index], duration: chunk.duration }, ...this.messages.slice(index + 1)]
+                        }
+                        this.scrollToBottom()
+                    },
+                    controller
+                )
             } catch (error) {
-                console.error('Error fetching AI response:', error)
-                const index = this.messages.findIndex(msg => msg.id === loadingMessageId)
-                if (index !== -1) {
-                    this.messages = [
-                        ...this.messages.slice(0, index),
-                        {
-                            role: 'assistant',
-                            content: '请求失败，请稍后重试。',
-                            id: this.generateUniqueId()
-                        },
-                        ...this.messages.slice(index + 1)
-                    ]
+                if (error.name !== 'AbortError') {
+                    this.messages = [{ role: 'assistant', content: '这个模型出现了问题，请换个模型试试！', id: this.generateUniqueId() }]
                 }
             }
         },
@@ -267,6 +243,10 @@ export default {
             })
         },
         closeShareDialog() {
+            // 如果有正在进行的请求，取消它
+            if (this.abortController) {
+                this.abortController.abort()
+            }
             this.isShareDialogOpen = false // 关闭弹窗
         },
         handlePresetClick(preset) {

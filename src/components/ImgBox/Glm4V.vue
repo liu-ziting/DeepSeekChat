@@ -96,7 +96,8 @@ export default {
             isLoading: false, // 加载状态
             isShareDialogOpen: false, // 分享弹窗是否打开
             selectedFunction: 0, // 默认选择第一个功能
-            functions: ImagePrompts
+            functions: ImagePrompts,
+            abortController: null // 用来保存 AbortController 实例
         }
     },
     methods: {
@@ -219,6 +220,8 @@ export default {
             })
         },
         async startRecognition() {
+            // 创建新的 AbortController 实例
+            this.abortController = new AbortController()
             if (!this.imageBase64) {
                 alert('请先上传图片')
                 return
@@ -249,13 +252,25 @@ export default {
                 const stream = true
                 // 用于存储流式响应的内容
                 let streamContent = ''
-                await fetchAIResponse(apiUrl, apiKey, modelName, messages, temperature, stream, chunk => {
-                    // 逐步更新消息内容
-                    if (chunk.type === 'content') {
-                        streamContent += chunk.content
-                        this.generatedContent = streamContent
-                    }
-                })
+                await fetchAIResponse(
+                    apiUrl,
+                    apiKey,
+                    modelName,
+                    messages,
+                    temperature,
+                    stream,
+                    chunk => {
+                        if (this.abortController.signal.aborted) {
+                            return // 请求被中止，退出
+                        }
+                        // 逐步更新消息内容
+                        if (chunk.type === 'content') {
+                            streamContent += chunk.content
+                            this.generatedContent = streamContent
+                        }
+                    },
+                    this.abortController
+                )
                 // this.generatedContent = data.choices[0].message.content
             } catch (error) {
                 console.error('Error fetching AI response:', error)
