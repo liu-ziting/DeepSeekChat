@@ -16,6 +16,10 @@
             <input type="radio" name="tab" :checked="tab === 'image'" />
             <span class="name">识图</span>
         </label>
+        <label class="radio" @click="changeModel('cogview')">
+            <input type="radio" name="tab" :checked="tab === 'cogview'" />
+            <span class="name">生图</span>
+        </label>
     </div>
 </template>
 

@@ -29,6 +29,13 @@ export const API_CONFIG = {
         modelName: 'glm-4v-flash',
         temperature: 0.8
     },
+    bigmodelCogview: {
+        name: '智谱清言',
+        apiUrl: 'https://open.bigmodel.cn/api/paas/v4/images/generations',
+        apiKey: process.env.VUE_APP_GLM_API_KEY,
+        modelName: 'cogview-3-flash',
+        temperature: 0.8
+    },
     kimi: {
         name: '月之暗面',
         apiUrl: 'https://api.moonshot.cn/v1/chat/completions',
@@ -55,18 +62,6 @@ export const API_CONFIG = {
         modelName: 'Baichuan4-Air',
         temperature: 0.8
     }
-    // aliyuncs: {
-    //     apiUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
-    //     apiKey: process.env.VUE_APP_ALIYUNCS_API_KEY,
-    //     modelName: 'qwen-plus',
-    //     temperature: 0.8
-    // },
-    // gpt35: {
-    //     apiUrl: 'https://freegpt351024.vercel.app/v1/chat/completions',
-    //     apiKey: '1313ljjmtdsxxx',
-    //     modelName: 'gpt-3.5-turbo',
-    //     temperature: 0.8
-    // }
 }
 
 export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, temperature = 1, stream = false, onDataReceived, controller) => {

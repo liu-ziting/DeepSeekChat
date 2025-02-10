@@ -39,8 +39,12 @@
                 <RoleList />
             </template>
             <!-- 图片识别大模型-智谱 -->
-            <template v-else>
+            <template v-else-if="tab === 'image'">
                 <Glm4V />
+            </template>
+            <!-- 生图大模型 -->
+            <template v-else>
+                <CogView />
             </template>
             <FooterBox />
         </div>
@@ -54,6 +58,7 @@ import TabSelector from './TabSelector.vue'
 import Message from './ChatBox/MessageBox.vue'
 import InputBox from './ChatBox/InputBox.vue'
 import Glm4V from './ImgBox/Glm4V.vue'
+import CogView from './ImgBox/CogView.vue'
 import FooterBox from './FooterBox.vue'
 import { fetchAIResponse, API_CONFIG } from '../utils/api'
 import { ChatPrompts } from '../utils/prompt.js'
@@ -65,7 +70,8 @@ export default {
         Message,
         InputBox,
         FooterBox,
-        Glm4V
+        Glm4V,
+        CogView
     },
     data() {
         return {
