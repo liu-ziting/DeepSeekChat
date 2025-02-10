@@ -31,7 +31,7 @@ export default {
             wechatQR: require('@/assets/WeChat.jpg'),
             showInfo: false,
             modelIntroduce: `
-🧠 大模型接口
+🧠 代码/部署
 - 本项目90%的代码由大模型自主开发
 - 构建工具和技术栈如下
 - RooCline+DeepSeek+TailwindCSS
@@ -55,6 +55,9 @@ export default {
 
 🖼️ 识图
 - 智谱清言：glm-4v-flash
+
+😍 生图
+- 智谱清言：cogview-3-flash
             `
         }
     }
