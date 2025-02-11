@@ -1,28 +1,35 @@
 <template>
     <div class="container mx-auto p-4">
-        <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">梦的回忆：重温你的梦境</h2>
+        <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">AI梦境生成器</h2>
         <div class="flex flex-col lg:flex-row lg:gap-8">
             <!-- 视频展示区域 -->
             <div class="w-full aspect-square mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0">
-                <video :src="videoUrl" controls class="w-full h-full object-cover" v-if="videoUrl"></video>
+                <video :src="videoUrl" :poster="coverImageUrl" controls class="w-full h-full object-cover" v-if="videoUrl"></video>
                 <div class="w-full h-full bg-gray-100 flex items-center justify-center" v-else>
                     <IconGlm />
                 </div>
             </div>
 
             <div class="w-full lg:w-1/2 flex flex-col justify-between">
-                <textarea
-                    v-model="inputText"
-                    :disabled="disabled"
-                    class="text-sm w-full h-[120px] p-2 text-lg border rounded-md focus:ring-2 mb-4"
-                    placeholder="请输入梦境描述，详细描绘梦中的场景、人物、情感和细节，越具体越能还原出真实的梦境画面！"
-                ></textarea>
+                <div class="relative">
+                    <label for="inputText" class="text-sm font-semibold mb-2"
+                        >梦境描述
+
+                        <a href="javascript:void(0)" class="text-blue-500 cursor-pointer float-right" @click="optimizeInput">优化提示词</a>
+                    </label>
+                    <textarea
+                        v-model="inputText"
+                        :disabled="disabled"
+                        class="text-sm w-full h-[120px] p-2 text-lg border rounded-md focus:ring-2 mb-4"
+                        placeholder="请输入梦境描述，详细描绘梦中的场景、人物、情感和细节，越具体越能还原出真实的梦境画面！"
+                    ></textarea>
+                </div>
                 <button
                     @click="submitData"
                     class="text-sm w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
                     :disabled="!inputText || isLoading"
                 >
-                    {{ isLoading ? '生成中，请不要退出页面！' : '生成视频' }}
+                    {{ isLoading ? inputTip : '生成视频' }}
                 </button>
             </div>
         </div>
@@ -32,7 +39,6 @@
 <script>
 import { API_CONFIG } from '../../utils/api'
 import IconGlm from '../IconBox/IconGlm.vue'
-import { ImageCogView } from '../../utils/prompt.js'
 
 export default {
     components: {
@@ -42,30 +48,35 @@ export default {
         return {
             inputText: '',
             videoUrl: '',
+            coverImageUrl: '',
             isLoading: false,
-            styles: ImageCogView,
-            currentStyles: [],
-            disabled: false
+            disabled: false,
+            inputTip: ''
         }
     },
     methods: {
-        shuffleStyles() {
-            // 随机从styles中选择3个不同的风格
-            const shuffled = this.styles.sort(() => Math.random() - 0.5).slice(0, 4)
-            this.currentStyles = shuffled
+        async optimizeInput() {
+            if (!this.inputText) return
+
+            this.isLoading = true
+            try {
+                this.inputTip = '提示词优化中，请稍后！'
+                const optimizedPrompt = await this.optimizePrompt(this.inputText)
+                if (optimizedPrompt) {
+                    this.inputText = optimizedPrompt
+                }
+            } catch (error) {
+                console.error('Error optimizing prompt:', error)
+            } finally {
+                this.isLoading = false
+            }
         },
         async submitData() {
             if (!this.inputText) return
 
-            // 第一步：调用大模型优化用户输入
-            const optimizedPrompt = await this.optimizePrompt(this.inputText)
-            if (!optimizedPrompt) return
-            this.inputText = optimizedPrompt
-
-            // 第二步：生成视频
+            // 直接生成视频
             const { apiUrl, apiKey, modelName } = API_CONFIG['bigmodelCogVideo']
-            const stylePrompt = this.styles.find(style => style.name === this.selectedStyle)?.prompt || ''
-            const fullPrompt = `${optimizedPrompt}，${stylePrompt}`
+            const fullPrompt = `${this.inputText}`
 
             // 生成视频并轮询任务状态
             const taskId = await this.generateVideo(apiUrl, apiKey, modelName, fullPrompt)
@@ -74,7 +85,6 @@ export default {
             }
         },
         async optimizePrompt(userInput) {
-            this.isLoading = true
             try {
                 const { apiUrl, apiKey, modelName } = API_CONFIG['bigmodel']
                 const requestBody = {
@@ -82,7 +92,15 @@ export default {
                     stream: false,
                     temperature: 0.8,
                     messages: [
-                        { role: 'system', content: '请将以下用户描述优化为适合生成视频的详细提示词，不超过 100字：' },
+                        {
+                            role: 'system',
+                            content: `你是一名提示词优化助手，请将用户输入的白话描述转换为适合生成视频的详细提示词。要求：
+1. 保留原始描述的核心场景、人物、情感和细节；
+2. 如果描述中出现“我”，需明确表示为“一位中国人”；
+3. 添加适合视频生成的画面描述，如光影、色彩、动作等；
+4. 确保视频中的人物只出现背面，不出现正面；
+5. 确保提示词简洁明了，不超过 150 字。`
+                        },
                         { role: 'user', content: `${userInput}` }
                     ]
                 }
@@ -107,6 +125,7 @@ export default {
             }
         },
         async generateVideo(apiUrl, apiKey, modelName, prompt) {
+            this.inputTip = '生成中，请不要退出页面！'
             this.isLoading = true
             this.videoUrl = null
             try {
@@ -157,7 +176,8 @@ export default {
                     const result = await response.json()
                     if (result.task_status === 'SUCCESS') {
                         this.isLoading = false
-                        this.videoUrl = result.video_result[0]?.url // 假设返回的视频 URL 字段为 video_result[0].url
+                        this.videoUrl = result.video_result[0]?.url
+                        this.coverImageUrl = result.video_result[0]?.cover_image_url
                         return
                     } else if (result.status === 'failed') {
                         throw new Error('Video generation failed')
@@ -173,10 +193,7 @@ export default {
             console.error('Task polling timed out')
         }
     },
-    mounted() {
-        // 初始化时先加载3个风格
-        this.shuffleStyles()
-    }
+    mounted() {}
 }
 </script>
 
