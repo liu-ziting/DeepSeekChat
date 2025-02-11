@@ -192,7 +192,9 @@ export default {
                     })
 
                     if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`)
+                        const errorResponse = await response.json() // 解析错误响应
+                        const errorMessage = errorResponse.error?.message || `HTTP error! Status: ${response.status}`
+                        throw new Error(errorMessage) // 抛出错误信息
                     }
 
                     const result = await response.json()
@@ -207,6 +209,12 @@ export default {
                     }
                 } catch (error) {
                     console.error('Error polling task status:', error)
+                    alert(error.message) // 弹出错误信息
+                    this.isLoading = false
+                    this.videoUrl = null
+                    this.coverImageUrl = null
+                    this.imageUrl = null
+                    this.inputText = ''
                     return
                 }
 
