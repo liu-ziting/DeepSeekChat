@@ -1,8 +1,6 @@
 <template>
     <div class="container mx-auto p-4">
-        <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">
-          梦的回忆：重温你的梦境
-        </h2>
+        <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">梦的回忆：重温你的梦境</h2>
         <div class="flex flex-col lg:flex-row lg:gap-8">
             <!-- 视频展示区域 -->
             <div class="w-full aspect-square mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0">
@@ -16,7 +14,7 @@
                 <textarea
                     v-model="inputText"
                     :disabled="disabled"
-                    class="text-sm w-full h-30 p-2 text-lg border rounded-md focus:ring-2 mb-4"
+                    class="text-sm w-full h-[120px] p-2 text-lg border rounded-md focus:ring-2 mb-4"
                     placeholder="请输入梦境描述，详细描绘梦中的场景、人物、情感和细节，越具体越能还原出真实的梦境画面！"
                 ></textarea>
                 <button
@@ -47,7 +45,7 @@ export default {
             isLoading: false,
             styles: ImageCogView,
             currentStyles: [],
-            disabled:false,
+            disabled: false
         }
     },
     methods: {
@@ -84,9 +82,9 @@ export default {
                     stream: false,
                     temperature: 0.8,
                     messages: [
-                        { "role": "system", "content": "请将以下用户描述优化为适合生成视频的详细提示词，不超过 100字：" },
-                        { "role": "user", "content": `${userInput}` }
-                    ],
+                        { role: 'system', content: '请将以下用户描述优化为适合生成视频的详细提示词，不超过 100字：' },
+                        { role: 'user', content: `${userInput}` }
+                    ]
                 }
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -114,7 +112,7 @@ export default {
             try {
                 const requestBody = {
                     model: modelName,
-                    prompt,
+                    prompt
                 }
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -138,7 +136,7 @@ export default {
             }
         },
         async pollTaskStatus(taskId) {
-            const {  apiKey } = API_CONFIG['bigmodelCogVideo']
+            const { apiKey } = API_CONFIG['bigmodelCogVideo']
             const maxAttempts = 30 // 最大轮询次数
             const interval = 5000 // 轮询间隔 5 秒
 
@@ -182,7 +180,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 textarea {
     outline: none;
 }
