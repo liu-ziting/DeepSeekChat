@@ -50,14 +50,14 @@ export default {
 🎭 角色对话
 - Gemini：deepseek-chat
 
-🏟️ 大模型竞技场
-- 毕昇BISHENG一款开源LLM应用开发平台
-
 🖼️ 识图
 - 智谱清言：glm-4v-flash
 
 😍 生图
 - 智谱清言：cogview-3-flash
+
+🎞️ 视频生成
+- 智谱清言：cogvideox-flash
             `
         }
     }
