@@ -135,7 +135,8 @@ export default {
             try {
                 const requestBody = {
                     model: modelName,
-                    prompt
+                    prompt,
+                    with_audio: true
                 }
                 const response = await fetch(apiUrl, {
                     method: 'POST',
