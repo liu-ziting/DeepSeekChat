@@ -3,7 +3,7 @@
         <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">AI梦境生成器</h2>
         <div class="flex flex-col lg:flex-row lg:gap-8">
             <!-- 视频展示区域 -->
-            <div class="w-full aspect-square mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0">
+            <div class="w-full aspect-[4/3] mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0">
                 <video :src="videoUrl" :poster="coverImageUrl" controls class="w-full h-full object-cover" v-if="videoUrl"></video>
                 <div class="w-full h-full bg-gray-100 flex items-center justify-center" v-else>
                     <IconGlm />
@@ -12,7 +12,7 @@
 
             <div class="w-full lg:w-1/2 flex flex-col justify-between">
                 <div class="relative">
-                    <label for="inputText" class="text-sm font-semibold mb-2"
+                    <label for="inputText" class="text-sm font-semibold"
                         >梦境描述
 
                         <a href="javascript:void(0)" class="text-blue-500 cursor-pointer float-right" @click="optimizeInput">优化提示词</a>
@@ -20,7 +20,7 @@
                     <textarea
                         v-model="inputText"
                         :disabled="disabled"
-                        class="text-sm w-full h-[120px] p-2 text-lg border rounded-md focus:ring-2 mb-4"
+                        class="text-sm w-full h-[120px] p-2 text-lg border rounded-md focus:ring-2 mb-4 mt-2"
                         placeholder="请输入梦境描述，详细描绘梦中的场景、人物、情感和细节，越具体越能还原出真实的梦境画面！"
                     ></textarea>
                 </div>
@@ -29,7 +29,7 @@
                     class="text-sm w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
                     :disabled="!inputText || isLoading"
                 >
-                    {{ isLoading ? inputTip : '生成视频' }}
+                    {{ isLoading ? inputTip : '开始创作' }}
                 </button>
             </div>
         </div>
@@ -94,12 +94,16 @@ export default {
                     messages: [
                         {
                             role: 'system',
-                            content: `你是一名提示词优化助手，请将用户输入的白话描述转换为适合生成视频的详细提示词。要求：
-1. 保留原始描述的核心场景、人物、情感和细节；
-2. 如果描述中出现“我”，需明确表示为“一位中国人”；
-3. 添加适合视频生成的画面描述，如光影、色彩、动作等；
-4. 确保视频中的人物只出现背面，不出现正面；
-5. 确保提示词简洁明了，不超过 150 字。`
+                            content: `你是一名提示词优化助手，请将用户的白话描述转换为适合生成视频的详细提示词。要求：
+
+1. 保留核心人物、环境、动作及情感细节，准确传达故事主旨；
+2. 添加适合视频生成的画面描述，包括光线、色彩、动作、镜头角度、背景和氛围等；
+3. 确保简洁明了，突出视频的关键元素，使其不超过 150 字。
+
+### 示例：
+**用户描述**：我梦到被一群猫追逐。
+**优化后的提示词**："镜头从低处逐渐拉远，拍摄一名人物在昏暗的街道上奔跑（人物描述）。周围是一群猫（主体描述），它们的眼睛在微弱的路灯下闪烁，步伐轻盈且迅速。画面带有轻微的晃动，增强紧张感，猫群的快速移动在镜头前形成模糊的影像。背景色调偏冷，夜晚的空气中弥漫着神秘感，人物的脸上充满恐慌。"
+`
                         },
                         { role: 'user', content: `${userInput}` }
                     ]

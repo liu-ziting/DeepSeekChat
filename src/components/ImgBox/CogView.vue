@@ -1,5 +1,7 @@
 <template>
     <div class="container mx-auto p-4">
+        <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">AI图片生成器</h2>
+
         <div class="flex flex-col lg:flex-row lg:gap-8">
             <!-- 图片展示区域 -->
             <div class="w-full aspect-square mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0">
@@ -120,8 +122,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 textarea {
     outline: none;
+}
+.head-title {
+    font-size: 18px;
+    margin-bottom: 10px;
 }
 </style>
