@@ -1,12 +1,19 @@
 <template>
     <div class="container mx-auto p-4">
-        <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">AI图生视频生成器</h2>
+        <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">AI视频生成器</h2>
 
         <div class="flex flex-col lg:flex-row lg:gap-8">
             <!-- 视频展示区域 -->
-            <div class="w-full aspect-[4/3] mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0">
-                <video :src="videoUrl" :poster="coverImageUrl" controls class="w-full h-full object-cover" v-if="videoUrl"></video>
-                <div class="w-full h-full bg-gray-100 flex items-center justify-center" v-else>
+            <div class="w-full aspect-[4/3] mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0 relative">
+                <!-- 如果图片上传了，则显示上传的图片 -->
+                <img v-if="imageUrl && !videoUrl" :src="imageUrl" alt="Uploaded Image" class="w-full h-full object-cover absolute top-0 left-0" />
+                <!-- 视频显示 -->
+                <video v-if="videoUrl" :src="videoUrl" :poster="coverImageUrl" controls class="w-full h-full object-cover"></video>
+                <!-- 加载动画 -->
+                <div v-if="isLoading && imageUrl" class="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50">
+                    <div class="spinner-border animate-spin border-t-4 border-b-4 border-blue-500 w-16 h-16 rounded-full"></div>
+                </div>
+                <div v-if="!videoUrl && !imageUrl" class="w-full h-full bg-gray-100 flex items-center justify-center">
                     <IconGlm />
                 </div>
             </div>
@@ -14,25 +21,26 @@
             <div class="w-full lg:w-1/2 flex flex-col justify-between">
                 <!-- 上传图片 -->
                 <div>
-                    <label for="imageUpload" class="text-sm font-semibold mb-2">上传图像</label>
+                    <label for="imageUpload" class="text-sm font-semibold mb-2">上传图像（可选）</label>
                     <input
                         type="file"
                         accept="image/jpg, image/jpeg, image/png"
                         @change="handleImageUpload"
                         :disabled="isLoading"
-                        class="mt-2 mb-4 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                        class="mb-4 mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                 </div>
+
                 <div class="relative">
-                    <label for="inputText" class="text-sm font-semibold"
-                        >图生视频描述
+                    <label for="inputText" class="text-sm font-semibold">
+                        描述
                         <a href="javascript:void(0)" class="text-blue-500 cursor-pointer float-right" @click="optimizeInput">优化提示词</a>
                     </label>
                     <textarea
                         v-model="inputText"
                         :disabled="disabled"
                         class="text-sm w-full h-[120px] p-2 text-lg border rounded-md focus:ring-2 mb-4 mt-2"
-                        placeholder="请输入你需要将图片转成什么样的视频！"
+                        placeholder="请输入您希望生成的视频效果描述！"
                     ></textarea>
                 </div>
 
@@ -192,6 +200,7 @@ export default {
                         this.isLoading = false
                         this.videoUrl = result.video_result[0]?.url
                         this.coverImageUrl = result.video_result[0]?.cover_image_url
+                        this.imageUrl = null // 清除上传的图片
                         return
                     } else if (result.status === 'failed') {
                         throw new Error('Video generation failed')
@@ -339,5 +348,11 @@ textarea {
 .head-title {
     font-size: 18px;
     margin-bottom: 10px;
+}
+.spinner-border {
+    border-width: 4px;
+    border-top-color: #3498db;
+    border-bottom-color: #3498db;
+    border-radius: 50%;
 }
 </style>
