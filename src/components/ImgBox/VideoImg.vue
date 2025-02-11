@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto p-4">
-        <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">AI梦境生成器</h2>
+        <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">AI图生视频生成器</h2>
 
         <div class="flex flex-col lg:flex-row lg:gap-8">
             <!-- 视频展示区域 -->
@@ -12,19 +12,30 @@
             </div>
 
             <div class="w-full lg:w-1/2 flex flex-col justify-between">
+                <!-- 上传图片 -->
+                <div>
+                    <label for="imageUpload" class="text-sm font-semibold mb-2">上传图像</label>
+                    <input
+                        type="file"
+                        accept="image/jpg, image/jpeg, image/png"
+                        @change="handleImageUpload"
+                        :disabled="isLoading"
+                        class="mt-2 mb-4 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
+                </div>
                 <div class="relative">
                     <label for="inputText" class="text-sm font-semibold"
-                        >梦境描述
-
+                        >图生视频描述
                         <a href="javascript:void(0)" class="text-blue-500 cursor-pointer float-right" @click="optimizeInput">优化提示词</a>
                     </label>
                     <textarea
                         v-model="inputText"
                         :disabled="disabled"
                         class="text-sm w-full h-[120px] p-2 text-lg border rounded-md focus:ring-2 mb-4 mt-2"
-                        placeholder="请输入梦境描述，详细描绘梦中的场景、人物、情感和细节，越具体越能还原出真实的梦境画面！"
+                        placeholder="请输入你需要将图片转成什么样的视频！"
                     ></textarea>
                 </div>
+
                 <button
                     @click="submitData"
                     class="text-sm w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
@@ -50,9 +61,12 @@ export default {
             inputText: '',
             videoUrl: '',
             coverImageUrl: '',
+            imageUrl: null, // 用于显示上传的图片
+            imageBase64: '', // 用于传递Base64编码的图片
             isLoading: false,
             disabled: false,
-            inputTip: ''
+            inputTip: '',
+            generatedContent: null
         }
     },
     methods: {
@@ -79,8 +93,16 @@ export default {
             const { apiUrl, apiKey, modelName } = API_CONFIG['bigmodelCogVideo']
             const fullPrompt = `${this.inputText}`
 
+            // 如果有上传的图像，将图像 URL 或 Base64 传入
+            const requestBody = {
+                model: modelName,
+                prompt: fullPrompt,
+                with_audio: true,
+                image_url: this.imageBase64 ? `data:image/png;base64,${this.imageBase64}` : null
+            }
+
             // 生成视频并轮询任务状态
-            const taskId = await this.generateVideo(apiUrl, apiKey, modelName, fullPrompt)
+            const taskId = await this.generateVideo(apiUrl, apiKey, modelName, requestBody)
             if (taskId) {
                 await this.pollTaskStatus(taskId)
             }
@@ -96,15 +118,9 @@ export default {
                         {
                             role: 'system',
                             content: `你是一名提示词优化助手，请将用户的白话描述转换为适合生成视频的详细提示词。要求：
-
-1. 保留核心人物、环境、动作及情感细节，准确传达故事主旨；
-2. 添加适合视频生成的画面描述，包括光线、色彩、动作、镜头角度、背景和氛围等；
-3. 确保简洁明了，突出视频的关键元素，使其不超过 150 字。
-
-### 示例：
-**用户描述**：我梦到被一群猫追逐。
-**优化后的提示词**："镜头从低处逐渐拉远，拍摄一名人物在昏暗的街道上奔跑（人物描述）。周围是一群猫（主体描述），它们的眼睛在微弱的路灯下闪烁，步伐轻盈且迅速。画面带有轻微的晃动，增强紧张感，猫群的快速移动在镜头前形成模糊的影像。背景色调偏冷，夜晚的空气中弥漫着神秘感，人物的脸上充满恐慌。"
-`
+                                1. 保留核心人物、环境、动作及情感细节，准确传达故事主旨；
+                                2. 添加适合视频生成的画面描述，包括光线、色彩、动作、镜头角度、背景和氛围等；
+                                3. 确保简洁明了，突出视频的关键元素，使其不超过 150 字。`
                         },
                         { role: 'user', content: `${userInput}` }
                     ]
@@ -129,16 +145,11 @@ export default {
                 return null
             }
         },
-        async generateVideo(apiUrl, apiKey, modelName, prompt) {
+        async generateVideo(apiUrl, apiKey, modelName, requestBody) {
             this.inputTip = '生成中，请不要退出页面！'
             this.isLoading = true
             this.videoUrl = null
             try {
-                const requestBody = {
-                    model: modelName,
-                    prompt,
-                    with_audio: true
-                }
                 const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: {
@@ -197,13 +208,134 @@ export default {
             }
 
             console.error('Task polling timed out')
+        },
+
+        // 上传图片
+        async handleImageUpload(event) {
+            this.generatedContent = null
+            const file = event.target.files[0]
+            if (!file) return
+
+            // 检查文件格式
+            const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png']
+            if (!allowedTypes.includes(file.type)) {
+                alert('仅支持 JPG、JPEG、PNG 格式的图片')
+                return
+            }
+
+            // 检查图片像素（不超过 6000x6000）
+            const img = new Image()
+            img.src = URL.createObjectURL(file)
+            img.onload = async () => {
+                const width = img.width
+                const height = img.height
+                if (width > 6000 || height > 6000) {
+                    alert('图片像素不能超过 6000x6000')
+                    return
+                }
+
+                // 如果图片大小超过 5MB，则进行压缩
+                if (file.size > 5 * 1024 * 1024) {
+                    try {
+                        const compressedFile = await this.compressImage(file)
+                        this.imageUrl = URL.createObjectURL(compressedFile)
+                        this.imageBase64 = await this.fileToBase64(compressedFile)
+                    } catch (error) {
+                        console.error('图片压缩失败:', error)
+                        alert('图片压缩失败，请重试')
+                        return
+                    }
+                } else {
+                    // 图片大小在 5MB 以内，直接处理
+                    const reader = new FileReader()
+                    reader.onload = e => {
+                        this.imageUrl = e.target.result // 用于显示图片
+                        this.imageBase64 = e.target.result.split(',')[1] // 提取 Base64 数据部分
+                    }
+                    reader.readAsDataURL(file)
+                }
+            }
+        },
+
+        // 压缩图片
+        compressImage(file) {
+            return new Promise((resolve, reject) => {
+                const img = new Image()
+                img.src = URL.createObjectURL(file)
+                img.onload = () => {
+                    const canvas = document.createElement('canvas')
+                    const ctx = canvas.getContext('2d')
+
+                    // 设置最大宽度和高度
+                    const maxWidth = 6000
+                    const maxHeight = 6000
+                    let width = img.width
+                    let height = img.height
+
+                    if (width > maxWidth || height > maxHeight) {
+                        const ratio = Math.min(maxWidth / width, maxHeight / height)
+                        width *= ratio
+                        height *= ratio
+                    }
+
+                    canvas.width = width
+                    canvas.height = height
+
+                    // 绘制图片到 canvas
+                    ctx.drawImage(img, 0, 0, width, height)
+
+                    // 将 canvas 转换为 Blob
+                    canvas.toBlob(
+                        blob => {
+                            if (!blob) {
+                                reject(new Error('图片压缩失败'))
+                                return
+                            }
+
+                            // 检查压缩后的文件大小
+                            if (blob.size > 5 * 1024 * 1024) {
+                                // 如果仍然大于 5MB，降低质量
+                                canvas.toBlob(
+                                    newBlob => {
+                                        if (!newBlob) {
+                                            reject(new Error('图片压缩失败'))
+                                            return
+                                        }
+                                        resolve(newBlob)
+                                    },
+                                    file.type,
+                                    0.5 // 降低质量
+                                )
+                            } else {
+                                resolve(blob)
+                            }
+                        },
+                        file.type,
+                        0.8 // 初始质量
+                    )
+                }
+                img.onerror = error => reject(error)
+            })
+        },
+
+        // 将文件转换为 Base64
+        fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader()
+                reader.onload = e => resolve(e.target.result.split(',')[1])
+                reader.onerror = error => reject(error)
+                reader.readAsDataURL(file)
+            })
         }
-    },
-    mounted() {}
+    }
 }
 </script>
 
 <style scoped>
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
 textarea {
     outline: none;
 }
