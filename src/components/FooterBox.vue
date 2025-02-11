@@ -38,7 +38,7 @@ export default {
 - 目前DeepSeek接口不稳定，请求慢无响应
 
 🤖 通用对话
-- 水泥封心：Baichuan4-Air
+- 水泥封心：gemini-1.5-pro-latest
 - DeepSeek：deepseek-chat 
 - 智谱清言：glm-4v-flash
 - 月之暗面：moonshot-v1-8k
