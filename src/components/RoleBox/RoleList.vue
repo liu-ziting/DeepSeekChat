@@ -117,7 +117,8 @@ export default {
                     role: 'assistant',
                     content: data.content,
                     name: data.title,
-                    presets: data.presets
+                    presets: data.presets,
+                    model: this.model
                 }
             ]
         },
