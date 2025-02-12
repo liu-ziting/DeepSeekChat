@@ -9,16 +9,30 @@ export const API_CONFIG = {
         // apiUrl: 'https://liuziting-gemini-play-98-58acmhtr50hp.deno.dev/v1/chat/completions',
         apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
         apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
-        // modelName: 'gemini-1.5-pro-latest',
         modelName: 'deepseek-v3',
         temperature: 0.8
     },
     deepseek: {
-        name: 'DeepSeek',
-        apiUrl: 'https://api.deepseek.com/v1/chat/completions',
-        apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
-        modelName: 'deepseek-chat',
+        apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
+        modelName: 'deepseek-v3',
         temperature: 0.8
+        // name: 'DeepSeek',
+        // apiUrl: 'https://api.deepseek.com/v1/chat/completions',
+        // apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
+        // modelName: 'deepseek-chat',
+        // temperature: 0.8
+    },
+    // 深度思考
+    deepThinking: {
+        name: 'DeepSeek-R1',
+        apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
+        modelName: 'deepseek-r1',
+        temperature: 0.5
+        // apiUrl: 'https://api.deepseek.com/v1/chat/completions',
+        // apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
+        // modelName: 'deepseek-reasoner'
     },
     qiniuyun: {
         name: 'DeepSeek-R1',
@@ -70,12 +84,7 @@ export const API_CONFIG = {
         modelName: 'moonshot-v1-8k-vision-preview',
         temperature: 0.7
     },
-    // 深度思考
-    deepThinking: {
-        apiUrl: 'https://api.deepseek.com/v1/chat/completions',
-        apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
-        modelName: 'deepseek-reasoner'
-    },
+
     baichuan: {
         name: '百川智能',
         apiUrl: 'https://api.baichuan-ai.com/v1/chat/completions',

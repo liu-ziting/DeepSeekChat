@@ -264,13 +264,15 @@ export default {
         },
         changeTab(newTab) {
             this.tab = newTab
+            this.isDeepThinking = false
+            this.model = 'shuinifengxin'
         },
         // 切换深度思考
         toggleDeepThinking(isDeepThinking) {
             this.isDeepThinking = isDeepThinking
             if (isDeepThinking) {
                 // 深度思考模式下，清空消息列表
-                this.messages = []
+                // this.messages = []
                 this.model = 'deepThinking'
             } else {
                 this.model = 'deepseek'

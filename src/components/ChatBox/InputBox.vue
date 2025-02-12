@@ -1,7 +1,7 @@
 <template>
     <div class="form fixed bottom-9 left-0 right-0 bg-white border-t border-gray-200 p-4">
         <!-- 模型切换下拉菜单 -->
-        <div v-if="(model === 'deepseek' || model === 'qiniuyun') && showMode" class="mb-2" style="width: 80%; margin-top: -5px">
+        <div v-if="model === 'deepseek' && showMode" class="mb-2" style="width: 80%; margin-top: -5px">
             <div>
                 <!-- 正常模式 -->
                 <label @click="changeMode('normal')" style="margin-right: 10px" class="inline-block cursor-pointer radio">
@@ -160,7 +160,11 @@ export default {
         toggleDeepThinking() {
             if (!this.isDeepThinking) {
                 // 如果当前是关闭状态，点击后弹出密码输入框
-                this.showPasswordModal = true
+                // this.showPasswordModal = true
+                this.isDeepThinking = true
+                this.$emit('toggle-deep-thinking', this.isDeepThinking)
+                this.showPasswordModal = false
+                this.passwordInput = ''
             } else {
                 // 如果当前是开启状态，直接关闭
                 this.isDeepThinking = false
