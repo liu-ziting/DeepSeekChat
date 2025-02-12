@@ -25,16 +25,12 @@ code {
 }
 .bg-main {
     height: 100vh;
-    background: url('@/assets/points.png');
-    background-position: 0 100%;
-    background-repeat: repeat-x;
-    background-size: 10px 432px;
 }
 
 .main,
 .form,
 footer {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
     border: 1px solid #eeeeee;
 }
@@ -43,6 +39,10 @@ footer {
 }
 .main {
     border-radius: 0.3rem;
+    background: url('@/assets/points.png');
+    background-position: 0 100%;
+    background-repeat: repeat-x;
+    background-size: 10px 432px;
 }
 .radio-inputs {
     position: relative;
