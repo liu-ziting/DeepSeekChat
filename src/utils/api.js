@@ -6,10 +6,11 @@ export const API_CONFIG = {
         // apiKey: process.env.VUE_APP_BAICHUAN_API_KEY,
         // modelName: 'Baichuan4-Air',
         // temperature: 0.3
-        apiUrl: 'https://liuziting-gemini-play-98-58acmhtr50hp.deno.dev/v1/chat/completions',
-        // apiUrl: 'https://my-openai-gemini-demo.vercel.app/v1/chat/completions',
-        apiKey: process.env.VUE_APP_GEMINI_API_KEY,
-        modelName: 'gemini-1.5-pro-latest',
+        // apiUrl: 'https://liuziting-gemini-play-98-58acmhtr50hp.deno.dev/v1/chat/completions',
+        apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
+        // modelName: 'gemini-1.5-pro-latest',
+        modelName: 'deepseek-v3',
         temperature: 0.8
     },
     deepseek: {
