@@ -297,7 +297,6 @@ export default {
                 alert('未找到分享内容')
                 return
             }
-
             // 使用 html2canvas 生成图片
             html2canvas(postCardElement, {
                 allowTaint: true, // 允许跨域

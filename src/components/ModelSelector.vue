@@ -4,9 +4,9 @@
             <input type="radio" name="model" :checked="model === 'shuinifengxin'" />
             <span class="name">水泥封心</span>
         </label>
-        <label class="radio" @click="changeModel('deepseek')">
-            <input type="radio" name="model" :checked="model === 'deepseek'" />
-            <span class="name">DeepSeek</span>
+        <label class="radio" @click="changeModel('qiniuyun')">
+            <input type="radio" name="model" :checked="model === 'qiniuyun'" />
+            <span class="name">DeepSeek-R1</span>
         </label>
 
         <label class="radio" @click="changeModel('bigmodel')">

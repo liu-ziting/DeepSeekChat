@@ -17,7 +17,14 @@ export const API_CONFIG = {
         apiUrl: 'https://api.deepseek.com/v1/chat/completions',
         apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
         modelName: 'deepseek-chat',
-        temperature: 1.5
+        temperature: 0.8
+    },
+    qiniuyun: {
+        name: 'DeepSeek',
+        apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
+        modelName: 'deepseek-r1',
+        temperature: 0.5
     },
     gemini: {
         name: 'Gemini',

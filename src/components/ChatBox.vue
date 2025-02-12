@@ -254,7 +254,7 @@ export default {
             this.isThinking = false
         },
         insertDefaultMessage() {
-            let messageContent = this.model === 'deepseek' ? 'DeepSeek接口最近极其不稳定，可能会请求慢无响应！' : '你好！请问有什么可以帮您的？'
+            let messageContent = '你好！请问有什么可以帮您的？'
 
             this.messages.push({
                 role: 'assistant',
