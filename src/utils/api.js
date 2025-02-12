@@ -20,7 +20,7 @@ export const API_CONFIG = {
         temperature: 0.8
     },
     qiniuyun: {
-        name: 'DeepSeek',
+        name: 'DeepSeek-R1',
         apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
         apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
         modelName: 'deepseek-r1',
