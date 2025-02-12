@@ -93,7 +93,7 @@ footer {
     box-sizing: border-box;
     box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
     padding: 0.25rem;
-    width: calc(100% - 2rem);
+    width: calc(100% - 1rem);
     margin: 10px auto 10px auto;
     font-size: 14px;
 }

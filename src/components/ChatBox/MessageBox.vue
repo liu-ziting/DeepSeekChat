@@ -4,7 +4,6 @@
             <div v-if="message.role === 'assistant'" class="w-10 h-10 flex items-center justify-center rounded-full">
                 <IconAI :model="message.model" />
             </div>
-
             <div class="flex flex-col relative" style="max-width: calc(100% - 50px)">
                 <span v-if="message.role === 'assistant' && message.model === 'deepseek' && !name" class="text-sm font-medium mb-1" :class="nameClass">
                     {{ message.mode === 'normal' ? '😀' : message.mode === 'angry' ? '😡' : message.mode === 'rude' ? '🤬' : '' }}

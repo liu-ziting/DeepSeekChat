@@ -7,7 +7,7 @@
                 <ModelSelector v-if="!isDeepThinking" :model="model" @change-model="changeModel" />
 
                 <!-- 聊天记录区域 -->
-                <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-36 chatContainer">
+                <div ref="chatContainer" class="flex-1 p-2 overflow-y-auto pb-36 chatContainer">
                     <!-- 消息列表 -->
                     <Message v-for="message in messages" :key="message.id" :message="message" />
                 </div>
@@ -277,7 +277,7 @@ export default {
             } else {
                 this.model = 'deepseek'
                 // 非深度思考模式下，插入默认的第一个对话
-                this.insertDefaultMessage()
+                // this.insertDefaultMessage()
             }
         }
     },
