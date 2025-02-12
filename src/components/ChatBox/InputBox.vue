@@ -1,7 +1,7 @@
 <template>
     <div class="form fixed bottom-9 left-0 right-0 bg-white border-t border-gray-200 pl-2 pr-2 pt-4 pb-4">
         <!-- 模型切换下拉菜单 -->
-        <div v-if="model === 'deepseek' && showMode" class="mb-2" style="width: 80%; margin-top: -5px">
+        <div v-if="(model === 'deepseek' || model === 'deepThinking') && showMode" class="mb-2" style="width: 80%; margin-top: -5px">
             <div>
                 <!-- 正常模式 -->
                 <label @click="changeMode('normal')" style="margin-right: 10px" class="inline-block cursor-pointer radio">
@@ -31,7 +31,7 @@
                 </label>
             </div>
         </div>
-        <div v-if="isDeepThinking" class="mb-3 text-sm text-gray-400 w-80" style="margin-top: -5px">已启用DeepSeek深度思考模式</div>
+        <!-- <div v-if="isDeepThinking" class="mb-3 text-sm text-gray-400 w-80" style="margin-top: -5px">已启用DeepSeek深度思考模式</div> -->
 
         <!-- 深度思考开关 -->
         <label
@@ -77,7 +77,7 @@
             <textarea
                 ref="textarea"
                 v-model="userInput"
-                placeholder="来说点什么..."
+                :placeholder="placeholder"
                 class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none overflow-hidden"
                 :disabled="isThinking"
                 rows="1"
@@ -122,6 +122,7 @@ export default {
     },
     data() {
         return {
+            placeholder: '来说点什么...',
             userInput: '',
             selectedModel: 'model1', // 默认选择的模型
             isDeepThinking: false, // 深度思考开关状态
@@ -162,14 +163,15 @@ export default {
                 // 如果当前是关闭状态，点击后弹出密码输入框
                 // this.showPasswordModal = true
                 this.isDeepThinking = true
-                this.$emit('toggle-deep-thinking', this.isDeepThinking)
                 this.showPasswordModal = false
                 this.passwordInput = ''
+                this.placeholder = '已启用DeepSeek深度思考模式'
             } else {
                 // 如果当前是开启状态，直接关闭
                 this.isDeepThinking = false
-                this.$emit('toggle-deep-thinking', this.isDeepThinking)
+                this.placeholder = '来说点什么...'
             }
+            this.$emit('toggle-deep-thinking', this.isDeepThinking)
         },
         confirmPasswordInput() {
             if (this.passwordInput === this.correctPassword) {

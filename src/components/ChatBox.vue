@@ -202,9 +202,9 @@ export default {
             return Date.now().toString(36) + Math.random().toString(36).substring(2)
         },
         getSystemMessage() {
-            if (this.isDeepThinking) {
-                return '' // 深度思考模式下，systemMessage 为空
-            }
+            // if (this.isDeepThinking) {
+            //     return '' // 深度思考模式下，systemMessage 为空
+            // }
             const prompt = ChatPrompts.find(p => p.mode === this.mode)
             return prompt ? prompt.systemMessage : '你是一个正常的助手，请用礼貌的语言回答问题。'
         },
