@@ -266,6 +266,8 @@ export default {
             this.tab = newTab
             this.isDeepThinking = false
             this.model = 'shuinifengxin'
+            this.messages = []
+            this.insertDefaultMessage()
         },
         // 切换深度思考
         toggleDeepThinking(isDeepThinking) {
