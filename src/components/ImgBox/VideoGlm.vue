@@ -204,6 +204,9 @@ export default {
 </script>
 
 <style scoped>
+.container {
+    padding-bottom: 50px;
+}
 textarea {
     outline: none;
 }
