@@ -1,5 +1,5 @@
 <template>
-    <div class="form fixed bottom-9 left-0 right-0 bg-white border-t border-gray-200 pl-2 pr-2 pt-4 pb-4">
+    <div class="form fixed bottom-9 left-0 right-0 border-gray-200 pl-2 pr-2 pt-4">
         <!-- 模型切换下拉菜单 -->
         <div v-if="(model === 'deepseek' || model === 'deepThinking') && showMode" class="mb-2" style="width: 80%; margin-top: -5px">
             <div>

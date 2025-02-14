@@ -18,15 +18,15 @@
         </label>
         <label class="radio" @click="changeModel('cogview')">
             <input type="radio" name="tab" :checked="tab === 'cogview'" />
-            <span class="name">生图</span>
+            <span class="name">图片生成</span>
         </label>
-        <label class="radio" @click="changeModel('textvideo')">
+        <!-- <label class="radio" @click="changeModel('textvideo')">
             <input type="radio" name="tab" :checked="tab === 'textvideo'" />
             <span class="name">文生视频</span>
-        </label>
+        </label> -->
         <label class="radio" @click="changeModel('imgvideo')">
             <input type="radio" name="tab" :checked="tab === 'imgvideo'" />
-            <span class="name">图生视频</span>
+            <span class="name">视频生成</span>
         </label>
     </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 底部介绍 -->
-        <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 text-center text-sm text-gray-500 z-1">
+        <footer class="fixed bottom-0 left-0 right-0 border-gray-200 p-2 text-center text-sm text-gray-500 z-1">
             <a href="javascript:;" @click="showInfo = true">本项目整合的AI大模型技术生态介绍</a>
             |
             <a href="javascript:;" class="text-blue-500 hover:underline" @click="showWeChatQR = true"> By lztziting </a>

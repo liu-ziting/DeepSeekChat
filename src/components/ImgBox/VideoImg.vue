@@ -1,5 +1,7 @@
 <template>
     <div class="container mx-auto pl-4 pr-4">
+        <!-- 选项卡切换 -->
+
         <div class="flex flex-col lg:flex-row lg:gap-8 lg:mt-10">
             <!-- 视频展示区域 -->
             <div class="w-full aspect-[4/3] mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0 relative">
