@@ -1,5 +1,5 @@
 <template>
-    <div style="border-radius: 10px 10px 0 0" class="form fixed bottom-9 left-0 right-0 bg-[#f0f0f0] border-gray-200 pl-2 pr-2 pt-4 pb-2">
+    <div style="border-radius: 6px 6px 0 0" class="form fixed bottom-9 left-0 right-0 bg-[#f0f0f0] border-gray-200 pl-2 pr-2 pt-4 pb-2">
         <!-- 模型切换下拉菜单 -->
         <div v-if="(model === 'deepseek' || model === 'deepThinking') && showMode" class="mb-2" style="width: 80%; margin-top: -5px">
             <div>
@@ -78,13 +78,17 @@
                 ref="textarea"
                 v-model="userInput"
                 :placeholder="placeholder"
-                class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-200 resize-none overflow-hidden"
+                class="text-sm flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-200 resize-none overflow-hidden"
                 :disabled="isThinking"
                 rows="1"
                 @input="handleInput"
                 @keydown="handleKeydown"
             ></textarea>
-            <button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" :disabled="isThinking">
+            <button
+                type="submit"
+                class="text-sm px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-300"
+                :disabled="isThinking"
+            >
                 发送
             </button>
         </form>
