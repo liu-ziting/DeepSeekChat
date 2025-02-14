@@ -1,8 +1,6 @@
 <template>
-    <div class="container mx-auto p-4">
-        <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">AI梦境生成器</h2>
-
-        <div class="flex flex-col lg:flex-row lg:gap-8">
+    <div class="container mx-auto pl-4 pr-4">
+        <div class="flex flex-col lg:flex-row lg:gap-8 lg:mt-10">
             <!-- 视频展示区域 -->
             <div class="w-full aspect-[4/3] mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0">
                 <video :src="videoUrl" :poster="coverImageUrl" controls class="w-full h-full object-cover" v-if="videoUrl"></video>
@@ -12,18 +10,20 @@
             </div>
 
             <div class="w-full lg:w-1/2 flex flex-col justify-between">
-                <div class="relative">
-                    <label for="inputText" class="text-sm font-semibold"
-                        >梦境描述
+                <div>
+                    <div class="relative">
+                        <label for="inputText" class="text-sm font-semibold"
+                            >AI梦境生成器
 
-                        <a href="javascript:void(0)" class="text-blue-500 cursor-pointer float-right" @click="optimizeInput">优化提示词</a>
-                    </label>
-                    <textarea
-                        v-model="inputText"
-                        :disabled="disabled"
-                        class="text-sm w-full h-[120px] p-2 text-lg border rounded-md focus:ring-2 mb-4 mt-2"
-                        placeholder="请输入梦境描述，详细描绘梦中的场景、人物、情感和细节，越具体越能还原出真实的梦境画面！"
-                    ></textarea>
+                            <a href="javascript:void(0)" class="text-blue-500 cursor-pointer float-right" @click="optimizeInput">优化提示词</a>
+                        </label>
+                        <textarea
+                            v-model="inputText"
+                            :disabled="disabled"
+                            class="text-sm w-full h-[120px] p-2 text-lg border rounded-md focus:ring-2 mb-4 mt-2"
+                            placeholder="请输入梦境描述，详细描绘梦中的场景、人物、情感和细节，越具体越能还原出真实的梦境画面！"
+                        ></textarea>
+                    </div>
                 </div>
                 <button
                     @click="submitData"

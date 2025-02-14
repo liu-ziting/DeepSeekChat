@@ -2,9 +2,9 @@
     <div class="container mx-auto pl-4 pr-4">
         <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 pb-10">
             <article class="rounded-xl border-2 border-gray-100 bg-white prompts" v-for="(prompt, index) in prompts" :key="index" @click="changePrompt(prompt)">
-                <div class="flex items-start gap-4 p-4 sm:p-6">
+                <div class="flex items-start gap-4 p-2 sm:p-4">
                     <div>
-                        <h3 class="font-medium sm:text-lg">
+                        <h3 class="font-medium sm:text-md">
                             <a href="javascript:;" class="hover:underline">{{ prompt.title }}</a>
                         </h3>
 

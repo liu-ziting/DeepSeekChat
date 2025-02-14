@@ -1,8 +1,6 @@
 <template>
-    <div class="container mx-auto p-4">
-        <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">AI视频生成器</h2>
-
-        <div class="flex flex-col lg:flex-row lg:gap-8">
+    <div class="container mx-auto pl-4 pr-4">
+        <div class="flex flex-col lg:flex-row lg:gap-8 lg:mt-10">
             <!-- 视频展示区域 -->
             <div class="w-full aspect-[4/3] mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0 relative">
                 <!-- 如果图片上传了，则显示上传的图片 -->

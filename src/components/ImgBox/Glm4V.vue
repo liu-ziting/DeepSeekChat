@@ -1,14 +1,7 @@
 <template>
-    <div class="container mx-auto p-4">
-        <!-- 标题 -->
-        <h2 class="head-title text-2xl font-bold text-center mb-6 cursor-pointer transition-all">
-            {{ functions[selectedFunction].name }}
-
-            <!-- <span class="text-sm text-blue-500" @click="switchFunction">切换</span> -->
-        </h2>
-
+    <div class="container mx-auto pl-4 pr-4">
         <!-- 布局容器 -->
-        <div class="flex flex-col lg:flex-row lg:gap-8">
+        <div class="flex flex-col lg:flex-row lg:gap-8 lg:mt-10">
             <!-- 图片展示区域 -->
             <div class="w-full aspect-square mb-4 rounded-md overflow-hidden lg:w-1/2 lg:mb-0">
                 <img @click="openShareDialog" :src="imageUrl" alt="Uploaded Image" class="w-full h-full object-cover" v-if="imageUrl" />
@@ -19,14 +12,19 @@
 
             <!-- 右侧区域（生成内容、输入框、按钮） -->
             <div class="w-full lg:w-1/2 flex flex-col justify-between">
-                <!-- 生成的内容 -->
-                <div class="mb-4 p-4 bg-gray-100 rounded-lg">
-                    <p v-if="generatedContent">
-                        {{ generatedContent }}
-                    </p>
-                    <p v-else class="text-gray-500">{{ functions[selectedFunction].placeholder }}</p>
+                <div>
+                    <!-- 标题 -->
+                    <h3 class="head-title font-bold text-left cursor-pointer transition-all">
+                        {{ functions[selectedFunction].name }}
+                    </h3>
+                    <!-- 生成的内容 -->
+                    <div class="mb-4 p-4 bg-gray-100 rounded-lg text-sm">
+                        <p v-if="generatedContent">
+                            {{ generatedContent }}
+                        </p>
+                        <p v-else class="text-gray-500">{{ isLoading ? '识别中...' : functions[selectedFunction].placeholder }}</p>
+                    </div>
                 </div>
-
                 <!-- 底部区域（输入框和按钮） -->
                 <div class="mt-auto">
                     <!-- 上传图片的输入框 -->
@@ -44,7 +42,7 @@
                         :disabled="!imageUrl || isLoading"
                         class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
                     >
-                        <span v-if="isLoading">正在识别中...</span>
+                        <span v-if="isLoading">正在识别</span>
                         <span v-else>{{ functions[selectedFunction].buttonText }}</span>
                     </button>
                 </div>
@@ -336,7 +334,7 @@ export default {
     padding-bottom: 50px;
 }
 .head-title {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 10px;
 }
 
