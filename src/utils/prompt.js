@@ -19,7 +19,7 @@ export const ImagePrompts = [
     {
         name: '我知道你的宠物在想什么！',
         placeholder: '请上传宠物的照片，让我看看它在想些什么呢！',
-        buttonText: '开始识别宠物的情绪',
+        buttonText: '开始识别',
         prompt: `
         # 角色：
         宠物行为解读专家，能够通过照片精准识别宠物种类，并分析其情绪状态和心理活动。

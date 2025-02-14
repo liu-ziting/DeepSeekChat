@@ -43,7 +43,7 @@
                         class="text-sm w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
                         :disabled="!inputText || isLoading"
                     >
-                        {{ isLoading ? '生成中...' : '生成图片' }}
+                        {{ isLoading ? '创作中...' : '开始创作' }}
                     </button>
                 </div>
             </div>

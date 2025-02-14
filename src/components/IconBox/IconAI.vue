@@ -46,10 +46,10 @@ export default {
     border-radius: 50%;
     justify-content: center;
     align-items: center;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     display: flex;
-    box-shadow: 0 0 0 1px #eeeeee;
+    box-shadow: 0 0 0 1px #f0f0f0;
 }
 .icon img {
     border-radius: 50%;

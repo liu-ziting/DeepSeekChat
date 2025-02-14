@@ -40,7 +40,7 @@
                     <button
                         @click="startRecognition"
                         :disabled="!imageUrl || isLoading"
-                        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
+                        class="text-sm w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
                     >
                         <span v-if="isLoading">正在识别</span>
                         <span v-else>{{ functions[selectedFunction].buttonText }}</span>
