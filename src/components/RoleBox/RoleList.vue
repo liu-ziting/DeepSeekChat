@@ -8,7 +8,7 @@
                             <a href="javascript:;" class="hover:underline">{{ prompt.title }}</a>
                         </h3>
 
-                        <p class="line-clamp-2 text-sm text-gray-700">
+                        <p class="line-clamp-2 text-sm text-gray-400">
                             {{ prompt.content }}
                         </p>
                     </div>

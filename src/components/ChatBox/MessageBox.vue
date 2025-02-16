@@ -36,7 +36,7 @@
                 </div>
 
                 <!-- 最终回答内容 -->
-                <div :class="bubbleClass" class="relative group" @mouseenter="showCopyButton = true" @mouseleave="showCopyButton = false">
+                <div :class="bubbleClass" class="relative group text-sm" @mouseenter="showCopyButton = true" @mouseleave="showCopyButton = false">
                     <!-- 拆分混合内容并分别渲染 -->
                     <div v-for="(part, index) in splitMixedContent(message.content)" :key="index">
                         <!-- 如果是代码，使用 CodeBlock 组件 -->

@@ -28,6 +28,9 @@
             <input type="radio" name="tab" :checked="tab === 'imgvideo'" />
             <span class="name">视频生成</span>
         </label>
+        <label class="radio" @click="openUrl()">
+            <span class="name">实时交互</span>
+        </label>
     </div>
 </template>
 
@@ -42,6 +45,9 @@ export default {
     methods: {
         changeModel(newModel) {
             this.$emit('tab-selected', newModel)
+        },
+        openUrl() {
+            window.open('https://gemini-live-lzt.netlify.app/', '_blank')
         }
     }
 }
