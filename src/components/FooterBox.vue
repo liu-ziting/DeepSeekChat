@@ -38,12 +38,11 @@ export default {
 - DeepSeek接口可能会请求慢无响应
 
 🤖 通用对话
-- 水泥封心：gemini-1.5-pro-latest
-- DeepSeek：deepseek-chat 
+- 水泥封心：deepseek-chat
+- DeepSeek：deepseek-r1
 - 智谱清言：glm-4v-flash
 - 月之暗面：moonshot-v1-8k
-- Gemini：gemini-1.5-pro-latest
-- 深度思考：deepseek-reasoner
+- Gemini：gemini-2.0-flash
 
 🎭 角色对话
 - 智谱清言：glm-4v-flash
