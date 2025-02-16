@@ -88,7 +88,7 @@ export default {
         return {
             messages: [], // 初始化为空
             isThinking: false,
-            mode: 'normal',
+            mode: 'rude',
             model: 'shuinifengxin',
             tab: 'chat',
             isDeepThinking: false,
