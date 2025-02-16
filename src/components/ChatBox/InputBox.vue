@@ -78,7 +78,7 @@
                 ref="textarea"
                 v-model="userInput"
                 :placeholder="placeholder"
-                class="text-sm flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-200 resize-none overflow-hidden"
+                class="text-sm flex-1 px-2 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-200 resize-none overflow-hidden"
                 :disabled="isThinking"
                 rows="1"
                 @input="handleInput"
