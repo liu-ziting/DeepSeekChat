@@ -1,10 +1,9 @@
 <template>
     <div>
         <!-- 底部介绍 -->
-        <footer class="fixed bottom-0 left-0 right-0 bg-[#f0f0f0] border-gray-200 p-2 text-center text-sm text-gray-500 z-1">
-            <a href="javascript:;" @click="showInfo = true">本项目整合的AI大模型技术生态介绍</a>
-            |
-            <a href="javascript:;" class="text-blue-500 hover:underline" @click="showWeChatQR = true"> By lztziting </a>
+        <footer class="fixed bottom-1 left-3 right-3 border-gray-200 text-sm text-gray-500 z-1">
+            <a style="float: left" href="javascript:;" class="text-blue-500" @click="showInfo = true">本项目整合的AI大模型技术生态介绍</a>
+            <a style="float: right" href="javascript:;" class="text-blue-500" @click="showWeChatQR = true"> By Liuziting </a>
         </footer>
         <div v-if="showWeChatQR" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click.self="showWeChatQR = false">
             <div class="bg-white p-4 rounded-lg">
