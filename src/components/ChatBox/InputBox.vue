@@ -215,7 +215,7 @@ export default {
     background-color: #f3f4f6;
     border: 1px solid #d9d9d9;
     border-radius: 10px;
-    margin: 5px 5px 30px 5px;
+    margin: 5px 5px 25px 5px;
     padding: 10px;
     position: relative;
     overflow: hidden; /* 防止内容溢出 */
