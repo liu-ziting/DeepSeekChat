@@ -2,7 +2,8 @@
     <div class="mb-4">
         <div :class="messageClass">
             <div v-if="message.role === 'assistant'" class="w-10 h-10 flex items-center justify-center rounded-full">
-                <IconAI :model="message.model" />
+                <img class="w-full h-full object-cover rounded-full" v-if="roleImgUrl" :src="roleImgUrl" />
+                <IconAI v-else :model="message.model" />
             </div>
             <div class="flex flex-col relative" style="max-width: calc(100% - 50px)">
                 <span v-if="message.role === 'assistant' && message.model === 'deepseek' && !name" class="text-sm font-medium mb-1" :class="nameClass">
@@ -105,6 +106,10 @@ export default {
         showName: {
             type: Boolean,
             default: true
+        },
+        roleImgUrl: {
+            type: String,
+            default: ''
         }
     },
     data() {

@@ -54,6 +54,7 @@
                                 :name="selectedPrompt.title"
                                 @preset-click="handlePresetClick"
                                 :showName="false"
+                                :roleImgUrl="roleImgUrl"
                             />
                         </div>
 
@@ -112,6 +113,7 @@ export default {
             this.selectedPrompt = data
             this.isShareDialogOpen = true
             this.activePrompt = data.description
+            this.roleImgUrl = data.imgurl || ''
             this.messages = [
                 {
                     role: 'assistant',

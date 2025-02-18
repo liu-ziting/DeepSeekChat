@@ -80,7 +80,7 @@ export default {
             this.currentStyles = shuffled
         },
         async submitData() {
-            if (!this.inputText || !this.selectedStyle) return
+            if (!this.inputText) return
 
             const { apiUrl, apiKey, modelName } = API_CONFIG['bigmodelCogview']
             const stylePrompt = this.styles.find(style => style.name === this.selectedStyle)?.prompt || ''
