@@ -45,7 +45,7 @@
                             </button>
                         </h2>
                         <!-- 聊天记录区域 -->
-                        <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-36 chatContainer">
+                        <div ref="chatContainer" class="flex-1 p-4 overflow-y-auto pb-2 chatContainer">
                             <!-- 消息列表 -->
                             <Message
                                 v-for="message in messages"
