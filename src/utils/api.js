@@ -86,12 +86,18 @@ export const API_CONFIG = {
         modelName: 'moonshot-v1-8k-vision-preview',
         temperature: 0.7
     },
-
     baichuan: {
         name: '百川智能',
         apiUrl: 'https://api.baichuan-ai.com/v1/chat/completions',
         apiKey: process.env.VUE_APP_BAICHUAN_API_KEY,
         modelName: 'Baichuan4-Air',
+        temperature: 0.8
+    },
+    stepfun: {
+        name: '阶跃星辰',
+        apiUrl: 'https://api.stepfun.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_STEPFUN_API_KEY,
+        modelName: 'step-1o-turbo-vision',
         temperature: 0.8
     }
 }

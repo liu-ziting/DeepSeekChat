@@ -245,7 +245,7 @@ export default {
                         ]
                     }
                 ]
-                const { apiUrl, apiKey, modelName, temperature } = API_CONFIG['bigmodel']
+                const { apiUrl, apiKey, modelName, temperature } = API_CONFIG['stepfun']
 
                 const stream = true
                 // 用于存储流式响应的内容

@@ -48,7 +48,7 @@ export default {
 - 智谱清言：glm-4v-flash
 
 🖼️ 图片识别
-- 智谱清言：glm-4v-flash
+- 阶跃星辰：step-1o-turbo-vision
 
 😍 图片生成
 - 智谱清言：cogview-3-flash
