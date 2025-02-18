@@ -26,6 +26,7 @@
         <img v-else-if="model == 'bigmodel'" src="@/assets/zhipu.png" />
         <img v-else-if="model == 'kimi'" src="@/assets/kimi.png" />
         <img v-else-if="model == 'gemini'" src="@/assets/gemin.jpg" />
+        <img v-else-if="model == 'gpt35'" src="@/assets/openai.png" />
         <img v-else src="@/assets/robot.png" />
     </div>
 </template>

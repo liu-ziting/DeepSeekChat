@@ -21,6 +21,10 @@
             <input type="radio" name="model" :checked="model === 'gemini'" />
             <span class="name">Gemini</span>
         </label>
+        <label class="radio" @click="changeModel('gpt35')">
+            <input type="radio" name="model" :checked="model === 'gpt35'" />
+            <span class="name">GPT</span>
+        </label>
     </div>
 </template>
 

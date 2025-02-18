@@ -109,6 +109,13 @@ export const API_CONFIG = {
         apiUrl: 'https://api.stepfun.com/v1/audio/speech',
         apiKey: process.env.VUE_APP_STEPFUN_API_KEY,
         modelName: 'step-tts-mini'
+    },
+    gpt35: {
+        name: 'GPT3.5',
+        apiUrl: 'https://api.chatanywhere.tech/v1/chat/completions',
+        apiKey: process.env.VUE_APP_GPT35_API_KEY,
+        modelName: 'gpt-3.5-turbo',
+        temperature: 0.8
     }
 }
 
