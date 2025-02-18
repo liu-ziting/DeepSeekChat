@@ -14,7 +14,7 @@
         <div class="box"></div>
         <div class="box"></div>
     </div> -->
-    <div class="icon">
+    <div class="icon" :style="{ boxShadow: model === 'deepseek' || model === 'deepThinking' || model === 'shuinifengxin' ? '0 0 0 1px #f0f0f0' : '' }">
         <svg v-if="model == 'deepseek' || model == 'deepThinking'" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <path
                 id="path"
@@ -50,7 +50,6 @@ export default {
     width: 36px;
     height: 36px;
     display: flex;
-    box-shadow: 0 0 0 1px #f0f0f0;
 }
 .icon img {
     border-radius: 50%;

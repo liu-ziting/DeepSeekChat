@@ -45,7 +45,7 @@ export default {
 - Gemini：gemini-2.0-flash
 
 🎭 角色对话
-- 智谱清言：glm-4v-flash
+- GPT：gpt-3.5-turbo
 
 🖼️ 图片识别
 - 阶跃星辰：step-1o-turbo-vision

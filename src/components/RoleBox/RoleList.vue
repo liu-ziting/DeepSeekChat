@@ -102,7 +102,7 @@ export default {
             ],
             isThinking: false,
             mode: 'normal',
-            model: 'deepseek',
+            model: 'gpt35',
             tab: 'chat',
             selectedPrompt: null,
             abortController: null // 用来保存 AbortController 实例
