@@ -291,8 +291,12 @@ export default {
                 )
                 // this.generatedContent = data.choices[0].message.content
 
-                // 调用 generateTTS，并传递完整的生成内容
-                this.generateTTS(streamContent)
+                // 移除表情符号，但保留中文字符、标点符号和常见符号
+                const cleanedContent = streamContent.replace(/[\u{1F600}-\u{1F64F}]/gu, ''); // 移除表情符号
+                console.log('Cleaned Content:', cleanedContent); // 打印清理后的内容
+
+                // 调用 generateTTS，并传递清理后的生成内容
+                this.generateTTS(cleanedContent);
             } catch (error) {
                 console.error('Error fetching AI response:', error)
                 this.generatedContent = '识别失败，请重试'
