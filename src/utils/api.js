@@ -2,22 +2,25 @@
 export const API_CONFIG = {
     shuinifengxin: {
         name: '水泥封心',
-        // apiUrl: 'https://api.baichuan-ai.com/v1/chat/completions',
-        // apiKey: process.env.VUE_APP_BAICHUAN_API_KEY,
-        // modelName: 'Baichuan4-Air',
-        // temperature: 0.3
-        // apiUrl: 'https://liuziting-gemini-play-98-58acmhtr50hp.deno.dev/v1/chat/completions',
         apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
         apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
         modelName: 'deepseek-v3',
         temperature: 0.6
     },
     deepseek: {
+        // 派欧算力云
+        // name: 'DeepSeek',
+        // apiUrl: 'https://api.ppinfra.com/v3/openai/chat/completions',
+        // apiKey: '',
+        // modelName: 'deepseek/deepseek-v3/community',
+        // temperature: 0.6
+        // 七牛云
         name: 'DeepSeek',
         apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
         apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
         modelName: 'deepseek-v3',
         temperature: 0.6
+        // 官方
         // name: 'DeepSeek',
         // apiUrl: 'https://api.deepseek.com/v1/chat/completions',
         // apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
@@ -26,21 +29,22 @@ export const API_CONFIG = {
     },
     // 深度思考
     deepThinking: {
+        // 派欧算力云
+        // name: 'DeepSeek-R1',
+        // apiUrl: 'https://api.ppinfra.com/v3/openai/chat/completions',
+        // apiKey: '',
+        // modelName: 'deepseek/deepseek-r1',
+        // temperature: 0.6
+        // 七牛云
         name: 'DeepSeek-R1',
         apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
         apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
         modelName: 'deepseek-r1',
         temperature: 0.6
+        // 官方
         // apiUrl: 'https://api.deepseek.com/v1/chat/completions',
         // apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
         // modelName: 'deepseek-reasoner'
-    },
-    qiniuyun: {
-        name: 'DeepSeek-R1',
-        apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
-        apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
-        modelName: 'deepseek-r1',
-        temperature: 0.5
     },
     gemini: {
         name: 'Gemini2.0',
@@ -48,7 +52,8 @@ export const API_CONFIG = {
         // apiUrl: 'https://my-openai-gemini-demo.vercel.app/v1/chat/completions',
         apiKey: process.env.VUE_APP_GEMINI_API_KEY,
         // modelName: 'gemini-1.5-pro-latest',
-        modelName: 'gemini-2.0-flash-lite-preview-02-05',
+        // modelName: 'gemini-2.0-flash-lite-preview-02-05',
+        modelName: 'gemini-2.0-flash-thinking-exp',
         temperature: 0.8
     },
     bigmodel: {
@@ -72,7 +77,6 @@ export const API_CONFIG = {
         modelName: 'cogvideox-flash',
         temperature: 0.8
     },
-
     kimi: {
         name: '月之暗面',
         apiUrl: 'https://api.moonshot.cn/v1/chat/completions',
