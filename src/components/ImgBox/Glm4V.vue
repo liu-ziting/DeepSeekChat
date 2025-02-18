@@ -13,17 +13,31 @@
             <!-- 右侧区域（生成内容、输入框、按钮） -->
             <div class="w-full lg:w-1/2 flex flex-col justify-between">
                 <div>
-                    <!-- 标题 -->
-                    <h3 class="head-title font-bold text-left cursor-pointer transition-all">
+                    <h3 class="head-title font-bold text-left cursor-pointer transition-all relative">
                         {{ functions[selectedFunction].name }}
+
+                        <span v-if="audioUrl" @click="playAudio" class="absolute right-0 bottom-0">
+                            <svg t="1739841511937" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12641" width="24" height="24">
+                                <path
+                                    d="M616.533333 156.8a53.333333 53.333333 0 0 0-48.426666-2.986667l-307.626667 137.6h-85.333333A88.533333 88.533333 0 0 0 85.333333 378.24v267.52a88.533333 88.533333 0 0 0 90.026667 86.826667h85.333333l307.626667 137.6a52.906667 52.906667 0 0 0 48.426667-2.986667A48 48 0 0 0 640 826.026667V197.973333a48 48 0 0 0-23.466667-41.173333zM578.346667 810.666667l-293.973334-132.48a52.48 52.48 0 0 0-21.333333-4.48H175.36a28.373333 28.373333 0 0 1-28.373333-27.946667V378.24a28.373333 28.373333 0 0 1 28.373333-27.946667h87.68a52.48 52.48 0 0 0 21.333333-4.48L578.346667 213.333333zM715.946667 366.506667a32 32 0 0 0-4.906667 45.013333 159.573333 159.573333 0 0 1 0 200.96 32 32 0 0 0 49.92 40.106667 223.573333 223.573333 0 0 0 0-281.173334 32 32 0 0 0-45.013333-4.906666z"
+                                    p-id="12642"
+                                ></path>
+                                <path
+                                    d="M868.266667 301.44a32 32 0 1 0-51.2 38.4 286.08 286.08 0 0 1 0 344.32 32 32 0 0 0 6.4 44.8 32.426667 32.426667 0 0 0 19.2 6.4 31.786667 31.786667 0 0 0 25.6-12.8 350.08 350.08 0 0 0 0-421.12z"
+                                    p-id="12643"
+                                ></path>
+                            </svg>
+                        </span>
                     </h3>
-                    <!-- 生成的内容 -->
                     <div class="mb-4 p-4 bg-gray-100 rounded-lg text-sm">
                         <p v-if="generatedContent">
                             {{ generatedContent }}
                         </p>
-                        <p v-else class="text-gray-500">{{ isLoading ? '识别中...' : functions[selectedFunction].placeholder }}</p>
+                        <p v-else class="text-gray-500">
+                            {{ isLoading ? '识别中...' : functions[selectedFunction].placeholder }}
+                        </p>
                     </div>
+                    <audio :src="audioUrl" ref="audioRef" style="display: none"></audio>
                 </div>
                 <!-- 底部区域（输入框和按钮） -->
                 <div class="mt-auto">
@@ -76,8 +90,9 @@
         </div>
     </div>
 </template>
+
 <script>
-import { fetchAIResponse, API_CONFIG } from '../../utils/api'
+import { fetchAIResponse, API_CONFIG, fetchTTS } from '../../utils/api'
 import IconGlm from '../IconBox/IconGlm.vue'
 import html2canvas from 'html2canvas'
 import { ImagePrompts } from '../../utils/prompt.js'
@@ -95,7 +110,8 @@ export default {
             isShareDialogOpen: false, // 分享弹窗是否打开
             selectedFunction: 0, // 默认选择第一个功能
             functions: ImagePrompts,
-            abortController: null // 用来保存 AbortController 实例
+            abortController: null, // 用来保存 AbortController 实例
+            audioUrl: null // 用于存储语音的 URL
         }
     },
     methods: {
@@ -270,6 +286,9 @@ export default {
                     this.abortController
                 )
                 // this.generatedContent = data.choices[0].message.content
+
+                // 调用 generateTTS，并传递完整的生成内容
+                this.generateTTS(streamContent)
             } catch (error) {
                 console.error('Error fetching AI response:', error)
                 this.generatedContent = '识别失败，请重试'
@@ -277,7 +296,35 @@ export default {
                 this.isLoading = false // 结束加载
             }
         },
+        // 生成tts
+        async generateTTS(content) {
+            const { apiUrl, apiKey, modelName } = API_CONFIG['stepfunTTS']
 
+            const input = content
+            const voice = 'jilingshaonv'
+
+            try {
+                const blob = await fetchTTS(apiUrl, apiKey, modelName, input, voice)
+                this.audioUrl = URL.createObjectURL(blob)
+                // 自动播放音频
+                this.$nextTick(() => {
+                    const audioElement = this.$el.querySelector('audio')
+                    if (audioElement) {
+                        audioElement.play()
+                    }
+                })
+            } catch (error) {
+                console.error('Error generating speech:', error)
+            }
+        },
+        playAudio() {
+            const audio = this.$refs.audioRef
+            if (audio) {
+                audio.play().catch(error => {
+                    console.error('音频播放错误:', error)
+                })
+            }
+        },
         // 打开分享弹窗
         openShareDialog() {
             this.isShareDialogOpen = true
@@ -329,6 +376,7 @@ export default {
     }
 }
 </script>
+
 <style scoped>
 .container {
     padding-bottom: 50px;

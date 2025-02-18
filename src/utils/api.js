@@ -99,6 +99,12 @@ export const API_CONFIG = {
         apiKey: process.env.VUE_APP_STEPFUN_API_KEY,
         modelName: 'step-1o-turbo-vision',
         temperature: 0.8
+    },
+    stepfunTTS: {
+        name: '阶跃星辰',
+        apiUrl: 'https://api.stepfun.com/v1/audio/speech',
+        apiKey: process.env.VUE_APP_STEPFUN_API_KEY,
+        modelName: 'step-tts-mini'
     }
 }
 
@@ -200,6 +206,32 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
             }
         }
     }
+}
+
+// TTS
+export const fetchTTS = async (apiUrl, apiKey, modelName, input, voice) => {
+    const requestBody = {
+        model: modelName,
+        voice: voice,
+        input: input
+    }
+
+    const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${apiKey}`
+        },
+        body: JSON.stringify(requestBody)
+    })
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+
+    // 获取音频数据
+    const blob = await response.blob()
+    return blob
 }
 
 // 计算 token 数量的函数
