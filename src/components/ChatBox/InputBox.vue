@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <!-- 模型切换下拉菜单 -->
+        <!-- 模式选择 -->
         <div v-if="(model === 'deepseek' || model === 'deepThinking') && showMode" class="ml-2" style="width: 80%">
             <div>
                 <!-- 正常模式 -->
@@ -31,6 +31,7 @@
                 </label>
             </div>
         </div>
+
         <div class="input-box" :style="{ height: boxHeight + 'px' }">
             <form @submit.prevent="handleSubmit">
                 <textarea class="input-textarea" ref="textarea" @input="handleInput" @keydown="handleKeydown" v-model="userInput" :placeholder="placeholder"></textarea>
@@ -204,7 +205,8 @@ export default {
             // 保持深度思考模式关闭
             this.isDeepThinking = false
         }
-    }
+    },
+    mounted() {}
 }
 </script>
 <style scoped>

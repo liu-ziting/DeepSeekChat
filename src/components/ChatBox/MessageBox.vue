@@ -19,7 +19,7 @@
                 <!-- 可折叠的思维链内容 -->
                 <div v-if="message.reasoningContent" class="bg-gray-100 p-3 rounded-lg mb-2 text-sm text-gray-700">
                     <div class="flex items-center justify-between cursor-pointer" @click="toggleReasoning">
-                        <span class="font-medium">深度思考</span>
+                        <span class="font-medium">深度思考（{{ message.reasoningDuration }}秒）</span>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 transition-transform duration-200"

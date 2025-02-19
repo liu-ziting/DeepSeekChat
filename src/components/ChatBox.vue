@@ -172,9 +172,22 @@ export default {
                         if (chunk.type === 'reasoning') {
                             reasoningContent += chunk.content
                             totalTokens = parseFloat((totalTokens + chunk.token).toFixed(4))
+
+                            // 获取当前消息对象
+                            const currentMessage = this.messages[index]
+
+                            // 如果是第一次进入 reasoning 阶段，记录开始时间
+                            if (!currentMessage.reasoningStartTime) {
+                                currentMessage.reasoningStartTime = Date.now()
+                            }
+
+                            // 计算深度思考持续时间
+                            const currentTime = Date.now()
+                            currentMessage.reasoningDuration = parseFloat(((currentTime - currentMessage.reasoningStartTime) / 1000).toFixed(1))
+
                             this.messages = [
                                 ...this.messages.slice(0, index),
-                                { ...this.messages[index], reasoningContent, token: totalTokens, duration: chunk.duration },
+                                { ...currentMessage, reasoningContent, token: totalTokens, duration: chunk.duration }, // 更新消息对象
                                 ...this.messages.slice(index + 1)
                             ]
                         } else if (chunk.type === 'content') {
