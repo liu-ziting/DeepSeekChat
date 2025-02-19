@@ -47,7 +47,7 @@ export const API_CONFIG = {
         // modelName: 'deepseek-reasoner'
     },
     gemini: {
-        name: 'Gemini2.0',
+        name: 'Gemini',
         apiUrl: 'https://liuziting-gemini-play-98-58acmhtr50hp.deno.dev/v1/chat/completions',
         // apiUrl: 'https://my-openai-gemini-demo.vercel.app/v1/chat/completions',
         apiKey: process.env.VUE_APP_GEMINI_API_KEY,
@@ -118,7 +118,7 @@ export const API_CONFIG = {
         modelName: 'step-tts-mini'
     },
     gpt35: {
-        name: 'GPT3.5',
+        name: 'GPT',
         apiUrl: 'https://api.chatanywhere.tech/v1/chat/completions',
         apiKey: process.env.VUE_APP_GPT35_API_KEY,
         modelName: 'gpt-3.5-turbo',
@@ -207,7 +207,6 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
                                 duration: currentDuration
                             })
                         }
-
                         if (delta.content) {
                             const tokenCount = calculateTokenCount(delta.content)
                             onDataReceived({

@@ -24,6 +24,10 @@
             <input type="radio" name="model" :checked="model === 'bigmodel'" />
             <span class="name">智谱</span>
         </label>
+        <!-- <label class="radio" @click="changeModel('stepfunChat')">
+            <input type="radio" name="model" :checked="model === 'stepfunChat'" />
+            <span class="name">阶跃星辰</span>
+        </label> -->
     </div>
 </template>
 

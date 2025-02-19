@@ -14,7 +14,7 @@
         <div class="box"></div>
         <div class="box"></div>
     </div> -->
-    <div class="icon" :style="{ boxShadow: model === 'deepseek' || model === 'deepThinking' || model === 'shuinifengxin' ? '0 0 0 1px #f0f0f0' : '' }">
+    <div class="icon" :style="{ boxShadow: model === 'deepseek' || model === 'deepThinking' || model === 'stepfunChat' || model === 'shuinifengxin' ? '0 0 0 1px #f0f0f0' : '' }">
         <svg v-if="model == 'deepseek' || model == 'deepThinking'" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <path
                 id="path"
@@ -27,6 +27,20 @@
         <img v-else-if="model == 'kimi'" src="@/assets/kimi.png" />
         <img v-else-if="model == 'gemini'" src="@/assets/gemin.jpg" />
         <img v-else-if="model == 'gpt35'" src="@/assets/openai.png" />
+        <svg v-else-if="model == 'stepfunChat'" width="28" height="28" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M781.011 300.436C874.145 332.184 877.687 349.723 873.218 367.135C851.8 443.321 335.575 309.838 259.684 789.762L250.999 485.693L346.621 245.204C453.585 158.141 660.598 144.649 781.011 300.436Z"
+                fill="#005AFF"
+            ></path>
+            <path
+                d="M347.675 232.219C471.967 224.124 578.088 261.352 615.991 292.299C623.242 298.244 621.303 308.911 612.829 312.916C451.73 367.136 253.065 544.72 260.274 825.136C260.738 843.434 236.116 849.842 227.473 833.694C157.063 702.193 148.504 560.193 177.427 469.461C208.163 384.759 183.709 351.957 151.624 314.392C135.392 287.324 217.48 245.036 347.675 232.219Z"
+                fill="#37DBFF"
+            ></path>
+            <path
+                d="M652.123 538.564C636.819 518.495 613.588 504.329 585.761 501.42C541.744 496.782 499.161 524.061 485.079 566.053C476.31 592.151 479.261 618.671 490.603 640.679C496.716 652.569 513.454 653.117 520.706 641.86C547.436 600.457 591.369 572.673 640.36 566.306C653.641 564.578 660.302 549.189 652.165 538.564H652.123Z"
+                fill="#005AFF"
+            ></path>
+        </svg>
         <img v-else src="@/assets/robot.png" />
     </div>
 </template>
