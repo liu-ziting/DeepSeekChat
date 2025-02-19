@@ -35,7 +35,6 @@ export default {
 - 本项目90%的代码由大模型自主开发
 - 构建工具和技术栈如下
 - RooCline+DeepSeek+TailwindCSS
-- DeepSeek接口可能会请求慢无响应
 
 🤖 通用对话
 - 水泥封心：deepseek-chat
@@ -43,6 +42,7 @@ export default {
 - 智谱清言：glm-4v-flash
 - 月之暗面：moonshot-v1-8k
 - Gemini：gemini-2.0-flash
+- GPT：gpt-3.5-turbo
 
 🎭 角色对话
 - GPT：gpt-3.5-turbo
@@ -50,12 +50,15 @@ export default {
 🖼️ 图片识别
 - 阶跃星辰：step-1o-turbo-vision
 
+🎤 语音生成
+- 阶跃星辰：step-tts-mini
+
 😍 图片生成
 - 智谱清言：cogview-3-flash
 
 🎞️ 视频生成
 - 智谱清言：cogvideox-flash
-            `
+ `
         }
     }
 }
