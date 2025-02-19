@@ -201,7 +201,7 @@ export default {
                         } else if (chunk.type === 'complete') {
                             this.messages = [...this.messages.slice(0, index), { ...this.messages[index], duration: chunk.duration }, ...this.messages.slice(index + 1)]
                         }
-                        this.scrollToBottom()
+                        this.conditionalScrollToBottom()
                     },
                     controller
                 )
@@ -210,6 +210,22 @@ export default {
                     this.messages = [{ role: 'assistant', content: '这个模型出现了问题，请换个模型试试！', id: this.generateUniqueId() }]
                 }
             }
+        },
+        conditionalScrollToBottom() {
+            const chatContainer = this.$refs.chatContainer
+            if (!chatContainer) return // Ensure container exists
+
+            const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight + 50 // Add a tolerance of 50px
+
+            if (isAtBottom) {
+                this.scrollToBottom()
+            }
+        },
+        scrollToBottom() {
+            this.$nextTick(() => {
+                const chatContainer = this.$refs.chatContainer
+                chatContainer.scrollTop = chatContainer.scrollHeight
+            })
         },
         generateUniqueId() {
             return Date.now().toString(36) + Math.random().toString(36).substring(2)
@@ -228,12 +244,6 @@ export default {
                 throw new Error(`未找到模型 ${this.model} 的配置`)
             }
             return config
-        },
-        scrollToBottom() {
-            this.$nextTick(() => {
-                const chatContainer = this.$refs.chatContainer
-                chatContainer.scrollTop = chatContainer.scrollHeight
-            })
         },
         changeMode(newMode) {
             // 如果有正在进行的请求，取消它

@@ -97,6 +97,13 @@ export const API_CONFIG = {
         modelName: 'Baichuan4-Air',
         temperature: 0.8
     },
+    stepfunChat: {
+        name: '阶跃星辰',
+        apiUrl: 'https://api.stepfun.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_STEPFUN_API_KEY,
+        modelName: 'step-1-flash',
+        temperature: 0.8
+    },
     stepfun: {
         name: '阶跃星辰',
         apiUrl: 'https://api.stepfun.com/v1/chat/completions',
