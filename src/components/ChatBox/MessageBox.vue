@@ -7,10 +7,10 @@
             </div>
             <div class="flex flex-col relative" style="max-width: calc(100% - 50px)">
                 <span v-if="message.role === 'assistant' && message.model === 'deepseek' && !name" class="text-sm font-medium mb-1" :class="nameClass">
-                    {{ message.mode === 'normal' ? '😀' : message.mode === 'angry' ? '😡' : message.mode === 'rude' ? '🤬' : '' }}
                     <span v-if="message.model && showName" class="text-sm font-medium mb-1" :class="nameClass">
                         {{ config[message.model].name }}
                     </span>
+                    {{ message.mode === 'normal' ? '😀' : message.mode === 'angry' ? '😡' : message.mode === 'rude' ? '🤬' : '' }}
                 </span>
 
                 <span v-else-if="message.model && showName" class="text-sm font-medium mb-1" :class="nameClass">
@@ -49,9 +49,9 @@
                     <button
                         v-if="showCopyButton"
                         @click="handleCopy"
-                        class="absolute -top-2 -right-2 p-1 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-100 transition-colors duration-200"
+                        class="absolute -top-2 -right-2 p-[3px] bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-100 transition-colors duration-200"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
                                 stroke-linecap="round"
                                 stroke-linejoin="round"

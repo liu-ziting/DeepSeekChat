@@ -1,5 +1,5 @@
 <template>
-    <div class="model-selector flex justify-center gap-4 p-4 bg-white border-b border-gray-200" style="margin-top: 0">
+    <div class="model-selector flex justify-center gap-4 p-4 bg-white" style="margin-top: 0">
         <label class="radio" @click="changeModel('shuinifengxin')">
             <input type="radio" name="model" :checked="model === 'shuinifengxin'" />
             <span class="name">水泥封心</span>
@@ -8,10 +8,9 @@
             <input type="radio" name="model" :checked="model === 'deepseek'" />
             <span class="name">DeepSeek-R1</span>
         </label>
-
-        <label class="radio" @click="changeModel('bigmodel')">
-            <input type="radio" name="model" :checked="model === 'bigmodel'" />
-            <span class="name">智谱</span>
+        <label class="radio" @click="changeModel('gpt35')">
+            <input type="radio" name="model" :checked="model === 'gpt35'" />
+            <span class="name">GPT</span>
         </label>
         <label class="radio" @click="changeModel('kimi')">
             <input type="radio" name="model" :checked="model === 'kimi'" />
@@ -21,9 +20,9 @@
             <input type="radio" name="model" :checked="model === 'gemini'" />
             <span class="name">Gemini</span>
         </label>
-        <label class="radio" @click="changeModel('gpt35')">
-            <input type="radio" name="model" :checked="model === 'gpt35'" />
-            <span class="name">GPT</span>
+        <label class="radio" @click="changeModel('bigmodel')">
+            <input type="radio" name="model" :checked="model === 'bigmodel'" />
+            <span class="name">智谱</span>
         </label>
     </div>
 </template>

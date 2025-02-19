@@ -71,28 +71,27 @@ footer {
     cursor: pointer;
     align-items: center;
     justify-content: center;
-    border-radius: 0.5rem;
+    border-radius: 0.3rem;
     border: none;
-    padding: 0.5rem 0;
+    padding: 0.3rem 0;
     color: rgba(51, 65, 85, 1);
     transition: all 0.15s ease-in-out;
 }
 
-.radio-inputs .radio input:checked + .name {
-    background-color: #fff;
+.model-selector .radio input:checked + .name {
+    background-color: #e5e7eb;
     font-weight: 600;
 }
-
 .model-selector {
     position: relative;
     display: flex;
     flex-wrap: wrap;
     border-radius: 0.5rem;
-    background-color: #eee;
+    background-color: #fff;
     box-sizing: border-box;
     box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
     padding: 0.25rem;
-    width: calc(100% - 1rem);
+    width: calc(100% - 0.5rem);
     margin: 10px auto 10px auto;
     font-size: 13px;
 }
@@ -116,11 +115,6 @@ footer {
     padding: 0.5rem 0;
     color: rgba(51, 65, 85, 1);
     transition: all 0.15s ease-in-out;
-}
-
-.model-selector .radio input:checked + .name {
-    background-color: #fff;
-    font-weight: 600;
 }
 
 /* 自定义滚动条 */

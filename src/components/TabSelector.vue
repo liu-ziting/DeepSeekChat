@@ -1,5 +1,5 @@
 <template>
-    <div class="model-selector flex justify-center p-4 bg-white border-b border-gray-200">
+    <div class="model-selector flex justify-center p-4 bg-white">
         <label class="radio" @click="changeModel('chat')">
             <input type="radio" name="tab" :checked="tab === 'chat'" />
             <span class="name">多模型</span>

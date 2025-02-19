@@ -1,30 +1,42 @@
+vue
 <template>
     <div class="code-block">
         <!-- 代码块 -->
         <pre><code ref="code" :class="languageClass">{{ formattedCode }}</code></pre>
         <!-- 复制按钮 -->
-        <button
-            v-if="showCopyButton"
+        <svg
+            v-if="!isCopied"
             @click="copyCode"
-            class="copy-button absolute -top-2 -right-2 p-1 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-100 transition-colors duration-200"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-gray-500 absolute top-2 right-2 cursor-pointer copy-button"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
         >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                />
-            </svg>
-        </button>
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+            />
+        </svg>
+        <!-- 成功图标 -->
+        <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-green-500 absolute top-2 right-2 cursor-pointer copy-button"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+        >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
     </div>
 </template>
-
 <script>
 import hljs from 'highlight.js' // 引入 highlight.js
 import 'highlight.js/styles/atom-one-dark.css' // 引入黑色主题样式
 import Clipboard from 'clipboard' // 引入 clipboard 库
-
 export default {
     props: {
         code: {
@@ -38,6 +50,11 @@ export default {
         showCopyButton: {
             type: Boolean,
             default: true
+        }
+    },
+    data() {
+        return {
+            isCopied: false // 控制是否显示成功图标
         }
     },
     computed: {
@@ -67,12 +84,13 @@ export default {
             const clipboard = new Clipboard('.copy-button', {
                 text: () => this.code
             })
-
             clipboard.on('success', () => {
-                console.log('代码已复制！')
+                this.isCopied = true // 显示成功图标
+                setTimeout(() => {
+                    this.isCopied = false // 3 秒后恢复为复制图标
+                }, 3000)
                 clipboard.destroy() // 销毁 clipboard 实例
             })
-
             clipboard.on('error', () => {
                 console.log('复制失败，请手动复制。')
                 clipboard.destroy() // 销毁 clipboard 实例
@@ -81,7 +99,6 @@ export default {
     }
 }
 </script>
-
 <style scoped>
 .code-block {
     position: relative;
@@ -90,35 +107,18 @@ export default {
     padding: 10px;
     margin: 16px 0;
 }
-
 pre {
     margin: 0;
     overflow-x: auto; /* 水平滚动 */
     white-space: pre-wrap; /* 保留换行符 */
     word-wrap: break-word; /* 长单词换行 */
 }
-
 code {
     display: block; /* 确保代码块独占一行 */
     font-family: 'Courier New', Courier, monospace; /* 等宽字体 */
     font-size: 14px;
     line-height: 1.5;
-    color: #abb2bf; /* 黑色主题代码颜色 */
 }
-
-/* .copy-button {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 4px 8px;
-    background: #61afef;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-} */
-
 pre code.hljs {
     padding: 0 !important;
 }
