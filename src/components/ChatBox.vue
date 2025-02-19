@@ -14,6 +14,7 @@
 
                 <!-- 输入框区域 -->
                 <InputBox
+                    ref="inputBox"
                     :is-thinking="isThinking"
                     :showMode="true"
                     :mode="mode"
@@ -275,6 +276,7 @@ export default {
                 this.insertDefaultMessage() // 插入默认对话
             }
             this.isThinking = false
+            this.$refs.inputBox.init()
         },
         insertDefaultMessage() {
             let messageContent = '你好！请问有什么可以帮您的？'

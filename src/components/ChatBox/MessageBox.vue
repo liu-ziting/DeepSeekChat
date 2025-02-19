@@ -10,7 +10,7 @@
                     <span v-if="message.model && showName" class="text-sm font-medium mb-1" :class="nameClass">
                         {{ config[message.model].name }}
                     </span>
-                    {{ message.mode === 'normal' ? '😀' : message.mode === 'angry' ? '😡' : message.mode === 'rude' ? '🤬' : '' }}
+                    {{ message.mode === 'normal' ? '😊' : message.mode === 'angry' ? '😡' : message.mode === 'rude' ? '🤬' : '' }}
                 </span>
 
                 <span v-else-if="message.model && showName" class="text-sm font-medium mb-1" :class="nameClass">
@@ -43,7 +43,7 @@
                         <!-- 如果是代码，使用 CodeBlock 组件 -->
                         <CodeBlock v-if="part.type === 'code'" :code="part.content" :language="detectLanguage(part.content)" />
                         <!-- 否则解析为 Markdown -->
-                        <div v-else v-html="renderMarkdown(part.content)" class="markdown-content"></div>
+                        <div v-else v-html="renderMarkdown(escapeHtml(part.content))" class="markdown-content"></div>
                     </div>
                     <!-- 复制按钮 -->
                     <button
@@ -199,6 +199,20 @@ export default {
         // 拆分混合内容
         splitMixedContent(content) {
             return splitMixedContent(content)
+        },
+        // HTML 实体编码函数
+        escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }
+
+            return text.replace(/[&<>"']/g, function (m) {
+                return map[m]
+            })
         }
     }
 }
