@@ -36,21 +36,24 @@ export default {
 - 构建工具和技术栈如下
 - RooCline+DeepSeek+TailwindCSS
 
-🤖 通用对话
+🤖 多模型
 - 水泥封心：deepseek-chat
 - DeepSeek：deepseek-r1
-- 智谱清言：glm-4v-flash
-- 月之暗面：moonshot-v1-8k
 - Gemini：gemini-2.0-flash
 - GPT：gpt-3.5-turbo
+- 智谱清言：glm-4v-flash
+- 月之暗面：moonshot-v1-8k
+- 零一万物：yi-lightning
+- 通义千问：qwen-max
+- 阶跃星辰：step-1-flash
+- 百川智能：Baichuan4-Air
+- MINIMAX：MiniMax-Text-01
 
 🎭 角色对话
 - GPT：gpt-3.5-turbo
 
-🖼️ 图片识别
+🖼️ 图片识别/语音合成
 - 阶跃星辰：step-1o-turbo-vision
-
-🎤 语音生成
 - 阶跃星辰：step-tts-mini
 
 😍 图片生成
