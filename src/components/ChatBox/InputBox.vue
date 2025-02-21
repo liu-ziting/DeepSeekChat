@@ -9,6 +9,24 @@
             >
                 <img :src="selectedModelImg" class="w-5 h-5 rounded-full border-gray-300" />
                 <span class="pl-1" style="font-size: 12px"> {{ selectedModel }} </span>
+                <svg
+                    t="1740124860020"
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="5352"
+                    width="16"
+                    height="16"
+                    :class="{ 'rotate-180': isShareDialogOpen }"
+                    style="transition: transform 0.2s ease"
+                >
+                    <path
+                        d="M512 574.72l-183.168-183.168a10.666667 10.666667 0 0 0-15.082667 0l-30.165333 30.165333a10.666667 10.666667 0 0 0 0 15.082667l198.250667 198.250667a42.666667 42.666667 0 0 0 60.330666 0l198.250667-198.250667a10.666667 10.666667 0 0 0 0-15.082667l-30.165333-30.165333a10.666667 10.666667 0 0 0-15.082667 0L512 574.698667z"
+                        fill="#313233"
+                        p-id="5353"
+                    ></path>
+                </svg>
             </button>
             <!-- 模式选择 -->
             <div v-if="(model === 'deepseek' || model === 'deepThinking') && showMode" class="w-1/2 flex justify-end">
@@ -42,7 +60,7 @@
                 </div>
             </div>
             <!-- 模型弹出层 -->
-            <div v-if="isShareDialogOpen" class="propup fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div v-if="isShareDialogOpen" @click.self="isShareDialogOpen = false" class="propup fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                 <div class="bg-white rounded-lg p-6 shadow-lg w-96">
                     <div class="flex flex-col items-left">
                         <h2 class="text-md font-semibold text-gray-800 mb-4">选择模型</h2>
@@ -53,11 +71,37 @@
                                     v-for="model in models"
                                     :key="model.name"
                                     @click="changeModel(model)"
-                                    class="group flex items-center p-2 rounded-md border border-gray-300 cursor-pointer hover:shadow-md transition-shadow focus:outline-none peer-checked:bg-blue-100 peer-checked:border-blue-500"
+                                    class="relative group flex items-center p-2 rounded-md border border-gray-300 cursor-pointer hover:shadow-md transition-shadow focus:outline-none peer-checked:bg-blue-100 peer-checked:border-blue-500"
+                                    :class="{ 'border-blue-500': selectedModel === model.name }"
                                 >
                                     <input type="radio" name="model" value="model1" class="peer sr-only" aria-hidden="true" />
                                     <img :src="model.img" alt="Model 1 Icon" class="w-5 h-5 mr-2 rounded border-gray-300" />
                                     <span class="text-gray-700 text-sm">{{ model.name }}</span>
+                                    <span v-if="selectedModel === model.name" class="text-green-500 ml-1 absolute right-2">
+                                        <svg
+                                            t="1740124477021"
+                                            class="icon"
+                                            viewBox="0 0 1024 1024"
+                                            version="1.1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            p-id="3639"
+                                            width="25"
+                                            height="25"
+                                        >
+                                            <path
+                                                d="M512 126.464c212.48 0 385.536 173.056 385.536 385.536s-173.056 385.536-385.536 385.536-385.536-173.056-385.536-385.536S299.52 126.464 512 126.464m0-20.48c-224.256 0-406.016 181.76-406.016 406.016s181.76 406.016 406.016 406.016 406.016-181.76 406.016-406.016-181.76-406.016-406.016-406.016z"
+                                                fill="#4E63DD"
+                                                opacity=".1"
+                                                p-id="3640"
+                                            ></path>
+                                            <path d="M323.584 512a188.416 188.416 0 1 0 376.832 0 188.416 188.416 0 1 0-376.832 0Z" fill="#4E63DD" opacity=".5" p-id="3641"></path>
+                                            <path
+                                                d="M512 374.784c36.864 0 71.168 14.336 97.28 40.448s40.448 60.416 40.448 97.28c0 75.776-61.44 137.216-137.216 137.216-36.864 0-71.168-14.336-97.28-40.448s-40.448-60.416-40.448-97.28c0-75.776 61.44-137.216 137.216-137.216m0-51.2c-103.936 0-188.416 84.48-188.416 188.416s84.48 188.416 188.416 188.416 188.416-84.48 188.416-188.416-84.48-188.416-188.416-188.416z"
+                                                fill="#4E63DD"
+                                                p-id="3642"
+                                            ></path>
+                                        </svg>
+                                    </span>
                                 </label>
                             </div>
                         </div>
