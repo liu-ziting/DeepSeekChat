@@ -133,10 +133,17 @@ export const API_CONFIG = {
     },
     qwen: {
         name: '通义千问',
-        apiUrl: 'https://api-1-hemf.onrender.com/v1/chat/completions',
-        apiKey: process.env.VUE_APP_QWEN_API_KEY,
-        modelName: 'qwen-max',
+        apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
+        modelName: 'qwen-max-2025-01-25',
         temperature: 0.8
+    },
+    minimax: {
+        name: 'MINIMAX',
+        apiUrl: 'https://api.minimax.chat/v1/text/chatcompletion_v2',
+        apiKey: process.env.VUE_APP_MINIMAX_API_KEY,
+        modelName: 'MiniMax-Text-01',
+        temperature: 0.1
     }
 }
 
@@ -144,7 +151,7 @@ export const API_CONFIG = {
 export const showModels = [
     {
         name: '水泥封心',
-        model: 'deepseek',
+        model: 'shuinifengxin',
         img: require('@/assets/robot.png')
     },
     {
@@ -161,6 +168,11 @@ export const showModels = [
         name: 'Gemini2.0',
         model: 'gemini',
         img: require('@/assets/gemini.jpg')
+    },
+    {
+        name: 'minimax',
+        model: 'minimax',
+        img: require('@/assets/minimax.webp')
     },
     {
         name: '月之暗面',
