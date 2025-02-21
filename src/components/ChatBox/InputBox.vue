@@ -1,34 +1,68 @@
 <template>
     <div class="">
-        <!-- 模式选择 -->
-        <div v-if="(model === 'deepseek' || model === 'deepThinking') && showMode" class="ml-2" style="width: 80%">
-            <div>
-                <!-- 正常模式 -->
-                <label @click="changeMode('normal')" style="margin-right: 10px" class="inline-block cursor-pointer radio">
-                    <input class="hidden peer" type="radio" name="radio" :checked="mode === 'normal'" />
-                    <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
-                        <span :class="{ 'filter grayscale': mode !== 'normal' }">😀</span>
-                        正常
-                    </span>
-                </label>
+        <!-- 模型选择 -->
+        <div class="flex items-center justify-between">
+            <button
+                @click="openModelDialog"
+                style="border: 1px solid #d9d9d9"
+                class="model-select inline-flex items-center cursor-pointer px-2 py-1 ml-1 rounded-full transition-colors"
+            >
+                <img :src="selectedModelImg" class="w-5 h-5 rounded-full border-gray-300" />
+                <span class="pl-1" style="font-size: 12px"> {{ selectedModel }} </span>
+            </button>
+            <!-- 模式选择 -->
+            <div v-if="(model === 'deepseek' || model === 'deepThinking') && showMode" class="w-1/2 flex justify-end">
+                <div>
+                    <!-- 正常模式 -->
+                    <label @click="changeMode('normal')" style="margin-right: 10px" class="inline-block cursor-pointer radio">
+                        <input class="hidden peer" type="radio" name="radio" :checked="mode === 'normal'" />
+                        <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
+                            <span :class="{ 'filter grayscale': mode !== 'normal' }">😀</span>
+                            正常
+                        </span>
+                    </label>
 
-                <!-- 暴躁模式 -->
-                <label @click="changeMode('angry')" style="margin-right: 10px" class="inline-block cursor-pointer radio">
-                    <input class="hidden peer" type="radio" name="radio" :checked="mode === 'angry'" />
-                    <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
-                        <span :class="{ 'filter grayscale': mode !== 'angry' }">😡</span>
-                        暴躁
-                    </span>
-                </label>
+                    <!-- 暴躁模式 -->
+                    <label @click="changeMode('angry')" style="margin-right: 10px" class="inline-block cursor-pointer radio">
+                        <input class="hidden peer" type="radio" name="radio" :checked="mode === 'angry'" />
+                        <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
+                            <span :class="{ 'filter grayscale': mode !== 'angry' }">😡</span>
+                            暴躁
+                        </span>
+                    </label>
 
-                <!-- 祖安模式 -->
-                <label @click="changeMode('rude')" style="margin-right: 10px" class="inline-block cursor-pointer radio">
-                    <input class="hidden peer" type="radio" name="radio" :checked="mode === 'rude'" />
-                    <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
-                        <span :class="{ 'filter grayscale': mode !== 'rude' }">🤬</span>
-                        有点脏
-                    </span>
-                </label>
+                    <!-- 祖安模式 -->
+                    <label @click="changeMode('rude')" style="margin-right: 10px" class="inline-block cursor-pointer radio">
+                        <input class="hidden peer" type="radio" name="radio" :checked="mode === 'rude'" />
+                        <span class="relative text-sm transition-all duration-300 peer-checked:font-bold peer-checked:text-black text-gray-400">
+                            <span :class="{ 'filter grayscale': mode !== 'rude' }">🤬</span>
+                            有点脏
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <!-- 模型弹出层 -->
+            <div v-if="isShareDialogOpen" class="propup fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                <div class="bg-white rounded-lg p-6 shadow-lg w-96">
+                    <div class="flex flex-col items-left">
+                        <h2 class="text-md font-semibold text-gray-800 mb-4">选择模型</h2>
+
+                        <div class="w-full">
+                            <div class="grid grid-cols-2 gap-2">
+                                <label
+                                    v-for="model in models"
+                                    :key="model.name"
+                                    @click="changeModel(model)"
+                                    class="group flex items-center p-2 rounded-md border border-gray-300 cursor-pointer hover:shadow-md transition-shadow focus:outline-none peer-checked:bg-blue-100 peer-checked:border-blue-500"
+                                >
+                                    <input type="radio" name="model" value="model1" class="peer sr-only" aria-hidden="true" />
+                                    <img :src="model.img" alt="Model 1 Icon" class="w-5 h-5 mr-2 rounded border-gray-300" />
+                                    <span class="text-gray-700 text-sm">{{ model.name }}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -55,7 +89,7 @@
                     </button>
 
                     <button
-                        v-if="model === 'gpt35' || model === 'gemini' || model === 'kimi' || model === 'stepfunChat'"
+                        v-if="model === 'gpt35' || model === 'gemini' || model === 'kimi' || model === 'stepfunChat' || model === 'lingyiwanwu'"
                         class="think inline-flex items-center cursor-pointer px-2 py-1 rounded-full transition-colors"
                         :class="think ? 'bg-[#DBEAFE] border-[#4D6BFE] text-[#4D6BFE]' : 'bg-gray-200 border-gray-400 text-gray-600'"
                         @click="changeThink"
@@ -101,6 +135,7 @@
 
 <script>
 import { autoResizeTextarea, resetTextareaHeight } from '../../utils/helpers'
+import { showModels } from '../../utils/api'
 
 export default {
     props: {
@@ -130,16 +165,19 @@ export default {
     },
     data() {
         return {
+            models: showModels,
             boxHeight: 100, // 初始高度
             initialHeight: 100, // 初始化高度，用于重置
             placeholder: '来说点什么...',
             userInput: '',
-            selectedModel: 'model1', // 默认选择的模型
             isDeepThinking: false, // 深度思考开关状态
             showPasswordModal: false, // 控制密码模态框的显示与隐藏
             passwordInput: '', // 用户输入的密码
             correctPassword: '1313ljjmtdsxxx', // 正确的密码
-            think: false
+            think: false,
+            isShareDialogOpen: false,
+            selectedModel: '水泥封心',
+            selectedModelImg: require('@/assets/robot.png')
         }
     },
     methods: {
@@ -235,6 +273,15 @@ export default {
         },
         init() {
             this.think = false
+        },
+        openModelDialog() {
+            this.isShareDialogOpen = true
+        },
+        changeModel(data) {
+            this.isShareDialogOpen = false
+            this.selectedModel = data.name
+            this.selectedModelImg = data.img
+            this.$emit('change-model', data.model)
         }
     },
     mounted() {}

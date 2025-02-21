@@ -4,7 +4,7 @@
             <!-- 模型选择 -->
             <TabSelector :tab="tab" @tab-selected="changeTab" />
             <template v-if="tab === 'chat'">
-                <ModelSelector v-if="!isDeepThinking" :model="model" @change-model="changeModel" />
+                <!-- <ModelSelector v-if="!isDeepThinking" :model="model" @change-model="changeModel" /> -->
 
                 <!-- 聊天记录区域 -->
                 <div ref="chatContainer" class="flex-1 p-2 overflow-y-auto pb-2 chatContainer">
@@ -23,6 +23,7 @@
                     @scroll-to-bottom="scrollToBottom"
                     @change-mode="changeMode"
                     @toggle-deep-thinking="toggleDeepThinking"
+                    @change-model="changeModel"
                 />
             </template>
             <!-- 大模型竞技场 -->
@@ -60,7 +61,7 @@
 </template>
 
 <script>
-import ModelSelector from './ModelSelector.vue'
+// import ModelSelector from './ModelSelector.vue'
 import RoleList from './RoleBox/RoleList.vue'
 import TabSelector from './TabSelector.vue'
 import Message from './ChatBox/MessageBox.vue'
@@ -74,7 +75,7 @@ import { fetchAIResponse, API_CONFIG } from '../utils/api'
 import { ChatPrompts } from '../utils/prompt.js'
 export default {
     components: {
-        ModelSelector,
+        // ModelSelector,
         TabSelector,
         RoleList,
         Message,
@@ -208,7 +209,7 @@ export default {
                 )
             } catch (error) {
                 if (error.name !== 'AbortError') {
-                    this.messages = [{ role: 'assistant', content: '这个模型出现了问题，请换个模型试试！', id: this.generateUniqueId() }]
+                    this.messages = [{ role: 'assistant', content: '这个模型出现了问题，请重试或者换个模型！', id: this.generateUniqueId() }]
                 }
             }
         },

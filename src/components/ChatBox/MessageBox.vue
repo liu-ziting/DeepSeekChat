@@ -131,7 +131,7 @@ export default {
     },
     computed: {
         messageClass() {
-            return this.message.role === 'user' ? 'flex justify-end items-start gap-3' : 'flex justify-start items-start gap-3'
+            return this.message.role === 'user' ? 'flex justify-end items-start gap-2' : 'flex justify-start items-start gap-2'
         },
         bubbleClass() {
             return this.message.role === 'user' ? 'bg-blue-500 text-white rounded-lg p-3 ' : 'bg-gray-200 text-gray-800 rounded-lg p-3 '

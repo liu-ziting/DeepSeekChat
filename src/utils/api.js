@@ -123,8 +123,76 @@ export const API_CONFIG = {
         apiKey: process.env.VUE_APP_GPT35_API_KEY,
         modelName: 'gpt-3.5-turbo',
         temperature: 0.8
+    },
+    lingyiwanwu: {
+        name: '零一万物',
+        apiUrl: 'https://api.lingyiwanwu.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_LYWW_API_KEY,
+        modelName: 'yi-lightning',
+        temperature: 0.8
+    },
+    qwen: {
+        name: '通义千问',
+        apiUrl: 'https://api-1-hemf.onrender.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_QWEN_API_KEY,
+        modelName: 'qwen-max',
+        temperature: 0.8
     }
 }
+
+// 展示不同的模型
+export const showModels = [
+    {
+        name: '水泥封心',
+        model: 'deepseek',
+        img: require('@/assets/robot.png')
+    },
+    {
+        name: 'DeepSeek-R1',
+        model: 'deepseek',
+        img: require('@/assets/deepseek.png')
+    },
+    {
+        name: 'GPT3.5',
+        model: 'gpt35',
+        img: require('@/assets/openai.png')
+    },
+    {
+        name: 'Gemini2.0',
+        model: 'gemini',
+        img: require('@/assets/gemini.jpg')
+    },
+    {
+        name: '月之暗面',
+        model: 'kimi',
+        img: require('@/assets/kimi.png')
+    },
+    {
+        name: '智谱清言',
+        model: 'bigmodel',
+        img: require('@/assets/zhipu.png')
+    },
+    {
+        name: '通义千问',
+        model: 'qwen',
+        img: require('@/assets/qwen.jpg')
+    },
+    {
+        name: '阶跃星辰',
+        model: 'stepfunChat',
+        img: require('@/assets/stepfunChat.png')
+    },
+    {
+        name: '百川智能',
+        model: 'baichuan',
+        img: require('@/assets/baishuan.png')
+    },
+    {
+        name: '零一万物',
+        model: 'lingyiwanwu',
+        img: require('@/assets/lingyiwanwu.svg')
+    }
+]
 
 export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, temperature = 1, stream = false, onDataReceived, controller) => {
     // 构建请求体
