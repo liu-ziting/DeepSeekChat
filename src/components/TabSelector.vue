@@ -24,7 +24,7 @@
             <input type="radio" name="tab" :checked="tab === 'textvideo'" />
             <span class="name">文生视频</span>
         </label> -->
-        <label class="radio" @click="changeModel('imgvideo')">
+        <label v-if="false" class="radio" @click="changeModel('imgvideo')">
             <input type="radio" name="tab" :checked="tab === 'imgvideo'" />
             <span class="name">视频生成</span>
         </label>
