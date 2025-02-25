@@ -37,7 +37,7 @@ export default {
 - RooCline+DeepSeek+TailwindCSS
 
 🤖 多模型
-- 水泥封心：deepseek-chat
+- 水泥封心：deepseek-v3
 - DeepSeek：deepseek-r1
 - Gemini：gemini-2.0-flash
 - GPT：gpt-3.5-turbo
@@ -50,7 +50,7 @@ export default {
 - MINIMAX：MiniMax-Text-01
 
 🎭 角色对话
-- GPT：gpt-3.5-turbo
+- GPT：deepseek-v3
 
 🖼️ 图片识别/语音合成
 - 阶跃星辰：step-1o-turbo-vision
@@ -59,8 +59,6 @@ export default {
 😍 图片生成
 - 智谱清言：cogview-3-flash
 
-🎞️ 视频生成
-- 智谱清言：cogvideox-flash
  `
         }
     }

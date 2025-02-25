@@ -24,6 +24,7 @@
                     @change-mode="changeMode"
                     @toggle-deep-thinking="toggleDeepThinking"
                     @change-model="changeModel"
+                    @stop-ai-response="stopAIResponse"
                 />
             </template>
             <!-- 大模型竞技场 -->
@@ -306,6 +307,20 @@ export default {
                 this.model = 'deepseek'
                 // 非深度思考模式下，插入默认的第一个对话
                 // this.insertDefaultMessage()
+            }
+        },
+        stopAIResponse() {
+            if (this.abortController) {
+                this.abortController.abort()
+                this.isThinking = false
+                // 在消息中塞入：已终止请求
+                this.messages.push({
+                    role: 'assistant',
+                    model: this.model,
+                    content: '已终止请求！'
+                })
+            } else {
+                console.log('No AI response in progress to stop.')
             }
         }
     },

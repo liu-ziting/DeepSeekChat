@@ -67,6 +67,7 @@
                             :model="model"
                             @send-message="sendMessage"
                             @scroll-to-bottom="scrollToBottom"
+                            @stop-ai-response="stopAIResponse"
                         />
                     </div>
                     <!-- 底部介绍 -->
@@ -102,7 +103,7 @@ export default {
             ],
             isThinking: false,
             mode: 'normal',
-            model: 'gpt35',
+            model: 'deepseek',
             tab: 'chat',
             selectedPrompt: null,
             abortController: null // 用来保存 AbortController 实例
@@ -254,6 +255,21 @@ export default {
         },
         handlePresetClick(preset) {
             this.$refs.inputBox.roleChange(preset)
+        },
+
+        stopAIResponse() {
+            if (this.abortController) {
+                this.abortController.abort()
+                this.isThinking = false
+                // 在消息中塞入：已终止请求
+                this.messages.push({
+                    role: 'assistant',
+                    model: this.model,
+                    content: '已终止请求！'
+                })
+            } else {
+                console.log('No AI response in progress to stop.')
+            }
         }
     }
 }

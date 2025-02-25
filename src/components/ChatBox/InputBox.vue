@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <!-- 模型选择 -->
-        <div class="flex items-center justify-between">
+        <div v-if="showMode" class="flex items-center justify-between">
             <button
                 @click="openModelDialog"
                 style="border: 1px solid #d9d9d9"
@@ -29,7 +29,7 @@
                 </svg>
             </button>
             <!-- 模式选择 -->
-            <div v-if="(model === 'deepseek' || model === 'deepThinking') && showMode" class="w-1/2 flex justify-end">
+            <div v-if="model === 'deepseek' || model === 'deepThinking'" class="w-1/2 flex justify-end">
                 <div>
                     <!-- 正常模式 -->
                     <label @click="changeMode('normal')" style="margin-right: 10px" class="inline-block cursor-pointer radio">
@@ -133,7 +133,7 @@
                     </button>
 
                     <button
-                        v-if="model === 'gpt35' || model === 'gemini' || model === 'kimi' || model === 'stepfunChat' || model === 'lingyiwanwu'"
+                        v-if="(model === 'gpt35' || model === 'gemini' || model === 'kimi' || model === 'stepfunChat' || model === 'lingyiwanwu') && showMode"
                         class="think inline-flex items-center cursor-pointer px-2 py-1 rounded-full transition-colors"
                         :class="think ? 'bg-[#DBEAFE] border-[#4D6BFE] text-[#4D6BFE]' : 'bg-gray-200 border-gray-400 text-gray-600'"
                         @click="changeThink"
@@ -149,8 +149,8 @@
                         </svg>
                         <span class="pl-1" style="font-size: 12px">伪深度思考</span>
                     </button>
-                    <button type="submit" :disabled="isThinking" class="send-button">
-                        <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <button type="submit" class="send-button">
+                        <svg v-if="!isThinking" width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 fill-rule="evenodd"
                                 clip-rule="evenodd"
@@ -169,6 +169,20 @@
                                 d="M13.685 7.44a1.11 1.11 0 0 1-1.523 0L6.238 1.762a1.002 1.002 0 0 1 0-1.46 1.11 1.11 0 0 1 1.523 0l5.924 5.678c.42.403.42 1.056 0 1.46z"
                                 fill="currentColor"
                             ></path>
+                        </svg>
+                        <svg
+                            v-else
+                            @click="stopAIResponse"
+                            t="1740452364359"
+                            class="icon"
+                            viewBox="0 0 1024 1024"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            p-id="4320"
+                            width="32"
+                            height="32"
+                        >
+                            <path d="M882.789 882.789H141.21V141.21H882.79z" fill="#ffffff" p-id="4321"></path>
                         </svg>
                     </button>
                 </div>
@@ -326,6 +340,9 @@ export default {
             this.selectedModel = data.name
             this.selectedModelImg = data.img
             this.$emit('change-model', data.model)
+        },
+        stopAIResponse() {
+            this.$emit('stop-ai-response')
         }
     },
     mounted() {}
