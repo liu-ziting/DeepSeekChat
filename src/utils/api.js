@@ -9,17 +9,17 @@ export const API_CONFIG = {
     },
     deepseek: {
         // 派欧算力云
-        name: 'DeepSeek',
-        apiUrl: 'https://api.ppinfra.com/v3/openai/chat/completions',
-        apiKey: process.env.VUE_APP_OPSLY_API_KEY,
-        modelName: 'deepseek/deepseek-v3/community',
-        temperature: 0.6
-        // 七牛云
         // name: 'DeepSeek',
-        // apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
-        // apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
-        // modelName: 'deepseek-v3',
+        // apiUrl: 'https://api.ppinfra.com/v3/openai/chat/completions',
+        // apiKey: process.env.VUE_APP_OPSLY_API_KEY,
+        // modelName: 'deepseek/deepseek-v3/community',
         // temperature: 0.6
+        // 七牛云
+        name: 'DeepSeek',
+        apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
+        modelName: 'deepseek-v3',
+        temperature: 0.6
         // 官方
         // name: 'DeepSeek',
         // apiUrl: 'https://api.deepseek.com/v1/chat/completions',
