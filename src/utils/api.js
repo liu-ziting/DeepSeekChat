@@ -118,7 +118,7 @@ export const API_CONFIG = {
         modelName: 'step-tts-mini'
     },
     gpt35: {
-        name: 'GPT',
+        name: 'GPT3.5',
         apiUrl: 'https://api.chatanywhere.tech/v1/chat/completions',
         apiKey: process.env.VUE_APP_GPT35_API_KEY,
         modelName: 'gpt-3.5-turbo',
@@ -144,6 +144,13 @@ export const API_CONFIG = {
         apiKey: process.env.VUE_APP_MINIMAX_API_KEY,
         modelName: 'MiniMax-Text-01',
         temperature: 0.1
+    },
+    gpt4o: {
+        name: 'GPT4o',
+        apiUrl: 'https://www.mnapi.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_GPT4o_API_KEY,
+        modelName: 'gpt-4o',
+        temperature: 0.3
     }
 }
 
@@ -158,21 +165,6 @@ export const showModels = [
         name: 'DeepSeek-R1',
         model: 'deepseek',
         img: require('@/assets/deepseek.png')
-    },
-    {
-        name: 'GPT3.5',
-        model: 'gpt35',
-        img: require('@/assets/openai.png')
-    },
-    {
-        name: 'Gemini2.0',
-        model: 'gemini',
-        img: require('@/assets/gemini.jpg')
-    },
-    {
-        name: 'minimax',
-        model: 'minimax',
-        img: require('@/assets/minimax.webp')
     },
     {
         name: '月之暗面',
@@ -203,6 +195,26 @@ export const showModels = [
         name: '零一万物',
         model: 'lingyiwanwu',
         img: require('@/assets/lingyiwanwu.svg')
+    },
+    {
+        name: 'GPT3.5',
+        model: 'gpt35',
+        img: require('@/assets/openai.png')
+    },
+    {
+        name: 'GPT4o',
+        model: 'gpt4o',
+        img: require('@/assets/gpt4o.png')
+    },
+    {
+        name: 'Gemini2.0',
+        model: 'gemini',
+        img: require('@/assets/gemini.jpg')
+    },
+    {
+        name: 'MiniMax',
+        model: 'minimax',
+        img: require('@/assets/minimax.webp')
     }
 ]
 
