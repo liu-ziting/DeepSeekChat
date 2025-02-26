@@ -50,7 +50,7 @@ export default {
 - MINIMAX：MiniMax-Text-01
 
 🎭 角色对话
-- GPT：deepseek-v3
+- DeepSeek：deepseek-v3
 
 🖼️ 图片识别/语音合成
 - 阶跃星辰：step-1o-turbo-vision

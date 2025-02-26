@@ -76,7 +76,7 @@
                     <button
                         v-if="false"
                         @click="handleCopy"
-                        class="absolute p-[3px] bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-100 transition-colors duration-200"
+                        class="absolute -top-2 -right-2 p-[3px] bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-100 transition-colors duration-200"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
