@@ -74,7 +74,7 @@
                     </div>
                     <!-- 复制按钮 -->
                     <button
-                        v-if="showCopyButton"
+                        v-if="false"
                         @click="handleCopy"
                         class="absolute p-[3px] bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-100 transition-colors duration-200"
                     >
