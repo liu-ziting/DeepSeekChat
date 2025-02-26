@@ -343,7 +343,7 @@ export default {
         changeTab(newTab) {
             this.tab = newTab
             this.isDeepThinking = false
-            this.model = 'shuinifengxin'
+            this.model = 'deepseek'
             this.messages = []
             this.insertDefaultMessage()
         },
