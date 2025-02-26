@@ -91,8 +91,8 @@ export default {
         return {
             messages: [], // 初始化为空
             isThinking: false,
-            mode: 'angry',
-            model: 'shuinifengxin',
+            mode: 'normal',
+            model: 'deepseek',
             tab: 'chat',
             isDeepThinking: false,
             abortController: null // 用来保存 AbortController 实例
@@ -130,9 +130,13 @@ export default {
         async getAIResponse(loadingMessageId, controller) {
             try {
                 const systemMessage = this.getSystemMessage()
+
+                // 移除默认消息
+                const messagesWithoutDefault = this.messages.filter(msg => msg.role !== 'assistant' || msg.content !== '你好！请问有什么可以帮您的？')
+
                 const messages = [
                     { role: 'system', content: systemMessage },
-                    ...this.messages.filter(msg => msg.id !== loadingMessageId).map(msg => ({ role: msg.role, content: msg.content }))
+                    ...messagesWithoutDefault.filter(msg => msg.id !== loadingMessageId).map(msg => ({ role: msg.role, content: msg.content }))
                 ]
 
                 const { apiUrl, apiKey, modelName, temperature } = this.getApiConfig()
@@ -153,7 +157,9 @@ export default {
                             duration: 0,
                             id: this.generateUniqueId(),
                             mode: this.mode,
-                            model: this.model
+                            model: this.model,
+                            reasoningSearchResults: [], // 新增：初始化 reasoningSearchResults
+                            contentSearchResults: [] // 新增：初始化 contentSearchResults
                         },
                         ...this.messages.slice(index + 1)
                     ]
@@ -172,6 +178,30 @@ export default {
                             return // 请求被中止，退出
                         }
 
+                        const extractSearchResults = text => {
+                            // 使用 RegExp 构造函数
+                            const searchResultRegex = new RegExp('([\\s\\S]*?)\\$\\~\\~\\~\\$\\s*(\\[.*?\\])\\s*\\$\\~\\~\\~\\$', 'g')
+                            let match
+                            let extractedResults = []
+
+                            while ((match = searchResultRegex.exec(text)) !== null) {
+                                try {
+                                    const parsedResults = JSON.parse(match[2])
+                                    extractedResults = [...extractedResults, ...parsedResults] // 合并结果
+                                } catch (error) {
+                                    console.error('JSON 解析错误:', error)
+                                    console.error('错误数据:', match[2])
+                                }
+                            }
+                            return extractedResults
+                        }
+
+                        // 新增：移除联网查询结果标记的函数
+                        const removeSearchResultMarkers = text => {
+                            const searchResultRegex = new RegExp('([\\s\\S]*?)\\$\\~\\~\\~\\$\\s*(\\[.*?\\])\\s*\\$\\~\\~\\~\\$', 'g')
+                            return text.replace(searchResultRegex, '')
+                        }
+
                         if (chunk.type === 'reasoning') {
                             reasoningContent += chunk.content
                             totalTokens = parseFloat((totalTokens + chunk.token).toFixed(4))
@@ -188,21 +218,42 @@ export default {
                             const currentTime = Date.now()
                             currentMessage.reasoningDuration = parseFloat(((currentTime - currentMessage.reasoningStartTime) / 1000).toFixed(1))
 
+                            // 清空 reasoningSearchResults 数组
+                            currentMessage.reasoningSearchResults = []
+                            const results = extractSearchResults(reasoningContent)
+                            currentMessage.reasoningSearchResults = [...results]
+
+                            // 移除 reasoningContent 中的联网查询结果标记
+                            const cleanedReasoningContent = removeSearchResultMarkers(reasoningContent)
+
                             this.messages = [
                                 ...this.messages.slice(0, index),
-                                { ...currentMessage, reasoningContent, token: totalTokens, duration: chunk.duration }, // 更新消息对象
+                                { ...currentMessage, reasoningContent: cleanedReasoningContent, token: totalTokens, duration: chunk.duration }, // 更新消息对象，包含 reasoningSearchResults
                                 ...this.messages.slice(index + 1)
                             ]
                         } else if (chunk.type === 'content') {
                             finalContent += chunk.content
                             totalTokens = parseFloat((totalTokens + chunk.token).toFixed(4))
+
+                            // 获取当前消息对象
+                            const currentMessage = this.messages[index]
+
+                            // 清空 contentSearchResults 数组
+                            currentMessage.contentSearchResults = []
+                            const results = extractSearchResults(finalContent)
+                            currentMessage.contentSearchResults = [...results]
+
+                            // 移除 finalContent 中的联网查询结果标记
+                            const cleanedFinalContent = removeSearchResultMarkers(finalContent)
+
                             this.messages = [
                                 ...this.messages.slice(0, index),
-                                { ...this.messages[index], content: finalContent, token: totalTokens, duration: chunk.duration },
+                                { ...currentMessage, content: cleanedFinalContent, token: totalTokens, duration: chunk.duration }, // 传递 reasoningSearchResults 和 contentSearchResults
                                 ...this.messages.slice(index + 1)
                             ]
                         } else if (chunk.type === 'complete') {
-                            this.messages = [...this.messages.slice(0, index), { ...this.messages[index], duration: chunk.duration }, ...this.messages.slice(index + 1)]
+                            const currentMessage = this.messages[index]
+                            this.messages = [...this.messages.slice(0, index), { ...currentMessage, duration: chunk.duration }, ...this.messages.slice(index + 1)] // 传递 reasoningSearchResults 和 contentSearchResults
                         }
                         this.conditionalScrollToBottom()
                     },

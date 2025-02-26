@@ -16,6 +16,33 @@
                 <span v-else-if="message.model && showName" class="text-sm font-medium mb-1" :class="nameClass">
                     {{ config[message.model].name }}
                 </span>
+
+                <!-- 可折叠的联网查询结果 (Content) -->
+                <div v-if="message.contentSearchResults && message.contentSearchResults.length > 0" class="bg-gray-100 p-3 rounded-lg mb-2 text-sm text-gray-700">
+                    <div class="flex items-center justify-between cursor-pointer" @click="toggleContentSearchResults">
+                        <span class="font-medium">联网查询结果（{{ message.contentSearchResults.length }} 条）</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4 transition-transform duration-200"
+                            :class="{ 'transform rotate-180': isContentSearchResultsExpanded }"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div v-if="isContentSearchResultsExpanded" class="mt-2">
+                        <ul>
+                            <li v-for="(result, index) in message.contentSearchResults" :key="index" class="mb-1">
+                                <a :href="result.link" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
+                                    {{ index + 1 }} . {{ result.title || result.url || '无标题' }}
+                                </a>
+                                <p class="text-gray-600 text-xs">{{ result.snippet }}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <!-- 可折叠的思维链内容 -->
                 <div v-if="message.reasoningContent" class="bg-gray-100 p-3 rounded-lg mb-2 text-sm text-gray-700">
                     <div class="flex items-center justify-between cursor-pointer" @click="toggleReasoning">
@@ -49,7 +76,7 @@
                     <button
                         v-if="showCopyButton"
                         @click="handleCopy"
-                        class="absolute -top-2 -right-2 p-[3px] bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-100 transition-colors duration-200"
+                        class="absolute p-[3px] bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-100 transition-colors duration-200"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
@@ -116,7 +143,8 @@ export default {
         return {
             showCopyButton: false, // 控制复制按钮的显示
             isReasoningExpanded: !!this.message.reasoningContent, // 默认展开（如果 reasoningContent 存在）
-            config: API_CONFIG
+            config: API_CONFIG,
+            isContentSearchResultsExpanded: false // 默认不展开（如果 contentSearchResults 存在）
         }
     },
     watch: {
@@ -184,6 +212,9 @@ export default {
         toggleReasoning() {
             this.isReasoningExpanded = !this.isReasoningExpanded
         },
+        toggleContentSearchResults() {
+            this.isContentSearchResultsExpanded = !this.isContentSearchResultsExpanded
+        },
         // 解析 Markdown 内容
         renderMarkdown(content) {
             return marked.parse(content) // 使用 marked 解析 Markdown
@@ -218,6 +249,12 @@ export default {
 }
 </script>
 <style scoped>
+ul li {
+    list-style: none;
+}
+ul {
+    padding-left: 0;
+}
 .preset-item {
     margin: 4px 0;
     color: #4a5568; /* 预设文本颜色 */

@@ -5,7 +5,7 @@
             <button
                 @click="openModelDialog"
                 style="border: 1px solid #d9d9d9"
-                class="model-select inline-flex items-center cursor-pointer px-2 py-1 ml-1 rounded-full transition-colors"
+                class="bg-[#ffffff] model-select inline-flex items-center cursor-pointer px-2 py-1 ml-1 rounded-full transition-colors"
             >
                 <img :src="selectedModelImg" class="w-5 h-5 rounded-full border-gray-300" />
                 <span class="pl-1" style="font-size: 12px"> {{ selectedModel }} </span>
@@ -234,8 +234,8 @@ export default {
             correctPassword: '1313ljjmtdsxxx', // 正确的密码
             think: false,
             isShareDialogOpen: false,
-            selectedModel: '水泥封心',
-            selectedModelImg: require('@/assets/robot.png')
+            selectedModel: 'DeepSeek-R1',
+            selectedModelImg: require('@/assets/deepseek.png')
         }
     },
     methods: {
