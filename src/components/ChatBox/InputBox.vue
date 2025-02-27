@@ -354,7 +354,7 @@ export default {
     min-height: 110px;
     max-height: 500px;
     background-color: #ffffff;
-    border: 1px solid #666666;
+    border: 1px solid #d9d9d9;
     border-radius: 10px;
     margin: 5px 5px 25px 5px;
     padding: 10px;
