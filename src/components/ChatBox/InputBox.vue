@@ -351,15 +351,21 @@ export default {
 <style scoped>
 .input-box {
     width: calc(100% - 10px);
-    min-height: 100px;
+    min-height: 110px;
     max-height: 500px;
-    background-color: #f3f4f6;
-    border: 1px solid #d9d9d9;
+    background-color: #ffffff;
+    border: 1px solid #334155;
     border-radius: 10px;
     margin: 5px 5px 25px 5px;
     padding: 10px;
     position: relative;
     overflow: hidden; /* 防止内容溢出 */
+}
+/* 检测电脑屏幕 */
+@media screen and (min-width: 1024px) {
+    .input-box {
+        min-height: 120px;
+    }
 }
 
 .input-textarea {
@@ -369,7 +375,7 @@ export default {
     border: none;
     resize: none;
     font-size: 14px;
-    background-color: #f3f4f6;
+    background-color: #ffffff;
     overflow: hidden; /* 防止内容溢出 */
 }
 

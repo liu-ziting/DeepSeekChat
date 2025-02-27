@@ -162,7 +162,7 @@ export default {
             return this.message.role === 'user' ? 'flex justify-end items-start gap-2' : 'flex justify-start items-start gap-2'
         },
         bubbleClass() {
-            return this.message.role === 'user' ? 'bg-blue-500 text-white rounded-lg p-3 ' : 'bg-gray-200 text-gray-800 rounded-lg p-3 '
+            return this.message.role === 'user' ? 'bg-blue-500 text-white rounded-lg p-3 ' : 'bg-[#f1f1f1] text-gray-800 rounded-lg p-3 '
         },
         nameClass() {
             return this.message.role === 'user' ? 'text-right text-blue-500' : 'text-left text-gray-600'
