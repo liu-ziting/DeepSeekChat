@@ -219,6 +219,14 @@ export default {
             this.$nextTick(() => {
                 autoResizeTextarea(this.$refs.textarea)
             })
+        },
+        // 监听model变化，更新选中的模型信息
+        model(newModel) {
+            const selected = this.models.find(m => m.model === newModel)
+            if (selected) {
+                this.selectedModel = selected.name
+                this.selectedModelImg = selected.img
+            }
         }
     },
     data() {
