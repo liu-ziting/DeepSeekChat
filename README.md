@@ -2,11 +2,12 @@
 
 ## 项目概述
 
-DeepSeek Chat 是一个基于 Vue.js 的 AI 聊天应用，集成了多种大模型能力，提供智能对话和宠物心理分析功能。项目采用模块化设计，具有良好的可扩展性。
+DeepSeek Chat 是一个基于 Vue.js 的 AI 聊天应用，集成了多种大模型能力，具有良好的可扩展性。
+本项目 90%的代码由大模型自主开发，构建工具：RooCline+DeepSeek+TailwindCSS。
 
 ### 项目背景
 
-随着大语言模型的快速发展，AI 对话系统在各个领域得到广泛应用。本项目旨在构建一个轻量级、易扩展的 AI 对话平台，集成多种主流大模型，为用户提供智能对话服务。同时，结合计算机视觉技术，创新性地加入了宠物心理分析功能，为宠物主人提供有趣的互动体验。
+随着大语言模型的快速发展，AI 对话系统在各个领域得到广泛应用。本项目旨在构建一个轻量级、易扩展的 AI 对话平台，集成多种主流大模型，为用户提供智能对话服务。
 
 ## 在线演示
 
@@ -16,9 +17,32 @@ DeepSeek Chat 是一个基于 Vue.js 的 AI 聊天应用，集成了多种大模
 
 ### 核心功能
 
--   多模型对话：支持 DeepSeek、Gemini、智谱清言、月之暗面等主流大模型
--   宠物心理分析：通过上传宠物照片，AI 分析宠物情绪并生成拟人化描述
--   响应式设计：适配桌面和移动端
+🤖 多模型
+
+-   水泥封心：deepseek-v3
+-   DeepSeek：deepseek-r1
+-   Gemini：gemini-2.0-flash
+-   GPT：gpt-3.5-turbo
+-   智谱清言：glm-4v-flash
+-   月之暗面：moonshot-v1-8k
+-   零一万物：yi-lightning
+-   通义千问：qwen-max
+-   阶跃星辰：step-1-flash
+-   百川智能：Baichuan4-Air
+-   MINIMAX：MiniMax-Text-01
+
+🎭 角色对话
+
+-   DeepSeek：deepseek-v3
+
+🖼️ 图片识别/语音合成
+
+-   阶跃星辰：step-1o-turbo-vision
+-   阶跃星辰：step-tts-mini
+
+😍 图片生成
+
+-   智谱清言：cogview-3-flash
 
 ### 技术特性
 
@@ -167,3 +191,8 @@ DeepSeekChat/
 -   [Gemini API 文档](https://ai.google.dev/docs)
 -   [智谱清言 API 文档](https://open.bigmodel.cn/dev/api)
 -   [月之暗面 API 文档](https://platform.moonshot.cn/docs)
+-   [零一万物 API 文档](https://platform.yilifang.com/docs)
+-   [通义千问 API 文档](https://open.qwen.cn/docs)
+-   [阶跃星辰 API 文档](https://platform.step.com/docs)
+-   [百川智能 API 文档](https://open.baichuan.com.cn/docs)
+-   [MINIMAX API 文档](https://platform.minimax.cn/docs)
