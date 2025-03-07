@@ -64,6 +64,7 @@ export default {
     methods: {
         async handleFileUpload(event) {
             const file = event.target.files[0]
+            console.log(file)
             if (file) {
                 this.readImageFile(file)
             }
@@ -137,8 +138,7 @@ export default {
                     this.predictions = [{ className: '健康得很', probability: 1 }]
                 }
 
-                const rate = Math.max(Predictions['色情'] || 0, Predictions['性感'] || 0, Predictions['变态'] || 0)
-
+                const rate = Math.max(Predictions['色情'] || 0, (Predictions['性感'] || 0) * 0.8, Predictions['变态'] || 0)
                 const resultBox = this.$refs.resultBox
                 if (resultBox) {
                     let resultText = '无不雅内容'
@@ -147,7 +147,7 @@ export default {
                     if (rate > 0.5) {
                         resultText = '存在不雅内容'
                         resultColor = 'text-red-500'
-                    } else if (rate > 0.2) {
+                    } else if (rate > 0.3) {
                         resultText = '可能包含不雅内容'
                         resultColor = 'text-yellow-500'
                     }
