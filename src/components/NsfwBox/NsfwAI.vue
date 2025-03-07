@@ -14,10 +14,12 @@
                 @change="handleFileUpload"
                 class="mb-4 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed"
             />
-            <div class="mb-4 p-4 bg-gray-100 rounded-lg text-sm">
+            <div class="mb-10 p-4 bg-gray-100 rounded-lg text-sm">
                 <div class="mb-2 text-lg" ref="resultBox"></div>
                 <div v-if="predictions.length" class="mt-2">
-                    <p class="mb-2 text-md" v-for="(prediction, index) in predictions" :key="index">{{ prediction.className }}: {{ (prediction.probability * 100).toFixed(2) }}%</p>
+                    <p class="mb-2 text-md" v-for="(prediction, index) in predictions" :key="index">
+                        - {{ prediction.className }}: {{ (prediction.probability * 100).toFixed(2) }}%
+                    </p>
                 </div>
                 <div v-else>请上传图片或粘贴图片，我来鉴定是否包含不雅内容！</div>
             </div>
@@ -137,13 +139,13 @@ export default {
 
                     if (rate > 0.5) {
                         resultText = '存在不雅内容'
-                        resultColor = 'text-yellow-500'
+                        resultColor = 'text-red-500'
                     } else if (rate > 0.2) {
                         resultText = '可能包含不雅内容'
-                        resultColor = 'text-yellow-300'
+                        resultColor = 'text-yellow-500'
                     }
 
-                    resultBox.classList.remove('text-green-600', 'text-yellow-500', 'text-yellow-300')
+                    resultBox.classList.remove('text-green-600', 'text-red-500', 'text-yellow-500')
                     resultBox.classList.add(resultColor)
                     resultBox.innerHTML = `<p class="text-lg font-bold">${resultText}</p>`
                 }
