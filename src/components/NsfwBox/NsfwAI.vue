@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto pl-4 pr-4">
-        <h2 class="text-xl font-bold mt-4 mb-4">拯救尴尬：鉴黄神器NSFW</h2>
+        <h2 class="text-xl font-bold mt-4 mb-4">我知道你的图片是否违规了！</h2>
         <div class="flex flex-col">
             <div class="w-full aspect-square mb-4 rounded-md overflow-hidden" @paste="handlePaste">
                 <img v-if="imageUrl" :src="imageUrl" id="uploaded-img" @load="analyzeImage" class="w-full h-full object-cover" />
@@ -26,7 +26,7 @@
             </div>
         </div>
         <!-- 底部介绍 -->
-        <footer class="fixed bottom-2 left-3 right-3 border-gray-200 text-xs text-center text-gray-500 z-1">
+        <footer v-if="false" class="fixed bottom-2 left-3 right-3 border-gray-200 text-xs text-center text-gray-500 z-1">
             <a href="javascript:;" class="text-black-500" @click="openChat">AI大模型对话</a>
             |
             <a href="javascript:;" class="text-black-500" @click="showWeChatQR = true"> 联系作者 </a>
