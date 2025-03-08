@@ -132,7 +132,7 @@ export const API_CONFIG = {
         temperature: 0.8
     },
     qwen: {
-        name: '通义千问',
+        name: '通义千问-Max',
         apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
         apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
         modelName: 'qwen-max-2025-01-25',
@@ -151,6 +151,13 @@ export const API_CONFIG = {
         apiKey: process.env.VUE_APP_GPT4o_API_KEY,
         modelName: 'gpt-4o',
         temperature: 0.3
+    },
+    qwq:{
+        name: '通义千问-QwQ',
+        apiUrl: 'https://api.suanli.cn/v1/chat/completions',
+        apiKey: process.env.VUE_APP_QWQ_API_KEY,
+        modelName: 'free:QwQ-32B',
+        temperature: 0.6
     }
 }
 
@@ -177,8 +184,13 @@ export const showModels = [
         img: require('@/assets/zhipu.png')
     },
     {
-        name: '通义千问',
+        name: '通义千问-Max',
         model: 'qwen',
+        img: require('@/assets/qwen.jpg')
+    },
+    {
+        name: '通义千问-QwQ',
+        model: 'qwq',
         img: require('@/assets/qwen.jpg')
     },
     {
