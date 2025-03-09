@@ -85,7 +85,7 @@ exports.handler = async (event) => {
     if (!config) {
         return {
             statusCode: 400,
-            body: JSON.stringify({ error: 'Invalid model' })
+            body: JSON.stringify({ error: 'Invalid model' }) // Stringify the error
         };
     }
 
@@ -119,6 +119,12 @@ exports.handler = async (event) => {
 
             // 如果是流式响应，直接返回流
             if (stream) {
+                // **IMPORTANT:  Netlify's streaming support is limited.  Consider handling streaming on the client-side.**
+                // This is a simplified example.  You might need to adapt it based on the specific stream format.
+                //  A more robust solution would involve using a library like 'node-stream-pipe' to handle the piping.
+
+                //  This example assumes the stream is text-based and can be converted to a string.
+                const text = await response.text(); // Read the entire stream into a string.  This defeats the purpose of streaming for large responses.
                 return {
                     statusCode: 200,
                     headers: {
@@ -126,14 +132,19 @@ exports.handler = async (event) => {
                         'Cache-Control': 'no-cache',
                         'Connection': 'keep-alive'
                     },
-                    body: response.body
+                    body: text // Return the stringified stream.
                 };
+
+
+                // **Alternative (Client-Side Streaming):**
+                //  1.  Return a regular JSON response with the URL of the streaming endpoint.
+                //  2.  On the client-side, use `fetch` with `stream: true` to handle the streaming response.
             } else {
                 // 如果是普通响应，返回完整数据
                 const data = await response.json();
                 return {
                     statusCode: 200,
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(data) // Stringify the data
                 };
             }
         } else if (input && voice) {
@@ -175,14 +186,14 @@ exports.handler = async (event) => {
             // 无效的请求
             return {
                 statusCode: 400,
-                body: JSON.stringify({ error: 'Invalid request body' })
+                body: JSON.stringify({ error: 'Invalid request body' }) // Stringify the error
             };
         }
     } catch (error) {
         console.error('Error:', error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: 'Internal Server Error' })
+            body: JSON.stringify({ error: 'Internal Server Error' }) // Stringify the error
         };
     }
 };
