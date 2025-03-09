@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { fetchAIResponse, modelConfig } from '../../utils/api'
+import { fetchAIResponse, API_CONFIG, fetchTTS } from '../../utils/api'
 import IconGlm from '../IconBox/IconGlm.vue'
 import html2canvas from 'html2canvas'
 import { ImagePrompts } from '../../utils/prompt.js'
@@ -237,15 +237,15 @@ export default {
                 reader.readAsDataURL(file)
             })
         },
-       async startRecognition() {
+        async startRecognition() {
             // 创建新的 AbortController 实例
-            this.abortController = new AbortController();
+            this.abortController = new AbortController()
             if (!this.imageBase64) {
-                alert('请先上传图片');
-                return;
+                alert('请先上传图片')
+                return
             }
 
-            this.isLoading = true; // 开始加载
+            this.isLoading = true // 开始加载
 
             try {
                 const messages = [
@@ -264,76 +264,64 @@ export default {
                             }
                         ]
                     }
-                ];
-                const { modelName, temperature } = modelConfig['stepfun'];
+                ]
+                const { apiUrl, apiKey, modelName, temperature } = API_CONFIG['stepfun']
 
-                const stream = true;
+                const stream = true
                 // 用于存储流式响应的内容
-                let streamContent = '';
+                let streamContent = ''
                 await fetchAIResponse(
+                    apiUrl,
+                    apiKey,
                     modelName,
                     messages,
                     temperature,
                     stream,
                     chunk => {
                         if (this.abortController.signal.aborted) {
-                            return; // 请求被中止，退出
+                            return // 请求被中止，退出
                         }
                         // 逐步更新消息内容
                         if (chunk.type === 'content') {
-                            streamContent += chunk.content;
-                            this.generatedContent = streamContent;
+                            streamContent += chunk.content
+                            this.generatedContent = streamContent
                         }
                     },
                     this.abortController
-                );
+                )
+                // this.generatedContent = data.choices[0].message.content
 
+                // 移除表情符号
+                const cleanedContent = streamContent.replace(/[\u{1F600}-\u{1F64F}]/gu, '')
+                // 移除所有双引号和空格
+                const trimmedContent = cleanedContent.replace(/["\s]/g, '')
                 // 调用 generateTTS，并传递清理后的生成内容
-                const cleanedContent = streamContent.replace(/[\u{1F600}-\u{1F64F}]/gu, ''); // 移除表情符号
-                const trimmedContent = cleanedContent.replace(/["\s]/g, ''); // 移除所有双引号和空格
-                this.generateTTS(trimmedContent);
+                this.generateTTS(trimmedContent)
             } catch (error) {
-                console.error('Error fetching AI response:', error);
-                this.generatedContent = '识别失败，请重试';
+                console.error('Error fetching AI response:', error)
+                this.generatedContent = '识别失败，请重试'
             } finally {
-                this.isLoading = false; // 结束加载
+                this.isLoading = false // 结束加载
             }
         },
+        // 生成tts
         async generateTTS(content) {
-            const { modelName } = modelConfig['stepfunTTS'];
-            const input = content;
-            const voice = 'jilingshaonv';
+            const { apiUrl, apiKey, modelName } = API_CONFIG['stepfunTTS']
+            const input = content
+            const voice = 'jilingshaonv'
 
             try {
-                const response = await fetch('/.netlify/functions/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        modelName,
-                        input,
-                        voice
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                // 直接使用 response.blob() 获取音频数据
-                const audioBlob = await response.blob();
-                this.audioUrl = URL.createObjectURL(audioBlob);
-
+                const blob = await fetchTTS(apiUrl, apiKey, modelName, input, voice)
+                this.audioUrl = URL.createObjectURL(blob)
                 // 自动播放音频
                 this.$nextTick(() => {
-                    const audioElement = this.$el.querySelector('audio');
+                    const audioElement = this.$el.querySelector('audio')
                     if (audioElement) {
-                        audioElement.play();
+                        audioElement.play()
                     }
-                });
+                })
             } catch (error) {
-                console.error('Error generating speech:', error);
+                console.error('Error generating speech:', error)
             }
         },
         playAudio() {

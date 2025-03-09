@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { modelConfig } from '../../utils/api'
+import { API_CONFIG } from '../../utils/api'
 import IconGlm from '../IconBox/IconGlm.vue'
 
 import { ImageCogView } from '../../utils/prompt.js'
@@ -79,41 +79,42 @@ export default {
             const shuffled = this.styles.sort(() => Math.random() - 0.5).slice(0, 4)
             this.currentStyles = shuffled
         },
-         async submitData() {
-            if (!this.inputText) return;
+        async submitData() {
+            if (!this.inputText) return
 
-            const { modelName } = modelConfig['bigmodelCogview'];
-            const stylePrompt = this.styles.find(style => style.name === this.selectedStyle)?.prompt || '';
-            const fullPrompt = `${this.inputText}，${stylePrompt}`;
+            const { apiUrl, apiKey, modelName } = API_CONFIG['bigmodelCogview']
+            const stylePrompt = this.styles.find(style => style.name === this.selectedStyle)?.prompt || ''
+            const fullPrompt = `${this.inputText}，${stylePrompt}`
 
-            await this.getAIResponse(modelName, fullPrompt);
+            await this.getAIResponse(apiUrl, apiKey, modelName, fullPrompt)
         },
-        async getAIResponse(modelName, prompt) {
-            this.isLoading = true;
-            this.imageUrl = null;
-
+        async getAIResponse(apiUrl, apiKey, modelName, prompt) {
+            this.isLoading = true
+            this.imageUrl = null
             try {
-                const response = await fetch('/.netlify/functions/chat', {
+                const requestBody = {
+                    model: modelName,
+                    prompt
+                }
+                const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${apiKey}`
                     },
-                    body: JSON.stringify({
-                        modelName,
-                        prompt
-                    })
-                });
+                    body: JSON.stringify(requestBody)
+                })
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`)
                 }
 
-                const result = await response.json();
-                this.imageUrl = result.data[0]?.url || ''; // 假设返回的数据结构中有 data[0].url
+                const result = await response.json()
+                this.imageUrl = result.data[0]?.url || ''
             } catch (error) {
-                console.error('Error fetching AI response:', error);
+                console.error('Error fetching AI response:', error)
             } finally {
-                this.isLoading = false;
+                this.isLoading = false
             }
         }
     },

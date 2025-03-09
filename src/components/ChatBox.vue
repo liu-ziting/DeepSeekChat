@@ -4,6 +4,8 @@
             <!-- 模型选择 -->
             <TabSelector :tab="tab" @tab-selected="changeTab" />
             <template v-if="tab === 'chat'">
+                <!-- <ModelSelector v-if="!isDeepThinking" :model="model" @change-model="changeModel" /> -->
+
                 <!-- 聊天记录区域 -->
                 <div ref="chatContainer" class="flex-1 p-2 overflow-y-auto pb-2 chatContainer">
                     <!-- 消息列表 -->
@@ -47,23 +49,34 @@
             <template v-else-if="tab === 'cogview'">
                 <CogView />
             </template>
+            <!-- 视频生成大模型 -->
+            <template v-else-if="tab === 'textvideo'">
+                <VideoGlm />
+            </template>
+            <template v-else-if="tab === 'imgvideo'">
+                <VideoImg />
+            </template>
             <FooterBox />
         </div>
     </div>
 </template>
 
 <script>
+// import ModelSelector from './ModelSelector.vue'
 import RoleList from './RoleBox/RoleList.vue'
 import TabSelector from './TabSelector.vue'
 import Message from './ChatBox/MessageBox.vue'
 import InputBox from './ChatBox/InputBox.vue'
 import Glm4V from './ImgBox/Glm4V.vue'
 import CogView from './ImgBox/CogView.vue'
+import VideoGlm from './ImgBox/VideoGlm.vue'
+import VideoImg from './ImgBox/VideoImg.vue'
 import FooterBox from './FooterBox.vue'
-import { fetchAIResponse, modelConfig } from '../utils/api'
+import { fetchAIResponse, API_CONFIG } from '../utils/api'
 import { ChatPrompts } from '../utils/prompt.js'
 export default {
     components: {
+        // ModelSelector,
         TabSelector,
         RoleList,
         Message,
@@ -71,6 +84,8 @@ export default {
         FooterBox,
         Glm4V,
         CogView,
+        VideoGlm,
+        VideoImg
     },
     data() {
         return {
@@ -124,7 +139,7 @@ export default {
                     ...messagesWithoutDefault.filter(msg => msg.id !== loadingMessageId).map(msg => ({ role: msg.role, content: msg.content }))
                 ]
 
-                const { modelName, temperature } = this.getApiConfig();
+                const { apiUrl, apiKey, modelName, temperature } = this.getApiConfig()
 
                 let reasoningContent = ''
                 let finalContent = ''
@@ -155,6 +170,8 @@ export default {
 
                 const stream = true
                 await fetchAIResponse(
+                    apiUrl,
+                    apiKey,
                     modelName,
                     messages,
                     temperature,
@@ -337,15 +354,15 @@ export default {
             return Date.now().toString(36) + Math.random().toString(36).substring(2)
         },
         getSystemMessage() {
-            // if (this.isDeepThinking) {
-            //     return '' // 深度思考模式下，systemMessage 为空
-            // }
+            if (this.model === 'qwq' || this.model === 'deepThinking') {
+                return '' // 深度思考模式下，systemMessage 为空
+            }
             const prompt = ChatPrompts.find(p => p.mode === this.mode)
             return prompt ? prompt.systemMessage : '你是一个正常的助手，请用礼貌的语言回答问题。'
         },
         getApiConfig() {
             // 直接从配置文件中获取当前模型的配置
-            const config = modelConfig[this.model]
+            const config = API_CONFIG[this.model]
             if (!config) {
                 throw new Error(`未找到模型 ${this.model} 的配置`)
             }

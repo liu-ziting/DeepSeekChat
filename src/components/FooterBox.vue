@@ -48,7 +48,6 @@ export default {
 - 阶跃星辰：step-1-flash
 - 百川智能：Baichuan4-Air
 - MINIMAX：MiniMax-Text-01
-- 通义千问QwQ：QwQ-32B
 
 🎭 角色对话
 - DeepSeek：deepseek-v3
