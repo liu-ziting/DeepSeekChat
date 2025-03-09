@@ -115,7 +115,7 @@ import { splitMixedContent, isCode } from '../../utils/helpers'
 import IconAI from '../IconBox/IconAI.vue'
 import CodeBlock from '../CodeBlock.vue' // 引入 CodeBlock 组件
 
-import { API_CONFIG } from '../../utils/api'
+import { modelConfig } from '../../utils/api'
 export default {
     components: {
         IconAI,
@@ -143,7 +143,7 @@ export default {
         return {
             showCopyButton: false, // 控制复制按钮的显示
             isReasoningExpanded: !!this.message.reasoningContent, // 默认展开（如果 reasoningContent 存在）
-            config: API_CONFIG,
+            config: modelConfig,
             isContentSearchResultsExpanded: false // 默认不展开（如果 contentSearchResults 存在）
         }
     },

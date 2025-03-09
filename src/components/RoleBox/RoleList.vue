@@ -81,7 +81,7 @@
 <script>
 import Message from '../ChatBox/MessageBox.vue'
 import InputBox from '../ChatBox/InputBox.vue'
-import { fetchAIResponse, API_CONFIG } from '../../utils/api'
+import { fetchAIResponse, modelConfig } from '../../utils/api'
 import { RolePrompts } from '../../utils/prompt.js'
 
 import FooterBox from '../FooterBox.vue'
@@ -162,7 +162,7 @@ export default {
                     ...this.messages.filter(msg => msg.id !== loadingMessageId).map(msg => ({ role: msg.role, content: msg.content }))
                 ]
 
-                const { apiUrl, apiKey, modelName, temperature } = this.getApiConfig()
+                const { modelName, temperature } = this.getApiConfig()
 
                 let reasoningContent = ''
                 let finalContent = ''
@@ -188,8 +188,6 @@ export default {
 
                 const stream = true
                 await fetchAIResponse(
-                    apiUrl,
-                    apiKey,
                     modelName,
                     messages,
                     temperature,
@@ -233,7 +231,7 @@ export default {
         },
         getApiConfig() {
             // 直接从配置文件中获取当前模型的配置
-            const config = API_CONFIG[this.model]
+            const config = modelConfig[this.model]
             if (!config) {
                 throw new Error(`未找到模型 ${this.model} 的配置`)
             }

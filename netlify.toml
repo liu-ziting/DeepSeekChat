@@ -1,0 +1,8 @@
+[build]
+  functions = "netlify/functions"  # 指定函数目录
+  publish = "dist"  # 指定构建输出目录（根据你的项目配置调整）
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200

@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { API_CONFIG } from '../../utils/api'
+import { modelConfig } from '../../utils/api'
 import IconGlm from '../IconBox/IconGlm.vue'
 
 export default {
@@ -98,7 +98,7 @@ export default {
             if (!this.inputText) return
 
             // 直接生成视频
-            const { apiUrl, apiKey, modelName } = API_CONFIG['bigmodelCogVideo']
+            const { apiUrl, apiKey, modelName } = modelConfig['bigmodelCogVideo']
             const fullPrompt = `${this.inputText}`
 
             // 如果有上传的图像，将图像 URL 或 Base64 传入
@@ -117,7 +117,7 @@ export default {
         },
         async optimizePrompt(userInput) {
             try {
-                const { apiUrl, apiKey, modelName } = API_CONFIG['bigmodel']
+                const { apiUrl, apiKey, modelName } = modelConfig['bigmodel']
                 const requestBody = {
                     model: modelName,
                     stream: false,
@@ -177,7 +177,7 @@ export default {
             }
         },
         async pollTaskStatus(taskId) {
-            const { apiKey } = API_CONFIG['bigmodelCogVideo']
+            const { apiKey } = modelConfig['bigmodelCogVideo']
             const maxAttempts = 30 // 最大轮询次数
             const interval = 5000 // 轮询间隔 5 秒
 
