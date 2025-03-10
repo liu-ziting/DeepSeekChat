@@ -271,6 +271,16 @@ export default {
                 console.log('No AI response in progress to stop.')
             }
         }
+    },
+    mounted() {
+        // 监听url参数
+
+        const urlParams = new URLSearchParams(window.location.search)
+        const roleParam = urlParams.get('role')
+        console.log(roleParam)
+        if (roleParam) {
+            this.changePrompt(this.prompts.find(p => p.title === roleParam))
+        }
     }
 }
 </script>
