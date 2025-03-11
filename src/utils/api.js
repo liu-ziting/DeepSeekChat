@@ -1,25 +1,30 @@
 // 不同模型的 API 配置
 export const API_CONFIG = {
     shuinifengxin: {
-        name: '水泥封心',
-        apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
-        apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
-        modelName: 'deepseek-v3',
-        temperature: 0.6
-    },
-    deepseek: {
-        // 派欧算力云
-        name: 'DeepSeek',
-        apiUrl: 'https://api.ppinfra.com/v3/openai/chat/completions',
-        apiKey: process.env.VUE_APP_OPSLY_API_KEY,
-        modelName: 'deepseek/deepseek-v3/community',
-        temperature: 0.6
-        // 七牛云
-        // name: 'DeepSeek',
+        // name: '水泥封心',
         // apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
         // apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
         // modelName: 'deepseek-v3',
         // temperature: 0.6
+        name: '水泥封心',
+        apiUrl: 'https://api.ppinfra.com/v3/openai/chat/completions',
+        apiKey: process.env.VUE_APP_OPSLY_API_KEY,
+        modelName: 'deepseek/deepseek-v3/community',
+        temperature: 0.6
+    },
+    deepseek: {
+        // 派欧算力云
+        // name: 'DeepSeek',
+        // apiUrl: 'https://api.ppinfra.com/v3/openai/chat/completions',
+        // apiKey: process.env.VUE_APP_OPSLY_API_KEY,
+        // modelName: 'deepseek/deepseek-v3/community',
+        // temperature: 0.6
+        // 七牛云
+        name: 'DeepSeek',
+        apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
+        modelName: 'deepseek-v3',
+        temperature: 0.6
         // 官方
         // name: 'DeepSeek',
         // apiUrl: 'https://api.deepseek.com/v1/chat/completions',
@@ -152,7 +157,7 @@ export const API_CONFIG = {
         modelName: 'gpt-4o',
         temperature: 0.3
     },
-    qwq:{
+    qwq: {
         name: '通义千问-QwQ',
         apiUrl: 'https://api.suanli.cn/v1/chat/completions',
         apiKey: process.env.VUE_APP_QWQ_API_KEY,
