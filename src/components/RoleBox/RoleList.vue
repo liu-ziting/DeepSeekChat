@@ -34,7 +34,7 @@
             <div class="fixed inset-0 bg-white shadow-lg flex flex-col">
                 <!-- 弹窗内容 -->
                 <div>
-                    <div class="main min-h-screen flex flex-col absolute inset-0 -z-10 h-full w-full bg-main">
+                    <div class="main min-h-screen flex flex-col absolute inset-0 -z-10 h-full w-full">
                         <h2 class="text-1xl font-bold mb-2 mt-2 text-center">
                             {{ selectedPrompt.title }}
                             <!-- 关闭按钮 -->
@@ -273,11 +273,8 @@ export default {
         }
     },
     mounted() {
-        // 监听url参数
-
         const urlParams = new URLSearchParams(window.location.search)
         const roleParam = urlParams.get('role')
-        console.log(roleParam)
         if (roleParam) {
             this.changePrompt(this.prompts.find(p => p.title === roleParam))
         }
