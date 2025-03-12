@@ -236,73 +236,70 @@ export default {
                             ]
                         } else if (chunk.type === 'content') {
                             // 获取当前消息对象
-                            const currentMessage = this.messages[index]; // 确保在使用之前初始化
+                            const currentMessage = this.messages[index] // 确保在使用之前初始化
 
                             // 直接处理流式数据的分块内容
-                            const content = chunk.content;
+                            const content = chunk.content
 
                             // 检查是否进入 <think> 标签
                             if (content.includes('<think>')) {
-                                isInsideThinkTag = true; // 标记进入 <think> 标签
-                                thinkBuffer = ''; // 清空临时缓冲区
+                                isInsideThinkTag = true // 标记进入 <think> 标签
+                                thinkBuffer = '' // 清空临时缓冲区
 
                                 // 记录深度思考开始时间
                                 if (!currentMessage.reasoningStartTime) {
-                                    currentMessage.reasoningStartTime = Date.now();
+                                    currentMessage.reasoningStartTime = Date.now()
                                 }
 
                                 // 在深度思考时，设置 content 为 "思考中"
-                                currentMessage.content = '思考中';
+                                currentMessage.content = '思考中'
                             }
 
                             // 如果在 <think> 标签内，追加内容到缓冲区并实时更新 reasoningContent
                             if (isInsideThinkTag) {
-                                thinkBuffer += content;
+                                thinkBuffer += content
 
                                 // 实时提取 <think> 标签中的内容（不包括 <think> 标签本身）
-                                const thinkContent = thinkBuffer
-                                    .replace('<think>', '') // 移除开始标签
-                                    .replace(/\n/g, ''); // 移除所有换行符
+                                const thinkContent = thinkBuffer.replace('<think>', '') // 移除开始标签
+                                // .replace(/\n/g, '') // 移除所有换行符
 
-                                reasoningContent = thinkContent; // 实时更新 reasoningContent
+                                reasoningContent = thinkContent // 实时更新 reasoningContent
 
                                 // 实时计算深度思考时间
                                 if (currentMessage.reasoningStartTime) {
-                                    const currentTime = Date.now();
-                                    currentMessage.reasoningDuration = parseFloat(
-                                        ((currentTime - currentMessage.reasoningStartTime) / 1000).toFixed(1)
-                                    );
+                                    const currentTime = Date.now()
+                                    currentMessage.reasoningDuration = parseFloat(((currentTime - currentMessage.reasoningStartTime) / 1000).toFixed(1))
                                 }
                             }
 
                             // 检查是否结束 </think> 标签
                             if (content.includes('</think>')) {
-                                isInsideThinkTag = false; // 标记离开 <think> 标签
+                                isInsideThinkTag = false // 标记离开 <think> 标签
 
                                 // 提取 <think> 标签中的内容
                                 const thinkContent = thinkBuffer
                                     .replace('<think>', '') // 移除开始标签
                                     .replace('</think>', '') // 移除结束标签
-                                    .replace(/\n/g, ''); // 移除所有换行符
+                                // .replace(/\n/g, '') // 移除所有换行符
 
-                                reasoningContent = thinkContent; // 更新 reasoningContent
-                                thinkBuffer = ''; // 清空缓冲区
+                                reasoningContent = thinkContent // 更新 reasoningContent
+                                thinkBuffer = '' // 清空缓冲区
                             }
 
                             // 如果不在 <think> 标签内，将内容追加到 finalContent
                             if (!isInsideThinkTag && !content.includes('<think>') && !content.includes('</think>')) {
-                                finalContent += content;
+                                finalContent += content
                             }
 
-                            totalTokens = parseFloat((totalTokens + chunk.token).toFixed(4));
+                            totalTokens = parseFloat((totalTokens + chunk.token).toFixed(4))
 
                             // 清空 contentSearchResults 数组
-                            currentMessage.contentSearchResults = [];
-                            const results = extractSearchResults(finalContent);
-                            currentMessage.contentSearchResults = [...results];
+                            currentMessage.contentSearchResults = []
+                            const results = extractSearchResults(finalContent)
+                            currentMessage.contentSearchResults = [...results]
 
                             // 移除 finalContent 中的联网查询结果标记
-                            const cleanedFinalContent = removeSearchResultMarkers(finalContent);
+                            const cleanedFinalContent = removeSearchResultMarkers(finalContent)
 
                             // 更新消息对象
                             this.messages = [
@@ -312,14 +309,10 @@ export default {
                                     content: isInsideThinkTag ? '思考中' : cleanedFinalContent, // 深度思考时显示 "思考中"，否则显示最终结果
                                     reasoningContent: reasoningContent, // 实时更新 reasoningContent
                                     token: totalTokens,
-                                    duration: chunk.duration,
+                                    duration: chunk.duration
                                 },
-                                ...this.messages.slice(index + 1),
-                            ];
-
-
-
-
+                                ...this.messages.slice(index + 1)
+                            ]
                         } else if (chunk.type === 'complete') {
                             const currentMessage = this.messages[index]
                             this.messages = [...this.messages.slice(0, index), { ...currentMessage, duration: chunk.duration }, ...this.messages.slice(index + 1)] // 传递 reasoningSearchResults 和 contentSearchResults
