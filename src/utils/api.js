@@ -203,76 +203,91 @@ export const showModels = [
     {
         name: 'DeepSeek-R1',
         model: 'deepseek',
+        description: '由七牛云服务商提供',
         img: require('@/assets/deepseek.png')
     },
     {
         name: '月之暗面',
         model: 'kimi',
+        description: '由月之暗面官方提供',
         img: require('@/assets/kimi.png')
     },
     {
         name: '智谱清言',
         model: 'bigmodel',
+        description: '由智谱清言官方提供',
         img: require('@/assets/zhipu.png')
     },
     {
         name: '阶跃星辰',
         model: 'stepfunChat',
+        description: '由阶跃星辰官方提供',
         img: require('@/assets/stepfunChat.png')
     },
     {
         name: '通义千问-Max',
         model: 'qwen',
+        description: '由七牛云服务商提供',
         img: require('@/assets/qwen.jpg')
     },
     {
         name: '通义千问-QwQ',
         model: 'qwq',
+        description: '由算了么服务商提供',
         img: require('@/assets/qwen.jpg')
     },
     {
         name: '百川智能',
         model: 'baichuan',
+        description: '由百川智能官方提供',
         img: require('@/assets/baishuan.png')
     },
     {
         name: '零一万物',
         model: 'lingyiwanwu',
+        description: '由零一万物官方提供',
         img: require('@/assets/lingyiwanwu.svg')
     },
     {
         name: 'GPT3.5',
         model: 'gpt35',
+        description: '由ChatAnywhere提供',
         img: require('@/assets/openai.png')
     },
     {
         name: 'GPT4o',
         model: 'gpt4o',
+        description: '由mnapi接口提供',
         img: require('@/assets/gpt4o.png')
     },
     {
         name: 'Gemini',
         model: 'gemini',
+        description: '由Deno服务平台提供',
         img: require('@/assets/gemini.jpg')
     },
     {
         name: 'Llama',
         model: 'llama',
+        description: '由Openrouter提供',
         img: require('@/assets/llama.png')
     },
     {
         name: 'Gemma',
         model: 'gemma',
+        description: '由Openrouter提供',
         img: require('@/assets/gemma.svg')
     },
     {
         name: 'MiniMax',
         model: 'minimax',
+        description: '由MiniMax官方提供',
         img: require('@/assets/minimax.webp')
     },
     {
         name: 'Mistral',
         model: 'mistral',
+        description: '由Openrouter提供',
         img: require('@/assets/mistral.png')
     }
 ]
