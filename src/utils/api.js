@@ -6,10 +6,15 @@ export const API_CONFIG = {
         // apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
         // modelName: 'deepseek-v3',
         // temperature: 0.6
+        // name: '水泥封心',
+        // apiUrl: 'https://api.ppinfra.com/v3/openai/chat/completions',
+        // apiKey: process.env.VUE_APP_OPSLY_API_KEY,
+        // modelName: 'deepseek/deepseek-v3/community',
+        // temperature: 0.6
         name: '水泥封心',
-        apiUrl: 'https://api.ppinfra.com/v3/openai/chat/completions',
-        apiKey: process.env.VUE_APP_OPSLY_API_KEY,
-        modelName: 'deepseek/deepseek-v3/community',
+        apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
+        apiKey: process.env.VUE_APP_OPENROUTER_API_KEY,
+        modelName: 'deepseek/deepseek-chat:free',
         temperature: 0.6
     },
     deepseek: {
@@ -56,6 +61,7 @@ export const API_CONFIG = {
         apiUrl: 'https://liuziting-gemini-play-98-58acmhtr50hp.deno.dev/v1/chat/completions',
         // apiUrl: 'https://my-openai-gemini-demo.vercel.app/v1/chat/completions',
         apiKey: process.env.VUE_APP_GEMINI_API_KEY,
+        // modelName: 'gemini-2.0-flash-exp',
         modelName: 'gemini-1.5-pro-latest',
         // modelName: 'gemini-2.0-flash-lite-preview-02-05',
         // modelName: 'gemini-2.0-flash-thinking-exp',
@@ -163,16 +169,37 @@ export const API_CONFIG = {
         apiKey: process.env.VUE_APP_QWQ_API_KEY,
         modelName: 'free:QwQ-32B',
         temperature: 0.6
+    },
+    llama: {
+        name: 'Llama',
+        apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
+        apiKey: process.env.VUE_APP_OPENROUTER_API_KEY,
+        modelName: 'meta-llama/llama-3.3-70b-instruct:free',
+        temperature: 0.6
+    },
+    gemma: {
+        name: 'Gemma',
+        apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
+        apiKey: process.env.VUE_APP_OPENROUTER_API_KEY,
+        modelName: 'google/gemma-3-27b-it:free',
+        temperature: 0.6
+    },
+    mistral: {
+        name: 'Mistral ',
+        apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
+        apiKey: process.env.VUE_APP_OPENROUTER_API_KEY,
+        modelName: 'mistralai/mistral-small-24b-instruct-2501:free',
+        temperature: 0.6
     }
 }
 
 // 展示不同的模型
 export const showModels = [
-    {
-        name: '水泥封心',
-        model: 'shuinifengxin',
-        img: require('@/assets/robot.png')
-    },
+    // {
+    //     name: '水泥封心',
+    //     model: 'shuinifengxin',
+    //     img: require('@/assets/robot.png')
+    // },
     {
         name: 'DeepSeek-R1',
         model: 'deepseek',
@@ -189,6 +216,11 @@ export const showModels = [
         img: require('@/assets/zhipu.png')
     },
     {
+        name: '阶跃星辰',
+        model: 'stepfunChat',
+        img: require('@/assets/stepfunChat.png')
+    },
+    {
         name: '通义千问-Max',
         model: 'qwen',
         img: require('@/assets/qwen.jpg')
@@ -197,11 +229,6 @@ export const showModels = [
         name: '通义千问-QwQ',
         model: 'qwq',
         img: require('@/assets/qwen.jpg')
-    },
-    {
-        name: '阶跃星辰',
-        model: 'stepfunChat',
-        img: require('@/assets/stepfunChat.png')
     },
     {
         name: '百川智能',
@@ -229,9 +256,24 @@ export const showModels = [
         img: require('@/assets/gemini.jpg')
     },
     {
+        name: 'Llama',
+        model: 'llama',
+        img: require('@/assets/llama.png')
+    },
+    {
+        name: 'Gemma',
+        model: 'gemma',
+        img: require('@/assets/gemma.svg')
+    },
+    {
         name: 'MiniMax',
         model: 'minimax',
         img: require('@/assets/minimax.webp')
+    },
+    {
+        name: 'Mistral',
+        model: 'mistral',
+        img: require('@/assets/mistral.png')
     }
 ]
 

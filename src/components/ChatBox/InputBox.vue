@@ -76,7 +76,9 @@
                                 >
                                     <input type="radio" name="model" value="model1" class="peer sr-only" aria-hidden="true" />
                                     <img :src="model.img" alt="Model 1 Icon" class="w-5 h-5 mr-2 rounded border-gray-300" />
-                                    <span class="text-gray-700 text-sm">{{ model.name }}</span>
+                                    <span class="text-gray-700 text-sm">
+                                        {{ model.name }}
+                                    </span>
                                     <span v-if="selectedModel === model.name" class="text-green-500 ml-1 absolute right-2">
                                         <svg
                                             t="1740124477021"
@@ -347,6 +349,7 @@ export default {
             this.isShareDialogOpen = false
             this.selectedModel = data.name
             this.selectedModelImg = data.img
+            this.deepThinking = false
             this.$emit('change-model', data.model)
         },
         stopAIResponse() {
