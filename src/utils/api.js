@@ -185,7 +185,7 @@ export const API_CONFIG = {
         temperature: 0.6
     },
     mistral: {
-        name: 'Mistral ',
+        name: 'Mistral',
         apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
         apiKey: process.env.VUE_APP_OPENROUTER_API_KEY,
         modelName: 'mistralai/mistral-small-24b-instruct-2501:free',
