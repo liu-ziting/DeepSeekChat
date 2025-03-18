@@ -78,7 +78,9 @@
                                     <img :src="model.img" alt="Model 1 Icon" class="w-5 h-5 mr-2 rounded border-gray-300" />
                                     <span class="text-gray-700 text-sm">
                                         {{ model.name }}
+                                        <p class="text-[10px] text-gray-400">{{ model.description }}</p>
                                     </span>
+
                                     <span v-if="selectedModel === model.name" class="text-green-500 ml-1 absolute right-2">
                                         <svg
                                             t="1740124477021"
