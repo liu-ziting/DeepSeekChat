@@ -37,7 +37,6 @@ export default {
 - RooCline+DeepSeek+TailwindCSS
 
 🤖 多模型
-- 水泥封心：deepseek-v3
 - DeepSeek：deepseek-r1
 - Gemini：gemini-2.0-flash
 - GPT：gpt-3.5-turbo
@@ -49,6 +48,11 @@ export default {
 - 百川智能：Baichuan4-Air
 - MINIMAX：MiniMax-Text-01
 - 通义千问QwQ：QwQ-32B
+- Llama：llama-3.3-70b
+- Gemma：gemma-3-27b-it
+- Mistral：mistral-small-24b
+以上大部分模型是免费模型
+一部分国内模型是初始赠送额度
 
 🎭 角色对话
 - DeepSeek：deepseek-v3
