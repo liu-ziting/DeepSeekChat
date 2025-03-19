@@ -61,12 +61,12 @@
             </div>
             <!-- 模型弹出层 -->
             <div v-if="isShareDialogOpen" @click.self="isShareDialogOpen = false" class="propup fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                <div class="bg-white rounded-lg p-6 shadow-lg w-96">
+                <div class="bg-white rounded-lg p-6 shadow-lg w-96 md:w-[600px]">
                     <div class="flex flex-col items-left">
-                        <h2 class="text-md font-semibold text-gray-800 mb-4">选择模型</h2>
+                        <h2 class="text-md font-semibold text-gray-800 mb-4">模型选择</h2>
 
                         <div class="w-full">
-                            <div class="grid grid-cols-2 gap-2">
+                            <div class="grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
                                 <label
                                     v-for="model in models"
                                     :key="model.name"
