@@ -33,9 +33,7 @@ export default {
             modelIntroduce: `
 🧠 代码/部署
 - 本项目90%的代码由大模型自主开发
-- 构建工具和技术栈如下
 - RooCline+DeepSeek+TailwindCSS
-
 🤖 多模型
 - DeepSeek：deepseek-r1
 - Gemini：gemini-2.0-flash
@@ -51,16 +49,12 @@ export default {
 - Llama：llama-3.3-70b
 - Gemma：gemma-3-27b-it
 - Mistral：mistral-small-24b
-以上大部分模型是免费模型
-一部分国内模型是初始赠送额度
-
+大部分模型免费，部分国内模型提供初始额度
 🎭 角色对话
 - DeepSeek：deepseek-v3
-
 🖼️ 图片识别/语音合成
 - 阶跃星辰：step-1o-turbo-vision
 - 阶跃星辰：step-tts-mini
-
 😍 图片生成
 - 智谱清言：cogview-3-flash
 
