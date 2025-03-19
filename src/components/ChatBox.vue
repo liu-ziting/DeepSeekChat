@@ -347,7 +347,7 @@ export default {
             return Date.now().toString(36) + Math.random().toString(36).substring(2)
         },
         getSystemMessage() {
-            if (this.model === 'qwq' || this.model === 'deepThinking') {
+            if (this.model === 'qwq') {
                 return '' // 深度思考模式下，systemMessage 为空
             }
             const prompt = ChatPrompts.find(p => p.mode === this.mode)
