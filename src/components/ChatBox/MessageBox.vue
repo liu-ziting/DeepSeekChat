@@ -59,7 +59,12 @@
                         </svg>
                     </div>
                     <div v-if="isReasoningExpanded" class="mt-2">
-                        <pre class="whitespace-pre-wrap">{{ message.reasoningContent }}</pre>
+                        <pre class="whitespace-pre-wrap">{{
+                            message.reasoningContent
+                                .replace(/\\n|\\r/g, '')
+                                .replace(/\s+/g, ' ')
+                                .trim()
+                        }}</pre>
                     </div>
                 </div>
 
