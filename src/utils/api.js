@@ -25,17 +25,23 @@ export const API_CONFIG = {
         // modelName: 'deepseek/deepseek-v3/community',
         // temperature: 0.6
         // 七牛云
-        name: 'DeepSeek',
-        apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
-        apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
-        modelName: 'deepseek-v3',
-        temperature: 0.6
+        // name: 'DeepSeek',
+        // apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
+        // apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
+        // modelName: 'deepseek-v3',
+        // temperature: 0.6
         // 官方
         // name: 'DeepSeek',
         // apiUrl: 'https://api.deepseek.com/v1/chat/completions',
         // apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
         // modelName: 'deepseek-chat',
         // temperature: 0.8
+        // openrouter
+        name: 'DeepSeek',
+        apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
+        apiKey: process.env.VUE_APP_OPENROUTER_API_KEY,
+        modelName: 'deepseek/deepseek-chat:free',
+        temperature: 0.6
     },
     // 深度思考
     deepThinking: {
@@ -46,15 +52,21 @@ export const API_CONFIG = {
         // modelName: 'deepseek/deepseek-r1',
         // temperature: 0.6
         // 七牛云
-        name: 'DeepSeek-R1',
-        apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
-        apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
-        modelName: 'deepseek-r1',
-        temperature: 0.6
+        // name: 'DeepSeek-R1',
+        // apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
+        // apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
+        // modelName: 'deepseek-r1',
+        // temperature: 0.6
         // 官方
         // apiUrl: 'https://api.deepseek.com/v1/chat/completions',
         // apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
         // modelName: 'deepseek-reasoner'
+        // openrouter
+        name: 'DeepSeek',
+        apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
+        apiKey: process.env.VUE_APP_OPENROUTER_API_KEY,
+        modelName: 'deepseek/deepseek-r1:free',
+        temperature: 0.6
     },
     gemini: {
         name: 'Gemini',
@@ -203,7 +215,7 @@ export const showModels = [
     {
         name: 'DeepSeek-R1',
         model: 'deepseek',
-        description: '由七牛云服务商提供',
+        description: '由Openrouter提供',
         img: require('@/assets/deepseek.png')
     },
     {
@@ -364,16 +376,15 @@ export const fetchAIResponse = async (apiUrl, apiKey, modelName, messages, tempe
                         const delta = data.choices[0].delta
                         const currentDuration = parseFloat(((performance.now() - startTime) / 1000).toFixed(2))
 
-                        if (delta.reasoning_content) {
-                            const tokenCount = calculateTokenCount(delta.reasoning_content)
+                        if (delta.reasoning_content || delta.reasoning) {
+                            const tokenCount = calculateTokenCount(delta.reasoning_content || delta.reasoning)
                             onDataReceived({
                                 type: 'reasoning',
-                                content: delta.reasoning_content,
+                                content: delta.reasoning_content || delta.reasoning,
                                 token: tokenCount,
                                 duration: currentDuration
                             })
-                        }
-                        if (delta.content) {
+                        } else if (delta.content) {
                             const tokenCount = calculateTokenCount(delta.content)
                             onDataReceived({
                                 type: 'content',
