@@ -303,7 +303,7 @@ export default {
                 this.isDeepThinking = true
                 this.showPasswordModal = false
                 this.passwordInput = ''
-                this.placeholder = '已启用DeepSeek深度思考模式'
+                // this.placeholder = '已启用DeepSeek深度思考模式'
             } else {
                 // 如果当前是开启状态，直接关闭
                 this.isDeepThinking = false
