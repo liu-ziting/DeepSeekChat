@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import ChatBox from '../components/ChatBox.vue'
 import ChatAI from '../components/MainBox/ChatAI.vue'
 import NsfwAI from '../components/NsfwBox/NsfwAI.vue'
+import SexVideo from '../components/SexBox/SexVideo.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
         path: '/ai',
         name: 'ChatAI',
         component: ChatAI
+    },
+    {
+        path: '/sex',
+        name: 'SexVideo',
+        component: SexVideo
     }
 ]
 
