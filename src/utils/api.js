@@ -52,21 +52,21 @@ export const API_CONFIG = {
         // modelName: 'deepseek/deepseek-r1',
         // temperature: 0.6
         // 七牛云
-        // name: 'DeepSeek-R1',
-        // apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
-        // apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
-        // modelName: 'deepseek-r1',
-        // temperature: 0.6
+        name: 'DeepSeek-R1',
+        apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
+        modelName: 'deepseek-r1',
+        temperature: 0.6
         // 官方
         // apiUrl: 'https://api.deepseek.com/v1/chat/completions',
         // apiKey: process.env.VUE_APP_DEEPSEEK_API_KEY,
         // modelName: 'deepseek-reasoner'
         // openrouter
-        name: 'DeepSeek',
-        apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
-        apiKey: process.env.VUE_APP_OPENROUTER_API_KEY,
-        modelName: 'deepseek/deepseek-r1:free',
-        temperature: 0.6
+        // name: 'DeepSeek',
+        // apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
+        // apiKey: process.env.VUE_APP_OPENROUTER_API_KEY,
+        // modelName: 'deepseek/deepseek-r1:free',
+        // temperature: 0.6
     },
     gemini: {
         name: 'Gemini',
