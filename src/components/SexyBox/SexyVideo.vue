@@ -4,7 +4,7 @@
             <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
 
-        <video ref="videoPlayer" :src="currentVideo" muted playsinline autoplay class="inset-0 w-full h-full object-cover" @click="handleVideoClick"></video>
+        <video ref="videoPlayer" :src="currentVideo" playsinline autoplay class="w-full h-full object-contain" @click="handleVideoClick"></video>
 
         <button
             v-if="showButton"
@@ -111,10 +111,9 @@ export default {
     }
 
     video {
-        width: 375px;
-        height: 667px;
-        border-radius: 20px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        max-width: 100%;
+        max-height: 100%;
+        margin: auto;
     }
 }
 </style>
