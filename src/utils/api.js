@@ -6,16 +6,16 @@ export const API_CONFIG = {
         // apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
         // modelName: 'deepseek-v3',
         // temperature: 0.6
-        // name: '水泥封心',
-        // apiUrl: 'https://api.ppinfra.com/v3/openai/chat/completions',
-        // apiKey: process.env.VUE_APP_OPSLY_API_KEY,
-        // modelName: 'deepseek/deepseek-v3/community',
-        // temperature: 0.6
         name: '水泥封心',
-        apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
-        apiKey: process.env.VUE_APP_OPENROUTER_API_KEY,
-        modelName: 'deepseek/deepseek-chat:free',
+        apiUrl: 'https://api.ppinfra.com/v3/openai/chat/completions',
+        apiKey: process.env.VUE_APP_OPSLY_API_KEY,
+        modelName: 'deepseek/deepseek-v3/community',
         temperature: 0.6
+        // name: '水泥封心',
+        // apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
+        // apiKey: process.env.VUE_APP_OPENROUTER_API_KEY,
+        // modelName: 'deepseek/deepseek-chat:free',
+        // temperature: 0.6
     },
     deepseek: {
         // 派欧算力云
@@ -25,11 +25,11 @@ export const API_CONFIG = {
         // modelName: 'deepseek/deepseek-v3/community',
         // temperature: 0.6
         // 七牛云
-        // name: 'DeepSeek',
-        // apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
-        // apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
-        // modelName: 'deepseek-v3',
-        // temperature: 0.6
+        name: 'DeepSeek',
+        apiUrl: 'https://api.qnaigc.com/v1/chat/completions',
+        apiKey: process.env.VUE_APP_QIUNIUYUN_API_KEY,
+        modelName: 'deepseek-v3',
+        temperature: 0.6
         // 官方
         // name: 'DeepSeek',
         // apiUrl: 'https://api.deepseek.com/v1/chat/completions',
@@ -37,11 +37,11 @@ export const API_CONFIG = {
         // modelName: 'deepseek-chat',
         // temperature: 0.8
         // openrouter
-        name: 'DeepSeek',
-        apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
-        apiKey: process.env.VUE_APP_OPENROUTER_API_KEY,
-        modelName: 'deepseek/deepseek-chat:free',
-        temperature: 0.6
+        // name: 'DeepSeek',
+        // apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
+        // apiKey: process.env.VUE_APP_OPENROUTER_API_KEY,
+        // modelName: 'deepseek/deepseek-chat:free',
+        // temperature: 0.6
     },
     // 深度思考
     deepThinking: {
@@ -215,7 +215,7 @@ export const showModels = [
     {
         name: 'DeepSeek-R1',
         model: 'deepseek',
-        description: '由Openrouter提供',
+        description: '由七牛云提供',
         img: require('@/assets/deepseek.png')
     },
     {
