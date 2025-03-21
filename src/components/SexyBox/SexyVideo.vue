@@ -4,12 +4,12 @@
             <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
 
-        <video ref="videoPlayer" :src="currentVideo" playsinline autoplay class="fixed inset-0 w-full h-full object-contain"></video>
+        <video ref="videoPlayer" :src="currentVideo" playsinline autoplay class="fixed inset-0 w-full h-full object-contain" @error="handleVideoError"></video>
 
         <button
             v-if="showButton"
             @click="fetchNextVideo"
-            class="fixed bottom-2 left-1/2 transform -translate-x-1/2 px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900 z-10"
+            class="fixed bottom-10 left-1/2 transform -translate-x-1/2 px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900 z-10"
         >
             下一个更好
         </button>
@@ -25,7 +25,7 @@ export default {
             currentVideo: '',
             retryCount: 0,
             maxRetries: 3,
-            showButton: false,
+            showButton: true,
             hasInteracted: false
         }
     },
@@ -49,13 +49,30 @@ export default {
             try {
                 const response = await axios.get('https://api.kuleu.com/api/MP4_xiaojiejie?type=json')
                 if (response.data.code === 200) {
-                    this.currentVideo = response.data.mp4_video
-                    this.retryCount = 0
-                    this.playVideo()
+                    const videoUrl = response.data.mp4_video
+                    const isValid = await this.checkVideoExists(videoUrl)
+
+                    if (isValid) {
+                        this.currentVideo = videoUrl
+                        this.retryCount = 0
+                        this.playVideo()
+                    } else {
+                        console.warn('Video file not found (404), retrying...')
+                        this.retryIfNeeded()
+                    }
                 }
             } catch (error) {
                 console.error('Error fetching video:', error)
                 this.retryIfNeeded()
+            }
+        },
+        async checkVideoExists(url) {
+            try {
+                const response = await fetch(url, { method: 'HEAD' })
+                return response.ok // `true` 代表视频可访问，否则 `false`
+            } catch (error) {
+                console.error('Error checking video existence:', error)
+                return false
             }
         },
         playVideo() {
@@ -74,8 +91,17 @@ export default {
             this.showButton = !this.showButton
         },
         handleVideoError() {
-            console.error('Video playback error')
-            this.retryIfNeeded()
+            console.error('Video playback error: File not found or inaccessible', this.currentVideo)
+
+            if (this.retryCount < this.maxRetries) {
+                this.retryCount++
+                setTimeout(() => {
+                    // this.fetchNextVideo()
+                }, 1000)
+            } else {
+                alert('当前视频无法播放，请尝试获取下一个视频')
+                this.showButton = true // 显示“下一个更好”按钮
+            }
         },
         retryIfNeeded() {
             if (this.retryCount < this.maxRetries) {
