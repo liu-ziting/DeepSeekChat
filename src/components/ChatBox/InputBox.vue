@@ -29,7 +29,7 @@
                 </svg>
             </button>
             <!-- 模式选择 -->
-            <div v-if="model === 'deepseek' || model === 'deepThinking' || model === 'mistral' || model === 'gemma'" class="w-1/2 flex justify-end">
+            <div v-if="model === 'deepseek' || model === 'deepThinking' || model === 'mistral' || model === 'gemma'" class="w-3/5 flex justify-end">
                 <div>
                     <!-- 正常模式 -->
                     <label @click="changeMode('normal')" style="margin-right: 10px" class="inline-block cursor-pointer radio">
