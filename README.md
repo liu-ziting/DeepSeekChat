@@ -187,12 +187,29 @@ DeepSeekChat/
 
 ## API 文档
 
--   [DeepSeek API 文档](https://platform.deepseek.com/docs)
--   [Gemini API 文档](https://ai.google.dev/docs)
--   [智谱清言 API 文档](https://open.bigmodel.cn/dev/api)
--   [月之暗面 API 文档](https://platform.moonshot.cn/docs)
--   [零一万物 API 文档](https://platform.yilifang.com/docs)
--   [通义千问 API 文档](https://open.qwen.cn/docs)
--   [阶跃星辰 API 文档](https://platform.step.com/docs)
--   [百川智能 API 文档](https://open.baichuan.com.cn/docs)
--   [MINIMAX API 文档](https://platform.minimax.cn/docs)
+- [DeepSeek API 文档](https://platform.deepseek.com/docs)
+
+- [Gemini API 文档](https://ai.google.dev/docs)
+
+- [智谱清言 API 文档](https://open.bigmodel.cn/dev/api)
+
+- [月之暗面 API 文档](https://platform.moonshot.cn/docs)
+
+- [零一万物 API 文档](https://platform.yilifang.com/docs)
+
+- [通义千问 API 文档](https://open.qwen.cn/docs)
+
+- [阶跃星辰 API 文档](https://platform.step.com/docs)
+
+- [百川智能 API 文档](https://open.baichuan.com.cn/docs)
+
+- [MINIMAX API 文档](https://platform.minimax.cn/docs)
+
+  
+
+已经跑完了AlexNet项目
+
+## 我的学习记录
+
+- 学习了 Git 基本操作
+- 成功创建分支并提交代码
